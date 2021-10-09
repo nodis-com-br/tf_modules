@@ -1,0 +1,10 @@
+---
+spec:
+  template:
+    spec:
+      containers:
+      - name: tunnel-front
+        volumeMounts:
+        - mountPath: "/var/lib/kubelet"
+          name: kubeconfig
+          readOnly: true
