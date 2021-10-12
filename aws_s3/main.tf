@@ -48,3 +48,10 @@ resource "aws_iam_policy" "this" {
     ]
   })
 }
+
+module "role" {
+  source = "../aws_iam_role"
+  count = var.role ? 1 : 0
+  owner_arn = var.users_iam_root_arn
+  policy_arns = [aws_iam_policy.this.arn]
+}
