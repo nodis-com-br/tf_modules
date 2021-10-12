@@ -8,7 +8,7 @@ resource "aws_alb_listener" "redirector" {
   load_balancer_arn = aws_alb.this.arn
   port = try(each.value.port, "443")
   protocol = try(each.value.protocol, "HTTPS")
-  certificate_arn = try(each.value.certificate, null)
+  certificate_arn = try(each.value.certificate_arn, null)
   default_action {
     type  = "redirect"
     redirect {

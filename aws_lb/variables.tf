@@ -12,6 +12,5 @@ variable "builtin_redirectors" {
 }
 
 variable "redirectors" {
-  type = object({})
   default = {}
 }

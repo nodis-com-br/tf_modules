@@ -3,8 +3,8 @@ module "dns_record" {
   name = var.route53_zone.name
   route53_zone = var.route53_zone
   alias = {
-    name = aws_alb.this.dns_name
-    zone_id = aws_alb.this.zone_id
+    name = module.load_balancer.this.dns_name
+    zone_id = module.load_balancer.this.zone_id
   }
   create_certificate = true
 }
@@ -25,7 +25,9 @@ module "load_balancer" {
     module.security_group.this.id,
   ]
   redirectors = {
-    https = {action = {host = var.alias}}
+    https = {
+      certificate_arn = module.dns_record.certificate.arn
+      action = {host = var.alias}}
   }
   builtin_redirectors = [
     "http_to_https"
@@ -33,12 +35,12 @@ module "load_balancer" {
 }
 
 
-resource "aws_alb" "this" {
-  subnets = var.subnet_ids
-  security_groups = [
-    module.security_group.this.id,
-  ]
-}
+//resource "aws_alb" "this" {
+//  subnets = var.subnet_ids
+//  security_groups = [
+//    module.security_group.this.id,
+//  ]
+//}
 
 //resource "aws_alb_listener" "http" {
 //  load_balancer_arn = aws_alb.this.arn
