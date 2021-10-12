@@ -31,6 +31,30 @@ module "security_group" {
 
 ### Load balancer #####################
 
+module "load_balancer" {
+  source = "../aws_lb"
+  subnet_ids = var.subnet_ids
+  security_group_ids = [
+    module.security_group.this.id,
+  ]
+  forwarders = {
+    1 = {
+      certificate_arn = module.dns_record.certificate.arn
+      target_group = {
+        vpc_id = var.vpc.id
+        type = "instance"
+        targets = var.instances
+      }
+    }
+  }
+  builtin_redirectors = [
+    "http_to_https"
+  ]
+  providers = {
+    aws.current = aws.current
+  }
+}
+
 resource "aws_alb" "this" {
   subnets = var.subnet_ids
   security_groups = [

@@ -40,13 +40,13 @@ resource "aws_alb_listener" "forwarder" {
 resource "aws_alb_target_group" "this" {
   provider = aws.current
   for_each = var.forwarders
-  port = try(each.value.action.port, 80)
-  protocol = try(each.value.action.protocol, "HTTP")
-  vpc_id = try(each.value.action.vpc_id)
-  target_type = each.value.action.target_type
+  port = try(each.value.target_group.port, 80)
+  protocol = try(each.value.target_group.protocol, "HTTP")
+  vpc_id = try(each.value.target_group.vpc_id)
+  target_type = each.value.target_group.target_type
   health_check {
-    path = try(each.value.action.healthcheck, {path = "/"}).path
-    matcher = try(each.value.action.healthcheck, {matcher = "200"}).matcher
+    path = try(each.value.target_group.healthcheck, {path = "/"}).path
+    matcher = try(each.value.target_group.healthcheck, {matcher = "200"}).matcher
   }
 }
 
