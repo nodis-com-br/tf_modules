@@ -12,3 +12,7 @@ variable "policy_arns" {
   type = list(string)
   default = []
 }
+
+variable "builtin_policies" {
+  default = []
+}
