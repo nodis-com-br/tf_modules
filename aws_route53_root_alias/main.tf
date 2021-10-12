@@ -83,7 +83,7 @@ module "security_group" {
   vpc = var.vpc
   builtin_ingress_rules = [
     "http",
-//    "https"
+    "https"
   ]
 }
 
