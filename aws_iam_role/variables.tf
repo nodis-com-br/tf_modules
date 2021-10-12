@@ -9,8 +9,6 @@ variable "policies" {
 }
 
 variable "policy_arns" {
-  type = map(object({
-    arn = string
-  }))
-  default = {}
+  type = list(string)
+  default = []
 }

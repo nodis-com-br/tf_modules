@@ -26,6 +26,6 @@ resource "aws_iam_role_policy_attachment" "this" {
   provider = aws.current
   for_each = toset(concat([for p in aws_iam_policy.this : p.arn], var.policy_arns))
   role = aws_iam_role.this.name
-  policy_arn = each.value.arn
+  policy_arn = each.value
 }
 
