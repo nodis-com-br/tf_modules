@@ -52,7 +52,7 @@ resource "aws_alb_target_group" "this" {
 
 resource "aws_alb_target_group_attachment" "this" {
   provider = aws.current
-  for_each = var.target_group_attachments
+  for_each = local.target_group_attachments
   target_group_arn = aws_alb_target_group.this[each.value.forwarder]
   target_id = each.value.id
 }
