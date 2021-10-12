@@ -14,3 +14,7 @@ variable "builtin_redirectors" {
 variable "redirectors" {
   default = {}
 }
+
+variable "forwarders" {
+  default = {}
+}

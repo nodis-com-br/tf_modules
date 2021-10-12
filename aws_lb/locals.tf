@@ -10,4 +10,5 @@ locals {
   }
   selected_builtin_redirectors = {for l in var.builtin_redirectors : l => local.builtin_redirectors[l]}
   redirectors = merge(var.redirectors, local.selected_builtin_redirectors)
+  target_group_attachments = {}
 }
