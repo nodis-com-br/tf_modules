@@ -13,6 +13,6 @@ locals {
   }
   selected_builtin_ingress_rules = { for r in var.builtin_ingress_rules : r => local.builtin_rules[r] }
   ingress_rules = merge(var.ingress_rules, local.selected_builtin_ingress_rules)
-  selected_builtin_egress_rules = { for r in var.builtin_ingress_rules : r => local.builtin_rules[r] }
+  selected_builtin_egress_rules = { for r in var.builtin_egress_rules : r => local.builtin_rules[r] }
   egress_rules = merge(var.egress_rules, local.selected_builtin_egress_rules)
 }

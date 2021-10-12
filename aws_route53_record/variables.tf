@@ -9,7 +9,9 @@ variable "type" {
 
 variable "records" {
   type = list(string)
+  default = []
 }
+
 
 variable "ttl" {
   type = number
@@ -29,6 +31,5 @@ variable "create_certificate" {
 }
 
 variable "alias" {
-  type = string
-  default = {}
+  default = null
 }

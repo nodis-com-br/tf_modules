@@ -72,9 +72,10 @@ module "dns_record" {
   source = "../aws_route53_record"
   name = var.route53_zone.name
   route53_zone = var.route53_zone
-  records = [
-    aws_alb.this.dns_name
-  ]
+  alias = {
+    name = aws_alb.this.dns_name
+    zone_id = aws_alb.this.zone_id
+  }
   create_certificate = true
 }
 
