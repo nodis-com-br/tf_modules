@@ -36,4 +36,3 @@ resource "aws_iam_role_policy_attachment" "that" {
   policy_arn = each.value
 }
 
-
