@@ -1,9 +1,11 @@
 resource "aws_alb" "this" {
+  provider = aws.current
   subnets = var.subnet_ids
   security_groups = var.security_group_ids
 }
 
 resource "aws_alb_listener" "redirector" {
+  provider = aws.current
   for_each = local.redirectors
   load_balancer_arn = aws_alb.this.arn
   port = try(each.value.port, "443")
@@ -22,7 +24,8 @@ resource "aws_alb_listener" "redirector" {
   }
 }
 
-resource "aws_alb_listener" "forwarders" {
+resource "aws_alb_listener" "forwarder" {
+  provider = aws.current
   for_each = var.forwarders
   load_balancer_arn = aws_alb.this.arn
   port = try(each.value.port, "443")
@@ -35,6 +38,7 @@ resource "aws_alb_listener" "forwarders" {
 }
 
 resource "aws_alb_target_group" "this" {
+  provider = aws.current
   for_each = var.forwarders
   port = try(each.value.action.port, 80)
   protocol = try(each.value.action.protocol, "HTTP")
@@ -47,6 +51,7 @@ resource "aws_alb_target_group" "this" {
 }
 
 resource "aws_alb_target_group_attachment" "this" {
+  provider = aws.current
   for_each = var.target_group_attachments
   target_group_arn = aws_alb_target_group.this[each.value.forwarder]
   target_id = each.value.id

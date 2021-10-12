@@ -7,6 +7,9 @@ module "dns_record" {
     zone_id = module.load_balancer.this.zone_id
   }
   create_certificate = true
+  providers = {
+    aws.dns = aws.dns
+  }
 }
 
 module "security_group" {
@@ -16,6 +19,9 @@ module "security_group" {
     "http",
     "https"
   ]
+  providers = {
+    aws.current = aws.current
+  }
 }
 
 module "load_balancer" {
@@ -32,47 +38,7 @@ module "load_balancer" {
   builtin_redirectors = [
     "http_to_https"
   ]
+  providers = {
+    aws.current = aws.current
+  }
 }
-
-
-//resource "aws_alb" "this" {
-//  subnets = var.subnet_ids
-//  security_groups = [
-//    module.security_group.this.id,
-//  ]
-//}
-
-//resource "aws_alb_listener" "http" {
-//  load_balancer_arn = aws_alb.this.arn
-//  port = 80
-//  protocol = "HTTP"
-//  default_action {
-//    type  = "redirect"
-//    redirect {
-//      host = "#{host}"
-//      path = "/#{path}"
-//      port = "443"
-//      protocol = "HTTPS"
-//      query = "#{query}"
-//      status_code = "HTTP_301"
-//    }
-//  }
-//}
-//
-//resource "aws_alb_listener" "https" {
-//  load_balancer_arn = aws_alb.this.arn
-//  port = 443
-//  protocol = "HTTPS"
-//  certificate_arn = module.dns_record.certificate.arn
-//  default_action {
-//    type  = "redirect"
-//    redirect {
-//      host = var.alias
-//      path = "/#{path}"
-//      port = "443"
-//      protocol = "HTTPS"
-//      query = "#{query}"
-//      status_code = "HTTP_301"
-//    }
-//  }
-//}

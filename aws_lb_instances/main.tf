@@ -5,6 +5,9 @@ module "dns_record" {
   records = [
     aws_alb.this.dns_name
   ]
+  providers = {
+    aws.dns = aws.dns
+  }
 }
 
 module "security_group" {
@@ -20,6 +23,9 @@ module "security_group" {
       protocol = -1
       cidr_blocks = var.instance_subnet_ids
     }
+  }
+  providers = {
+    aws.current = aws.current
   }
 }
 
