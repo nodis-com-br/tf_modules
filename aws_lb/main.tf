@@ -43,7 +43,7 @@ resource "aws_alb_target_group" "this" {
   port = try(each.value.target_group.port, 80)
   protocol = try(each.value.target_group.protocol, "HTTP")
   vpc_id = try(each.value.target_group.vpc_id)
-  target_type = each.value.target_group.target_type
+  target_type = each.value.target_group.type
   health_check {
     path = try(each.value.target_group.healthcheck, {path = "/"}).path
     matcher = try(each.value.target_group.healthcheck, {matcher = "200"}).matcher
@@ -53,6 +53,6 @@ resource "aws_alb_target_group" "this" {
 resource "aws_alb_target_group_attachment" "this" {
   provider = aws.current
   for_each = local.target_group_attachments
-  target_group_arn = aws_alb_target_group.this[each.value.forwarder]
+  target_group_arn = aws_alb_target_group.this[each.value.forwarder].arn
   target_id = each.value.id
 }

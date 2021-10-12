@@ -5,7 +5,6 @@ variable "vpc" {
 }
 
 variable "ingress_rules" {
-  type = map(object({}))
   default = {}
 }
 
@@ -15,7 +14,6 @@ variable "builtin_ingress_rules" {
 }
 
 variable "egress_rules" {
-  type = map(object({}))
   default = {}
 }
 

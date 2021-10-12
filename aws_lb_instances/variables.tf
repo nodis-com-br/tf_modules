@@ -25,8 +25,6 @@ variable "instances" {
   }))
 }
 
-variable "instance_subnet_ids" {
-  type = list(object({
-    id = string
-  }))
+variable "instance_subnet_cidrs" {
+  type = list(string)
 }
