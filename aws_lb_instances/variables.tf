@@ -1,3 +1,7 @@
+variable "name" {
+  type = string
+}
+
 variable "route53_zone" {
   type = object({
     name = string
@@ -17,4 +21,16 @@ variable "vpc" {
 
 variable "subnet_ids" {
   type = list(string)
+}
+
+variable "instances" {
+  type = map(object({
+    id = string
+  }))
+}
+
+variable "instance_subnet_ids" {
+  type = list(object({
+    id = string
+  }))
 }
