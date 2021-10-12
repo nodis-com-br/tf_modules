@@ -12,7 +12,7 @@ locals {
   redirectors = merge(var.redirectors, local.selected_builtin_redirectors)
   target_group_attachments = {for target in flatten([
     for fk, fv in var.forwarders : [
-      for t in f.target_group.targets : {
+      for t in fv.target_group.targets : {
         forwarder = fk
         id = t.id
       }

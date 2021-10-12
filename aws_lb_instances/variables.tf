@@ -9,10 +9,6 @@ variable "route53_zone" {
   })
 }
 
-variable "alias" {
-  type = string
-}
-
 variable "vpc" {
   type = object({
     id = string
