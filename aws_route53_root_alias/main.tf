@@ -1,6 +1,6 @@
 resource "aws_route53_record" "this" {
   zone_id = var.route53_zone.id
-  name = var.route53_zone.id
+  name = var.route53_zone.name
   type = "A"
   alias {
     name = aws_alb.this.dns_name
@@ -69,8 +69,7 @@ resource "aws_security_group" "this" {
 }
 
 resource "aws_alb" "this" {
-  name = var.route53_zone.name
-  subnets = var.subnets
+  subnets = var.subnet_ids
   security_groups = [
     aws_security_group.this.id,
   ]

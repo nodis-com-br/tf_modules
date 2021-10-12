@@ -15,8 +15,6 @@ variable "vpc" {
   })
 }
 
-variable "subnets" {
-  type = list(object({
-    id = string
-  }))
+variable "subnet_ids" {
+  type = list(string)
 }
