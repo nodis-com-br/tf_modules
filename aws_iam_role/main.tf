@@ -1,0 +1,30 @@
+resource "aws_iam_role" "this" {
+  provider = aws.current
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          AWS = var.owner_arn
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "this" {
+  provider = aws.current
+  for_each = var.policy_arns
+  role = aws_iam_role.this.name
+  policy_arn = each.value.arn
+}
+
+resource "aws_iam_policy" "this" {
+  provider = aws.current
+  for_each = var.policies
+  path = "/"
+  description = ""
+  policy = jsonencode(each.value)
+}
