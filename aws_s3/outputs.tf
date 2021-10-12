@@ -3,7 +3,7 @@ output "policy" {
 }
 
 output "role" {
-  value = var.role ? module.role.this.0 : null
+  value = var.role ? module.role.0.this : null
   sensitive = true
 }
 
