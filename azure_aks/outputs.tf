@@ -3,5 +3,5 @@ output "this" {
 }
 
 output "vault_auth_backend" {
-  value = try(vault_auth_backend.this.0)
+  value = var.vault_auth_backend ? vault_auth_backend.this.0 : null
 }
