@@ -8,7 +8,7 @@ locals {
     raw = azurerm_kubernetes_cluster.this.kube_config_raw
     kubedict = jsonencode({
       cluster = {
-        server = local.ip_endpont
+        server = azurerm_kubernetes_cluster.this.kube_config.0.host
         certificate-authority-data = azurerm_kubernetes_cluster.this.kube_config.0.cluster_ca_certificate
       }
       user = {
