@@ -27,5 +27,5 @@ data "kubernetes_secret" "vault-injector-token" {
 }
 
 data "dns_a_record_set" "endpoint_ip" {
-  host =  azurerm_kubernetes_cluster.this.kube_config.0.host
+  host = substr(azurerm_kubernetes_cluster.this.kube_config.0.host, 7, -4)
 }
