@@ -27,5 +27,5 @@ data "kubernetes_secret" "vault-injector-token" {
 }
 
 data "dns_a_record_set" "endpoint_ip" {
-  host = trimprefix(substring(azurerm_kubernetes_cluster.this.kube_config.0.host, -4, -1), "https://")
+  host = trimprefix(substr(azurerm_kubernetes_cluster.this.kube_config.0.host, -4, -1), "https://")
 }
