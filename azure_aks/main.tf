@@ -143,16 +143,3 @@ resource "azurerm_private_dns_zone_virtual_network_link" "this" {
   resource_group_name = azurerm_kubernetes_cluster.this.node_resource_group
   virtual_network_id = each.value.id
 }
-
-
-resource "null_resource" "endpoint_resolver" {
-  triggers = {
-    endpoint = azurerm_kubernetes_cluster.this.kube_config.0.host
-  }
-  provisioner "local-exec" {
-    command = "dig +short${regex("https:\\/\\/(.*):443", azurerm_kubernetes_cluster.this.kube_config.0.host)}"
-  }
-  depends_on = [
-    azurerm_private_dns_zone_virtual_network_link.this
-  ]
-}
