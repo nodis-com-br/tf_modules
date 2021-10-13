@@ -14,7 +14,7 @@ resource "vault_generic_secret" "default" {
 resource "vault_generic_secret" "endpoint" {
   path = "${local.vault_kv_secrets_path}/${local.cluster_name}"
   data_json = jsonencode({
-    endpoint = azurerm_kubernetes_cluster.this.kube_config.0.host
+    endpoint = "https://${data.dns_a_record_set.endpoint_ip.addrs.0}:443"
   })
 }
 
@@ -22,7 +22,7 @@ resource "vault_generic_secret" "endpoint-default" {
   count = var.default ? 1 : 0
   path = "${local.vault_kv_secrets_path}/default"
   data_json = jsonencode({
-    endpoint = azurerm_kubernetes_cluster.this.kube_config.0.host
+    endpoint = "https://${data.dns_a_record_set.endpoint_ip.addrs.0}:443"
   })
 }
 

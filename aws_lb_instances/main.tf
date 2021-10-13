@@ -32,8 +32,6 @@ module "security_group" {
   }
 }
 
-### Load balancer #####################
-
 module "load_balancer" {
   source = "../aws_lb"
   subnet_ids = var.subnet_ids
@@ -57,58 +55,3 @@ module "load_balancer" {
     aws.current = aws.current
   }
 }
-//
-//resource "aws_alb" "this" {
-//  subnets = var.subnet_ids
-//  security_groups = [
-//    module.security_group.this.id
-//  ]
-//}
-//
-//resource "aws_alb_listener" "http" {
-//  load_balancer_arn = aws_alb.this.arn
-//  port = 80
-//  protocol = "HTTP"
-//  default_action {
-//    type  = "redirect"
-//    redirect {
-//      host        = "#{host}"
-//      path        = "/#{path}"
-//      port        = "443"
-//      protocol    = "HTTPS"
-//      query       = "#{query}"
-//      status_code = "HTTP_301"
-//    }
-//  }
-//}
-//
-//resource "aws_alb_listener" "https" {
-//  load_balancer_arn = aws_alb.this.arn
-//  port = 443
-//  protocol = "HTTPS"
-//  certificate_arn = module.dns_record.certificate.arn
-//  default_action {
-//    type = "forward"
-//    target_group_arn = aws_alb_target_group.this.arn
-//  }
-//}
-//
-//resource "aws_alb_target_group" "this" {
-//  port = 80
-//  protocol = "HTTP"
-//  vpc_id = var.vpc.id
-//  target_type = "instance"
-//  health_check {
-//    path = "/"
-//    matcher = "200"
-//  }
-//}
-//
-//resource "aws_alb_target_group_attachment" "this" {
-//  for_each = var.instances
-//  target_group_arn = aws_alb_target_group.this.arn
-//  target_id = each.value.id
-//}
-//
-//
-

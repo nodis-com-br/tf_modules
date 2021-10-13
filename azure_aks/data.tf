@@ -25,3 +25,7 @@ data "kubernetes_secret" "vault-injector-token" {
     namespace = var.vault_token_reviewer_sa.namespace
   }
 }
+
+data "dns_a_record_set" "endpoint_ip" {
+  host = azurerm_kubernetes_cluster.this.fqdn
+}
