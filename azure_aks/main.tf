@@ -145,3 +145,16 @@ resource "azurerm_private_dns_zone_virtual_network_link" "this" {
 }
 
 
+resource "null_resource" "endpoint_resolver" {
+  triggers = {
+    endpoint = azurerm_kubernetes_cluster.this.kube_config.0.host
+    ca_crt = azurerm_kubernetes_cluster.this.kube_config.0.cluster_ca_certificate
+    token = azurerm_kubernetes_cluster.this.kube_config.0.password
+  }
+  provisioner "local-exec" {
+    command = "dig  ${azurerm_kubernetes_cluster.this.kube_config.0.host}"
+  }
+  depends_on = [
+    azurerm_private_dns_zone_virtual_network_link.this
+  ]
+}

@@ -25,7 +25,7 @@ data "kubernetes_secret" "vault-injector-token" {
     namespace = var.vault_token_reviewer_sa.namespace
   }
 }
-
-data "dns_a_record_set" "endpoint_ip" {
-  host = regex("https:\\/\\/(.*):443", azurerm_kubernetes_cluster.this.kube_config.0.host)
-}
+//
+//data "dns_a_record_set" "endpoint_ip" {
+//  host = regex("https:\\/\\/(.*):443", azurerm_kubernetes_cluster.this.kube_config.0.host)
+//}
