@@ -102,6 +102,6 @@ variable "vault_token_reviewer_sa" {
   })
   default = {
     name = "vault-injector"
-    namespace = "default"
+    namespace = "vault-injector"
   }
 }
