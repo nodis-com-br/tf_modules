@@ -21,7 +21,7 @@ resource "azurerm_storage_account" "this" {
 module "automation_account" {
   source = "../azure_automation"
   name = var.name
-  rg = azurerm_resource_group
+  rg = azurerm_resource_group.this
   builtin_schedules = [
     "daily",
     "week_days"
