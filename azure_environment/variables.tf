@@ -58,6 +58,10 @@ variable "vnet_dns_servers" {
   default = []
 }
 
+variable "enable_automation" {
+  default = false
+}
+
 variable "automation_builtin_runbooks" {
-  default = []
+  type = list(string)
 }

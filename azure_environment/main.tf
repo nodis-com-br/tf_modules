@@ -19,6 +19,7 @@ resource "azurerm_storage_account" "this" {
 }
 
 module "automation_account" {
+  count = var.enable_automation ? 1 : 0
   source = "../azure_automation"
   name = var.name
   rg = azurerm_resource_group.this
