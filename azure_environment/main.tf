@@ -22,14 +22,7 @@ module "automation_account" {
   source = "../azure_automation"
   name = var.name
   rg = azurerm_resource_group.this
-  builtin_schedules = [
-    "daily",
-    "week_days"
-  ]
-  builtin_runbooks = [
-    "update_modules",
-    "automated_snapshots"
-  ]
+  builtin_runbooks = var.automation_builtin_runbooks
 }
 
 

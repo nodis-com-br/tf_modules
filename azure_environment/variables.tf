@@ -57,3 +57,7 @@ variable "storage_account_replication_type" {
 variable "vnet_dns_servers" {
   default = []
 }
+
+variable "automation_builtin_runbooks" {
+  default = []
+}
