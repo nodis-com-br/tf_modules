@@ -1,11 +1,7 @@
-### Resource group ####################
-
 resource "azurerm_resource_group" "this" {
   name = var.name
   location = var.location
 }
-
-### Compute ###########################
 
 resource "azurerm_ssh_public_key" "this" {
   name = var.name
@@ -13,9 +9,6 @@ resource "azurerm_ssh_public_key" "this" {
   resource_group_name = upper(azurerm_resource_group.this.name)
   public_key = var.ssh_master_key
 }
-
-
-### Storage ###########################
 
 resource "azurerm_storage_account" "this" {
   name = "${var.storage_account_name_prefix}${var.name}"
@@ -25,7 +18,19 @@ resource "azurerm_storage_account" "this" {
   account_replication_type = var.storage_account_replication_type
 }
 
-### Load Balancer #####################
+module "automation_account" {
+  source = "../azure_automation"
+  name = var.name
+  rg = azurerm_resource_group
+  builtin_schedules = [
+    "daily",
+    "week_days"
+  ]
+  builtin_runbooks = [
+    "update_modules",
+    "automated_snapshots"
+  ]
+}
 
 
 
