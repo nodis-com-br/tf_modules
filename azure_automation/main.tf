@@ -41,7 +41,7 @@ resource "azurerm_automation_job_schedule" "this" {
   for_each = local.runbooks
   resource_group_name = var.rg.name
   automation_account_name = azurerm_automation_account.this.name
-  schedule_name = each.value.schedule
+  schedule_name = azurerm_automation_schedule.this[each.value.schedule].name
   runbook_name = azurerm_automation_runbook.this[each.key].name
   parameters = {
     resourcegroupname = var.rg.name
