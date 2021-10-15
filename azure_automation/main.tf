@@ -19,6 +19,7 @@ resource "azurerm_automation_runbook" "this" {
   for_each = local.runbooks
   name = "${var.name}-${each.key}"
   resource_group_name = var.rg.name
+  location = var.rg.location
   automation_account_name = azurerm_automation_account.this.name
   log_verbose = each.value.log_verbose
   log_progress = each.value.log_progress
