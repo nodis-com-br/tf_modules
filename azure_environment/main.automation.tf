@@ -17,7 +17,6 @@ resource "azurerm_automation_schedule" "week-days" {
   frequency = "Week"
   interval = 1
   start_time = null
-  timezone = "Etc/UTC"
   week_days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
 }
 
@@ -28,7 +27,6 @@ resource "azurerm_automation_schedule" "daily" {
   frequency = "Week"
   interval = 1
   start_time = null
-  timezone = "Etc/UTC"
   week_days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 }
 
