@@ -8,12 +8,9 @@ resource "google_service_account_key" "this" {
   service_account_id = google_service_account.this.name
 }
 
-
-resource "google_project_iam_binding" "this" {
+resource "google_project_iam_member" "this" {
   for_each = toset(local.roles)
   project = var.project
-  role    = each.value
-  members = [
-    google_service_account.this.email
-  ]
+  role = each.value
+  member = "serviceAccount:${google_service_account.this.email}"
 }
