@@ -13,12 +13,11 @@ resource "azurerm_automation_schedule" "this" {
   frequency = each.value.frequency
   interval = each.value.interval
   week_days = each.value.week_days
-  start_time = timeadd(timestamp(), "10m")
-//  lifecycle {
-//    ignore_changes = [
-//      timezone
-//    ]
-//  }
+  lifecycle {
+    ignore_changes = [
+      timezone
+    ]
+  }
 }
 
 resource "azurerm_automation_runbook" "this" {
