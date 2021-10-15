@@ -19,7 +19,8 @@ resource "azurerm_automation_schedule" "week-days" {
   week_days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
   lifecycle {
     ignore_changes = [
-      start_time
+      start_time,
+      timezone
     ]
   }
 }
@@ -33,7 +34,8 @@ resource "azurerm_automation_schedule" "daily" {
   week_days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
   lifecycle {
     ignore_changes = [
-      start_time
+      start_time,
+      timezone
     ]
   }
 }

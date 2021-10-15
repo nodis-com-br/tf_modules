@@ -38,7 +38,8 @@ resource "azurerm_automation_runbook" "update_modules" {
   tags = {}
   lifecycle {
     ignore_changes = [
-      content
+      content,
+      timezone
     ]
   }
 }
