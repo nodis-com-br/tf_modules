@@ -33,6 +33,6 @@ locals {
   }
   selected_runbooks = {for r in var.builtin_runbooks : r => local.builtin_runbooks[r]}
   runbooks = merge(var.runbooks, local.selected_runbooks)
-  selected_builtin_schedules = {for s in concat(local.default_schedules, var.builtin_schedules) : s => local.builtin_schedules[s]}
+  selected_builtin_schedules = {for s in distinct(concat(local.default_schedules, var.builtin_schedules)) : s => local.builtin_schedules[s]}
   schedules = merge(var.schedules, local.selected_builtin_schedules)
 }
