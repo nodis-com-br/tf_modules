@@ -64,4 +64,5 @@ variable "enable_automation" {
 
 variable "automation_builtin_runbooks" {
   type = list(string)
+  default = []
 }
