@@ -4,10 +4,6 @@ variable "username" {
   default = null
 }
 
-variable "access_key" {
-  default = false
-}
-
 variable "role" {
   default = false
 }

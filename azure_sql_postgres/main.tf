@@ -50,6 +50,7 @@ resource "azurerm_private_endpoint" "this" {
 }
 
 resource "aws_route53_record" "this" {
+  provider = aws.dns
   count = var.private_endpoint ? 1 : 0
   zone_id = var.route53_zone_id
   name = "${var.rg.name}-${var.name}.${var.private_domain}"
