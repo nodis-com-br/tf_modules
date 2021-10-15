@@ -1,0 +1,3 @@
+locals {
+  roles = var.roles
+}
