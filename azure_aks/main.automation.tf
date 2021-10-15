@@ -15,8 +15,12 @@ resource "azurerm_automation_schedule" "daily" {
   automation_account_name = azurerm_automation_account.this.name
   frequency = "Week"
   interval = 1
-  start_time = null
   week_days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+  lifecycle {
+    ignore_changes = [
+      start_time
+    ]
+  }
 }
 
 
