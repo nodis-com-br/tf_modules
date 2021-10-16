@@ -1,7 +1,11 @@
 variable "username" {}
 
-variable "policies" {
+variable "policy_arns" {
   default = []
+}
+
+variable "policies" {
+  default = {}
 }
 
 variable "pgp_key" {

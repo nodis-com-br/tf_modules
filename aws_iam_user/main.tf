@@ -24,13 +24,6 @@ resource "aws_iam_user_login_profile" "this" {
   }
 }
 
-resource "aws_iam_user_policy_attachment" "this" {
-  provider = aws.current
-  for_each = toset(var.policies)
-  policy_arn = each.value
-  user = aws_iam_user.this.name
-}
-
 resource "aws_iam_user_policy_attachment" "change_password" {
   provider = aws.current
   count = var.console ? 1 : 0
@@ -63,4 +56,19 @@ resource "aws_iam_user_policy" "manage_access_keys"    {
       ]
     }
   )
+}
+
+resource "aws_iam_user_policy_attachment" "this" {
+  provider = aws.current
+  for_each = toset(var.policy_arns)
+  policy_arn = each.value
+  user = aws_iam_user.this.name
+}
+
+resource "aws_iam_user_policy" "this"    {
+  provider = aws.current
+  for_each = var.policies
+  name = each.key
+  user = aws_iam_user.this.name
+  policy = jsonencode(each.value)
 }
