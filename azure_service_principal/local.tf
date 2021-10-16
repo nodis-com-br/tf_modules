@@ -27,6 +27,23 @@ locals {
         }
       }
     }
+    windows_graph_admin = {
+      resource_app_id =  "00000003-0000-0000-c000-000000000000"
+      resource_access = {
+        1 = {
+          type = "Scope"
+          id = "e1fe6dd8-ba31-4d61-89e7-88639da4683d" # user_read
+        }
+        2 = {
+          type = "Role"
+          id = "1bfefb4e-e0b5-418b-a88f-73c46d2cc8e9" # application_readwrite_all
+        }
+        3 = {
+          type = "Role"
+          id = "19dbc75e-c2e2-444c-a770-ec69d8559fc7" # directory_readwrite_all
+        }
+      }
+    }
   }
   selected_builtin_roles = { for r in var.builtin_roles : r => local.builtin_roles[r] }
   roles = merge(var.roles, local.selected_builtin_roles)

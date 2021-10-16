@@ -2,7 +2,7 @@ module "service_principal" {
   source = "../azure_service_principal"
   name = "vault"
   create_password = true
-  builtin_resource_accesses = ["aad_admin"]
+  builtin_resource_accesses = ["windows_graph_admin"]
   builtin_roles = ["owner"]
 }
 
