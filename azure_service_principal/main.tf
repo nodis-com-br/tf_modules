@@ -37,7 +37,7 @@ resource "azuread_group_member" "this" {
 }
 
 resource "azurerm_role_assignment" "this" {
-  for_each = var.roles
+  for_each = local.roles
   scope = each.value.scope
   role_definition_name = each.value.definition_name
   principal_id = azuread_service_principal.this.object_id
