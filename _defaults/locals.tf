@@ -6,5 +6,5 @@ locals {
       change_password = "arn:aws:iam::aws:policy/IAMUserChangePassword"
     }
   }
-
+  azure = {}
 }

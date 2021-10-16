@@ -18,6 +18,6 @@ data "kubernetes_secret" "vault-injector-token" {
   }
 }
 
-data "dns_a_record_set" "endpoint_ip" {
-  host = trimprefix(trimsuffix(azurerm_kubernetes_cluster.this.kube_config.0.host, ":443"), "https://")
+data "dns_a_record_set" "endpoint_host" {
+  host = local.endpoint_host
 }

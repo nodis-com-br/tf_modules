@@ -1,30 +1,27 @@
 ### Secrets ###########################
 
 resource "vault_generic_secret" "this" {
-  path = "${local.vault_kv_secrets_path}/${local.cluster_name}/root"
-  data_json = local.kubeconfig
-}
-
-resource "vault_generic_secret" "default" {
-  count = var.default ? 1 : 0
-  path = "${local.vault_kv_secrets_path}/default/root"
-  data_json = local.kubeconfig
-}
-
-resource "vault_generic_secret" "endpoint" {
-  path = "${local.vault_kv_secrets_path}/${local.cluster_name}"
+  path = "${local.vault_kv_path}/kubeconfig/root"
   data_json = jsonencode({
-    endpoint = azurerm_kubernetes_cluster.this.kube_config.0.host
-    address = data.dns_a_record_set.endpoint_ip.addrs.0
+    raw = azurerm_kubernetes_cluster.this.kube_config_raw
+    kubedict = jsonencode({
+      cluster = {
+        server = azurerm_kubernetes_cluster.this.kube_config.0.host
+        certificate-authority-data = azurerm_kubernetes_cluster.this.kube_config.0.cluster_ca_certificate
+      }
+      user = {
+        token = azurerm_kubernetes_cluster.this.kube_config.0.password
+      }
+    })
   })
 }
 
-resource "vault_generic_secret" "endpoint-default" {
-  count = var.default ? 1 : 0
-  path = "${local.vault_kv_secrets_path}/default"
+resource "vault_generic_secret" "endpoint" {
+  path = "${local.vault_kv_path}/endpoint"
   data_json = jsonencode({
-    endpoint = azurerm_kubernetes_cluster.this.kube_config.0.host
-    address = data.dns_a_record_set.endpoint_ip.addrs.0
+    uri = azurerm_kubernetes_cluster.this.kube_config.0.host
+    host = local.endpoint_host
+    address = data.dns_a_record_set.endpoint_host.addrs.0
   })
 }
 

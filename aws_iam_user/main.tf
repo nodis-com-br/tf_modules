@@ -1,5 +1,5 @@
 module "defaults" {
-  source = "../defaults"
+  source = "../_defaults"
 }
 
 resource "aws_iam_user" "this" {
