@@ -70,5 +70,5 @@ resource "aws_iam_user_policy" "this"    {
   for_each = var.policies
   name = each.key
   user = aws_iam_user.this.name
-  policy = jsonencode(each.value)
+  policy = each.value
 }
