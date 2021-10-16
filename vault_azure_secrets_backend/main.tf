@@ -3,7 +3,7 @@ module "service_principal" {
   name = "vault"
   create_password = true
   builtin_resource_access = ["aad_admin"]
-  builtin_roles = ['owner']
+  builtin_roles = ["owner"]
 }
 
 
