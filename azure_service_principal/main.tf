@@ -1,3 +1,7 @@
+module "defaults" {
+  source = "../_defaults"
+}
+
 resource "azuread_application" "this" {
   display_name = var.name
   name = null
