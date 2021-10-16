@@ -1,9 +1,5 @@
 locals {
-  builtin_policy_arns = {
-    admin = "arn:aws:iam::aws:policy/AdministratorAccess"
-    ec2_admin = "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
-    change_password = "arn:aws:iam::aws:policy/IAMUserChangePassword"
-  }
+  builtin_policy_arns = module.defaults.this.aws.policy_arns
   console_policy_arns = [
     "change_password"
   ]

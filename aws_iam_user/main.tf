@@ -1,3 +1,7 @@
+module "defaults" {
+  source = "../defaults"
+}
+
 resource "aws_iam_user" "this" {
   provider = aws.current
   name = var.username
