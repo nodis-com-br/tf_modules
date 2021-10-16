@@ -27,15 +27,3 @@ variable "builtin_resource_accesses" {
 variable "resource_accesses" {
   default = {}
 }
-
-variable "secret_path" {
-  default = null
-}
-
-variable "subscription_id" {
-  default = null
-}
-
-variable "tenant_id" {
-  default = null
-}
