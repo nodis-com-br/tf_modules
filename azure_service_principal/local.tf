@@ -4,6 +4,10 @@ locals {
       definition_name = "Contributor"
       scope = "/subscriptions/${data.azurerm_client_config.current.subscription_id}"
     }
+    owner =  {
+      definition_name = "Owner"
+      scope = "/subscriptions/${data.azurerm_client_config.current.subscription_id}"
+    }
   }
   builtin_resource_accesses = {
     aad_admin = {
