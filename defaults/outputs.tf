@@ -1,3 +1,3 @@
-output "this" {
-  value = local
+output "aws" {
+  value = local.aws
 }
