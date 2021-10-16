@@ -4,6 +4,10 @@ variable "group_ids" {
   default = []
 }
 
+variable "builtin_roles" {
+  default = []
+}
+
 variable "roles" {
   default = {}
   type = map(object({
@@ -16,7 +20,13 @@ variable "create_password" {
   default = false
 }
 
-variable "resource_access" {}
+variable "builtin_resource_accesses" {
+  default = []
+}
+
+variable "resource_accesses" {
+  default = {}
+}
 
 variable "secret_path" {
   default = null
