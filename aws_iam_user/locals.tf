@@ -34,6 +34,6 @@ locals {
     "manage_access_keys"
   ]
   selected_builtin_policies = {for l in distinct(concat(var.builtin_policies, local.default_policies)) : l => local.builtin_policies[l]}
-  policies = merge(var.policy_arns, local.selected_builtin_policies)
+  policies = merge(var.policies, local.selected_builtin_policies)
 
 }
