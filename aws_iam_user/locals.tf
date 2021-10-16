@@ -4,10 +4,10 @@ locals {
     ec2_admin = "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
     change_password = "arn:aws:iam::aws:policy/IAMUserChangePassword"
   }
-  default_policy_arns = [
+  console_policy_arns = [
     "change_password"
   ]
-  selected_builtin_policy_arns = {for l in distinct(concat(var.builtin_policy_arns, local.default_policy_arns)) : l => local.builtin_policy_arns[l]}
+  selected_builtin_policy_arns = {for l in distinct(concat(var.builtin_policy_arns, var.console ? local.console_policy_arns : [])) : l => local.builtin_policy_arns[l]}
   policy_arns = merge(var.policy_arns, local.selected_builtin_policy_arns)
   builtin_policies = {
     manage_access_keys = jsonencode(
@@ -30,10 +30,10 @@ locals {
       ]
     })
   }
-  default_policies = [
+  console_policies = [
     "manage_access_keys"
   ]
-  selected_builtin_policies = {for l in distinct(concat(var.builtin_policies, local.default_policies)) : l => local.builtin_policies[l]}
+  selected_builtin_policies = {for l in distinct(concat(var.builtin_policies, var.console ? local.console_policies: [])) : l => local.builtin_policies[l]}
   policies = merge(var.policies, local.selected_builtin_policies)
 
 }
