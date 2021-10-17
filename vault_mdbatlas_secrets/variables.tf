@@ -4,4 +4,5 @@ variable "config" {
     public_key = string
     private_key = string
   })
+  default = null
 }
