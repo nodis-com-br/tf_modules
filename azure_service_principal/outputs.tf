@@ -3,5 +3,5 @@ output "application" {
 }
 
 output "password" {
-  value = azuread_service_principal_password.this.0
+  value = var.create_password ? azuread_service_principal_password.this.0 : null
 }
