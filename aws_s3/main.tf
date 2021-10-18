@@ -49,21 +49,23 @@ resource "aws_iam_policy" "this" {
   })
 }
 
+resource "vault_generic_secret" "this" {
+  count = var.save_metadata ? 1 : 0
+  path = "${var.vault_kv_path}/policy/${var.name}"
+  data_json = jsonencode({
+    arn = aws_iam_policy.this.arn
+  })
+}
+
 module "role" {
   source = "../aws_iam_role"
   count = var.role ? 1 : 0
   owner_arn = var.role_owner_arn
   policy_arns = [aws_iam_policy.this.arn]
+  save_role = true
+  vault_kv_path = "${var.vault_kv_path}/role"
   providers = {
     aws.current = aws.current
   }
 }
 
-resource "vault_generic_secret" "this" {
-  count = var.save_metadata ? 1 : 0
-  path = "${var.vault_kv_path}/${var.name}"
-  data_json = jsonencode({
-    policy = aws_iam_policy.this.arn
-    role = var.role ? module.role.0.this.arn : null
-  })
-}
