@@ -13,5 +13,5 @@ variable "save_metadata" {
 }
 
 variable "vault_kv_path" {
-  default = "secrets/s3"
+  default = "secret/s3"
 }
