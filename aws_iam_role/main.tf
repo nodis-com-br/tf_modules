@@ -45,6 +45,6 @@ resource "vault_generic_secret" "this" {
   count = var.save_role ? 1 : 0
   path = "${var.vault_kv_path}/${var.name}"
   data_json = jsonencode({
-    arn = aws_iam_policy.this.arn
+    arn = aws_iam_role.this.arn
   })
 }
