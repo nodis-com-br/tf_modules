@@ -1,6 +1,6 @@
 resource "vault_policy" "this" {
   for_each = var.policy_definitions
-  name = "${var.name}-${each.key}"
+  name = "k8s-role_${var.backend}_${var.name}_${each.key}"
   policy = each.value
 }
 
