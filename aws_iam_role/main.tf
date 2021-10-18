@@ -42,8 +42,8 @@ resource "aws_iam_role_policy_attachment" "that" {
 }
 
 resource "vault_generic_secret" "this" {
-  count = var.save_role ? 1 : 0
-  path = "${var.vault_kv_path}/${var.name}"
+  count = var.vault_kv_path == null ? 0 : 1
+  path = var.vault_kv_path
   data_json = jsonencode({
     arn = aws_iam_role.this.arn
   })

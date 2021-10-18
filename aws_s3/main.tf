@@ -62,8 +62,7 @@ module "role" {
   count = var.role ? 1 : 0
   owner_arn = var.role_owner_arn
   policy_arns = [aws_iam_policy.this.arn]
-  save_role = true
-  vault_kv_path = "${var.vault_kv_path}/role"
+  vault_kv_path = "${var.vault_kv_path}/role/${var.name}"
   providers = {
     aws.current = aws.current
   }

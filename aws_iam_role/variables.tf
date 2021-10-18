@@ -17,10 +17,6 @@ variable "builtin_policies" {
   default = []
 }
 
-variable "save_role" {
-  default = true
-}
-
 variable "vault_kv_path" {
-  default = "secret/aws/role"
+  default = null
 }
