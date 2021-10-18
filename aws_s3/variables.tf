@@ -4,12 +4,12 @@ variable "role" {
   default = true
 }
 
-variable "users_iam_root_arn" {
+variable "role_owner_arn" {
   default = null
 }
 
 variable "save_metadata" {
-  default = false
+  default = true
 }
 
 variable "vault_kv_path" {
