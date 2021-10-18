@@ -1,5 +1,5 @@
 resource "vault_policy" "this" {
-  for_each = token_policy_definitions
+  for_each = var.policy_definitions
   name = "${var.name}-${each.key}"
   policy = each.value
 }
