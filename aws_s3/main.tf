@@ -58,3 +58,12 @@ module "role" {
     aws.current = aws.current
   }
 }
+
+resource "vault_generic_secret" "this" {
+  count = var.save_metadata ? 1 : 0
+  path = "${var.vault_kv_path}/${var.name}"
+  data_json = jsonencode({
+    policy = aws_iam_policy.this.arn
+    role = module.role.this.arn
+  })
+}

@@ -1,13 +1,17 @@
 variable "name" {}
 
-variable "username" {
-  default = null
-}
-
 variable "role" {
-  default = false
+  default = true
 }
 
 variable "users_iam_root_arn" {
   default = null
+}
+
+variable "save_metadata" {
+  default = false
+}
+
+variable "vault_kv_path" {
+  default = "secrets/s3"
 }
