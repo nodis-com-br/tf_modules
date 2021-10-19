@@ -17,6 +17,10 @@ variable "builtin_policies" {
   default = []
 }
 
+variable "builtin_policy_arns" {
+  default = []
+}
+
 variable "vault_kv_path" {
   default = null
 }
