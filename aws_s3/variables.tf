@@ -4,14 +4,22 @@ variable "role" {
   default = true
 }
 
+variable "access_key" {
+  default = false
+}
+
 variable "role_owner_arn" {
   default = null
 }
 
-variable "save_metadata" {
+variable "save_policy_arn" {
+  default = true
+}
+
+variable "save_role_arn" {
   default = true
 }
 
 variable "vault_kv_path" {
-  default = "secret/aws"
+  default = module.defaults.aws.vault_kv_path
 }

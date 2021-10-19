@@ -1,3 +1,7 @@
+module "defaults" {
+  source = "../_defaults"
+}
+
 resource "aws_s3_bucket" "this" {
   provider = aws.current
   bucket = var.name
@@ -50,7 +54,7 @@ resource "aws_iam_policy" "this" {
 }
 
 resource "vault_generic_secret" "this" {
-  count = var.save_metadata ? 1 : 0
+  count = var.save_policy_arn ? 1 : 0
   path = "${var.vault_kv_path}/policy/${var.name}"
   data_json = jsonencode({
     arn = aws_iam_policy.this.arn
@@ -62,9 +66,19 @@ module "role" {
   count = var.role ? 1 : 0
   owner_arn = var.role_owner_arn
   policy_arns = [aws_iam_policy.this.arn]
-  vault_kv_path = var.save_metadata ? "${var.vault_kv_path}/role/${var.name}" : null
+  vault_kv_path = var.save_role_arn ? "${var.vault_kv_path}/role/${var.name}" : null
   providers = {
     aws.current = aws.current
   }
 }
 
+module "user" {
+  source = "../aws_iam_user"
+  count = var.access_key ? 1 : 0
+  username = "vault"
+  access_key = true
+  policy_arns = [aws_iam_policy.this.arn]
+  providers = {
+    aws.current = aws.current
+  }
+}
