@@ -75,7 +75,7 @@ module "role" {
 module "user" {
   source = "../aws_iam_user"
   count = var.access_key ? 1 : 0
-  username = "vault"
+  username = aws_s3_bucket.this.bucket
   access_key = true
   policy_arns = [aws_iam_policy.this.arn]
   providers = {
