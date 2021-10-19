@@ -14,7 +14,7 @@ variable "pgp_key" {
 }
 
 variable "policy_arns" {
-  default = {}
+  default = []
 }
 
 variable "builtin_policy_arns" {
