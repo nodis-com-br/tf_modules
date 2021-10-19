@@ -8,6 +8,6 @@ output "role" {
 }
 
 output "access_key" {
-  value = var.access_key ? aws_iam_access_key.this.0 : null
+  value = var.access_key ? module.user.access_key : null
   sensitive = true
 }
