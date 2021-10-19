@@ -30,8 +30,8 @@ resource "aws_iam_user_login_profile" "this" {
 
 resource "aws_iam_user_policy_attachment" "this" {
   provider = aws.current
-  for_each = local.policy_arns
-  policy_arn = each.value
+  for_each = toset(local.policy_arns)
+  policy_arn = each.key
   user = aws_iam_user.this.name
 }
 
