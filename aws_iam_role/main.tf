@@ -24,7 +24,7 @@ resource "aws_iam_policy" "this" {
   for_each = var.policies
   path = "/"
   description = ""
-  policy = jsonencode(each.value)
+  policy = each.value
 }
 
 resource "aws_iam_role_policy_attachment" "this" {
