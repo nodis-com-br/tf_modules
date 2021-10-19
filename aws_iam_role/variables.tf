@@ -8,12 +8,11 @@ variable "policies" {
   default = {}
 }
 
-variable "policy_arns" {
-  type = list(string)
+variable "builtin_policies" {
   default = []
 }
 
-variable "builtin_policies" {
+variable "policy_arns" {
   default = []
 }
 

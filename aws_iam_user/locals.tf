@@ -25,6 +25,7 @@ locals {
   ]
   selected_builtin_policies = {for l in distinct(concat(var.builtin_policies, var.console ? local.console_policies : [])) : l => local.builtin_policies[l]}
   policies = merge(var.policies, local.selected_builtin_policies)
+
   console_policy_arns = [
     "change_password"
   ]
