@@ -12,6 +12,10 @@ variable "role_owner_arn" {
   default = null
 }
 
+variable "create_policy" {
+  default = false
+}
+
 variable "save_policy_arn" {
   default = true
 }
