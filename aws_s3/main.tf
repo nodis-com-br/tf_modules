@@ -12,7 +12,7 @@ resource "aws_s3_bucket" "this" {
 resource "aws_iam_policy" "this" {
   count = var.create_policy ? 1 : 0
   provider = aws.current
-  policy = jsonencode(local.default_policy)
+  policy = local.default_policy
 }
 
 resource "vault_generic_secret" "this" {
@@ -27,7 +27,7 @@ module "role" {
   source = "../aws_iam_role"
   count = var.role ? 1 : 0
   owner_arn = var.role_owner_arn
-  policies = {1 = jsonencode(local.default_policy)}
+  policies = {1 = local.default_policy}
   vault_kv_path = var.save_role_arn ? "${local.vault_kv_path}/role/${var.name}" : null
   providers = {
     aws.current = aws.current
@@ -39,7 +39,7 @@ module "user" {
   count = var.access_key ? 1 : 0
   username = aws_s3_bucket.this.bucket
   access_key = true
-  policies = {1 = jsonencode(local.default_policy)}
+  policies = {1 = local.default_policy}
   providers = {
     aws.current = aws.current
   }

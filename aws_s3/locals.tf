@@ -1,6 +1,6 @@
 locals {
   vault_kv_path = var.vault_kv_path == null ? module.defaults.aws.vault_kv_path : var.vault_kv_path
-  default_policy = {
+  default_policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
       {
@@ -39,5 +39,5 @@ locals {
         ]
       }
     ]
-  }
+  })
 }
