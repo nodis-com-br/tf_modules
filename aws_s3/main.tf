@@ -55,7 +55,7 @@ resource "aws_iam_policy" "this" {
 
 resource "vault_generic_secret" "this" {
   count = var.save_policy_arn ? 1 : 0
-  path = "${var.vault_kv_path}/policy/${var.name}"
+  path = "${local.vault_kv_path}/policy/${var.name}"
   data_json = jsonencode({
     arn = aws_iam_policy.this.arn
   })
@@ -66,7 +66,7 @@ module "role" {
   count = var.role ? 1 : 0
   owner_arn = var.role_owner_arn
   policy_arns = [aws_iam_policy.this.arn]
-  vault_kv_path = var.save_role_arn ? "${var.vault_kv_path}/role/${var.name}" : null
+  vault_kv_path = var.save_role_arn ? "${local.vault_kv_path}/role/${var.name}" : null
   providers = {
     aws.current = aws.current
   }

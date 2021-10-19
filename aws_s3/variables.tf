@@ -21,5 +21,5 @@ variable "save_role_arn" {
 }
 
 variable "vault_kv_path" {
-  default = module.defaults.aws.vault_kv_path
+  default = null
 }
