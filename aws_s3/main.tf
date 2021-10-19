@@ -70,6 +70,9 @@ module "role" {
   providers = {
     aws.current = aws.current
   }
+  depends_on = [
+    aws_iam_policy.this
+  ]
 }
 
 module "user" {
