@@ -5,7 +5,7 @@ locals {
       ec2_admin = "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
       change_password = "arn:aws:iam::aws:policy/IAMUserChangePassword"
     }
-    vault_kv_path = 'secret/aws'
+    vault_kv_path = "secret/aws"
   }
   azure = {
     roles = {
