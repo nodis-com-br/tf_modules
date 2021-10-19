@@ -28,6 +28,6 @@ locals {
   console_policy_arns = [
     "change_password"
   ]
-  selected_builtin_policy_arns = {for l in distinct(concat(var.builtin_policy_arns, var.console ? local.console_policy_arns : [])) : l => module.defaults.aws.policy_arns[l]}
-  policy_arns = merge(var.policy_arns, local.selected_builtin_policy_arns)
+  selected_builtin_policy_arns = [for l in var.builtin_policies : module.defaults.aws.policy_arns[l]]
+  policy_arns = concat(var.policy_arns, local.selected_builtin_policy_arns)
 }

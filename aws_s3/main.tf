@@ -65,7 +65,7 @@ module "role" {
   source = "../aws_iam_role"
   count = var.role ? 1 : 0
   owner_arn = var.role_owner_arn
-  policy_arns = {bucket = aws_iam_policy.this.arn}
+  policy_arns = [aws_iam_policy.this.arn]
   vault_kv_path = var.save_role_arn ? "${local.vault_kv_path}/role/${var.name}" : null
   providers = {
     aws.current = aws.current
