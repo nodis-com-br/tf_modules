@@ -19,7 +19,7 @@ resource "vault_generic_secret" "this" {
   count = alltrue([var.create_policy, var.save_policy_arn]) ? 1 : 0
   path = "${local.vault_kv_path}/policy/${var.name}"
   data_json = jsonencode({
-    arn = aws_iam_policy.this.arn
+    arn = aws_iam_policy.this.0.arn
   })
 }
 
@@ -32,9 +32,6 @@ module "role" {
   providers = {
     aws.current = aws.current
   }
-  depends_on = [
-    aws_iam_policy.this
-  ]
 }
 
 module "user" {
