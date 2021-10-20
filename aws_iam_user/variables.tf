@@ -28,3 +28,7 @@ variable "policy_arns" {
 variable "builtin_policy_arns" {
   default = []
 }
+
+variable "assume_role_arns" {
+  default = []
+}
