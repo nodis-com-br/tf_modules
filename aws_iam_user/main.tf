@@ -43,9 +43,10 @@ resource "aws_iam_user_policy" "this" {
   policy = each.value
 }
 
-resource "aws_iam_policy" "assume_role" {
+resource "aws_iam_user_policy" "assume_role" {
   provider = aws.current
   for_each = toset(var.assume_role_arns)
+  user = aws_iam_user.this.name
   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [

@@ -1,5 +1,5 @@
 output "policy" {
-  value = aws_iam_policy.this
+  value = var.policy ? aws_iam_policy.this.0 : null
 }
 
 output "role" {

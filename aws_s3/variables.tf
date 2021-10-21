@@ -1,7 +1,7 @@
 variable "name" {}
 
 variable "role" {
-  default = true
+  default = false
 }
 
 variable "access_key" {
@@ -12,7 +12,7 @@ variable "role_owner_arn" {
   default = null
 }
 
-variable "create_policy" {
+variable "policy" {
   default = false
 }
 

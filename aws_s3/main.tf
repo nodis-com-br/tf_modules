@@ -10,13 +10,13 @@ resource "aws_s3_bucket" "this" {
 }
 
 resource "aws_iam_policy" "this" {
-  count = var.create_policy ? 1 : 0
+  count = var.policy ? 1 : 0
   provider = aws.current
   policy = local.default_policy
 }
 
 resource "vault_generic_secret" "this" {
-  count = alltrue([var.create_policy, var.save_policy_arn]) ? 1 : 0
+  count = alltrue([var.policy, var.save_policy_arn]) ? 1 : 0
   path = "${local.vault_kv_path}/policy/${var.name}"
   data_json = jsonencode({
     arn = aws_iam_policy.this.0.arn
