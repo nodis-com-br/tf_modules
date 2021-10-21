@@ -21,15 +21,15 @@ resource "aws_iam_role" "this" {
 
 resource "aws_iam_role_policy" "this" {
   provider = aws.current
-  role = aws_iam_role.this.id
   for_each = var.policies
+  role = aws_iam_role.this.id
   policy = each.value
 }
 
-resource "aws_iam_role_policy_attachment" "that" {
+resource "aws_iam_role_policy_attachment" "this" {
   provider = aws.current
   for_each = toset(local.policy_arns)
-  role = aws_iam_role.this.name
+  role = aws_iam_role.this.id
   policy_arn = each.value
 }
 
