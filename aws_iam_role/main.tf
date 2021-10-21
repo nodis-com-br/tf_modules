@@ -24,7 +24,6 @@ resource "aws_iam_role_policy" "this" {
   role = aws_iam_role.this.id
   for_each = var.policies
   path = "/"
-  description = ""
   policy = each.value
 }
 
