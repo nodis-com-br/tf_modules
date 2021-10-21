@@ -19,19 +19,13 @@ resource "aws_iam_role" "this" {
   })
 }
 
-resource "aws_iam_policy" "this" {
+resource "aws_iam_role_policy" "this" {
   provider = aws.current
+  role = aws_iam_role.this.id
   for_each = var.policies
   path = "/"
   description = ""
   policy = each.value
-}
-
-resource "aws_iam_role_policy_attachment" "this" {
-  provider = aws.current
-  for_each = var.policies
-  role = aws_iam_role.this.name
-  policy_arn = aws_iam_policy.this[each.key].arn
 }
 
 resource "aws_iam_role_policy_attachment" "that" {
