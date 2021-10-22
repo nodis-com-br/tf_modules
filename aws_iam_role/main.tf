@@ -19,7 +19,8 @@ resource "aws_iam_role" "this" {
   })
   lifecycle {
     ignore_changes = [
-      inline_policy
+      inline_policy,
+      managed_policy_arns
     ]
   }
 }

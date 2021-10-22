@@ -61,5 +61,11 @@ resource "aws_iam_user_policy" "assume_role" {
       }
     ]
   })
+  lifecycle {
+    ignore_changes = [
+      inline_policy,
+      managed_policy_arns
+    ]
+  }
 }
 
