@@ -1,35 +1,3 @@
-### Identity ##########################
-
-//resource "azuread_application" "this" {
-//  display_name = local.cluster_name
-//}
-//
-//resource "azuread_service_principal" "this" {
-//  application_id = azuread_application.this.application_id
-//}
-//
-//resource "azuread_service_principal_password" "this" {
-//  service_principal_id = azuread_service_principal.this.id
-//  end_date = timeadd(timestamp(), "87600h")
-//  lifecycle {
-//    ignore_changes = [
-//      end_date
-//    ]
-//  }
-//}
-//
-//resource "azurerm_role_assignment" "vnet" {
-//  scope = var.vnet.id
-//  role_definition_name = "Reader"
-//  principal_id = azuread_service_principal.this.object_id
-//}
-//
-//resource "azurerm_role_assignment" "subnet" {
-//  scope = var.subnet.id
-//  role_definition_name = "Network Contributor"
-//  principal_id = azuread_service_principal.this.object_id
-//}
-
 module "service_principal" {
   source = "../azure_service_principal"
   name = local.cluster_name
@@ -46,9 +14,6 @@ module "service_principal" {
   }
 }
 
-
-### Cluster ###########################
-
 resource "azurerm_kubernetes_cluster" "this" {
   name = local.cluster_name
   location = var.rg.location
@@ -56,12 +21,10 @@ resource "azurerm_kubernetes_cluster" "this" {
   dns_prefix = local.cluster_name
   kubernetes_version = var.kubernetes_version
   private_cluster_enabled = var.private_cluster_enabled
-
   service_principal {
     client_id = module.service_principal.application.application_id
     client_secret = module.service_principal.password.value
   }
-
   network_profile {
     network_plugin = "kubenet"
     pod_cidr = "172.25.0.0/16"
@@ -69,7 +32,6 @@ resource "azurerm_kubernetes_cluster" "this" {
     dns_service_ip = "172.16.0.10"
     docker_bridge_cidr = "172.17.0.1/16"
   }
-
   default_node_pool {
     name = var.default_node_pool_name
     enable_auto_scaling = var.default_node_pool_enable_auto_scaling
@@ -84,7 +46,6 @@ resource "azurerm_kubernetes_cluster" "this" {
       nodePoolClass = var.default_node_pool_class == null ? var.default_node_pool_name : var.default_node_pool_class
     }
   }
-
   linux_profile {
     admin_username = var.node_admin_username
     ssh_key {
@@ -94,7 +55,6 @@ resource "azurerm_kubernetes_cluster" "this" {
   depends_on = [
     module.service_principal.password
   ]
-
   lifecycle {
     ignore_changes = [
       network_profile,
