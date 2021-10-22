@@ -17,6 +17,7 @@ resource "aws_iam_role" "this" {
       }
     ]
   })
+  tags = {}
   lifecycle {
     ignore_changes = [
       inline_policy,

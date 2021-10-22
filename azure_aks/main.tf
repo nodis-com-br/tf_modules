@@ -1,33 +1,49 @@
 ### Identity ##########################
 
-resource "azuread_application" "this" {
-  display_name = local.cluster_name
-}
+//resource "azuread_application" "this" {
+//  display_name = local.cluster_name
+//}
+//
+//resource "azuread_service_principal" "this" {
+//  application_id = azuread_application.this.application_id
+//}
+//
+//resource "azuread_service_principal_password" "this" {
+//  service_principal_id = azuread_service_principal.this.id
+//  end_date = timeadd(timestamp(), "87600h")
+//  lifecycle {
+//    ignore_changes = [
+//      end_date
+//    ]
+//  }
+//}
+//
+//resource "azurerm_role_assignment" "vnet" {
+//  scope = var.vnet.id
+//  role_definition_name = "Reader"
+//  principal_id = azuread_service_principal.this.object_id
+//}
+//
+//resource "azurerm_role_assignment" "subnet" {
+//  scope = var.subnet.id
+//  role_definition_name = "Network Contributor"
+//  principal_id = azuread_service_principal.this.object_id
+//}
 
-resource "azuread_service_principal" "this" {
-  application_id = azuread_application.this.application_id
-}
-
-resource "azuread_service_principal_password" "this" {
-  service_principal_id = azuread_service_principal.this.id
-  end_date = timeadd(timestamp(), "87600h")
-  lifecycle {
-    ignore_changes = [
-      end_date
-    ]
+module "service_principal" {
+  source = "../azure_service_principal"
+  name = local.cluster_name
+  create_password = true
+  roles = {
+    vnet = {
+      definition_name = "Reader"
+      scope = var.vnet.id
+    }
+    subnet = {
+      definition_name = "Network Contributor"
+      scope = var.subnet.id
+    }
   }
-}
-
-resource "azurerm_role_assignment" "vnet" {
-  scope = var.vnet.id
-  role_definition_name = "Reader"
-  principal_id = azuread_service_principal.this.object_id
-}
-
-resource "azurerm_role_assignment" "subnet" {
-  scope = var.subnet.id
-  role_definition_name = "Network Contributor"
-  principal_id = azuread_service_principal.this.object_id
 }
 
 
@@ -42,8 +58,8 @@ resource "azurerm_kubernetes_cluster" "this" {
   private_cluster_enabled = var.private_cluster_enabled
 
   service_principal {
-    client_id = azuread_service_principal.this.application_id
-    client_secret = azuread_service_principal_password.this.value
+    client_id = module.service_principal.application.application_id
+    client_secret = module.service_principal.password
   }
 
   network_profile {
