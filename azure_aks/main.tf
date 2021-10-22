@@ -81,7 +81,8 @@ resource "azurerm_kubernetes_cluster" "this" {
     ignore_changes = [
       network_profile,
       default_node_pool,
-      private_cluster_enabled
+      private_cluster_enabled,
+      end_date
     ]
   }
 }
