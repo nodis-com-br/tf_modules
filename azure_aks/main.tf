@@ -59,7 +59,7 @@ resource "azurerm_kubernetes_cluster" "this" {
 
   service_principal {
     client_id = module.service_principal.application.application_id
-    client_secret = module.service_principal.password
+    client_secret = module.service_principal.password.value
   }
 
   network_profile {
