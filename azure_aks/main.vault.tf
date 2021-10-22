@@ -28,20 +28,28 @@ resource "vault_generic_secret" "endpoint" {
 
 ### Vault auth backend ################
 
-resource "vault_auth_backend" "this" {
-  count = var.vault_auth_backend ? 1 : 0
-  type = "kubernetes"
-  path = local.cluster_name
-}
+//resource "vault_auth_backend" "this" {
+//  count = var.vault_auth_backend ? 1 : 0
+//  type = "kubernetes"
+//  path = local.cluster_name
+//}
+//
+//resource "vault_kubernetes_auth_backend_config" "this" {
+//  count = var.vault_auth_backend ? 1 : 0
+//  backend = vault_auth_backend.this.0.path
+//  kubernetes_host = azurerm_kubernetes_cluster.this.kube_config.0.host
+//  kubernetes_ca_cert = base64decode(azurerm_kubernetes_cluster.this.kube_config.0.cluster_ca_certificate)
+//  token_reviewer_jwt = data.kubernetes_secret.vault-injector-token.0.data.token
+//  disable_iss_validation = true
+//  pem_keys = []
+//}
 
-resource "vault_kubernetes_auth_backend_config" "this" {
-  count = var.vault_auth_backend ? 1 : 0
-  backend = vault_auth_backend.this.0.path
-  kubernetes_host = azurerm_kubernetes_cluster.this.kube_config.0.host
-  kubernetes_ca_cert = base64decode(azurerm_kubernetes_cluster.this.kube_config.0.cluster_ca_certificate)
-  token_reviewer_jwt = data.kubernetes_secret.vault-injector-token.0.data.token
-  disable_iss_validation = true
-  pem_keys = []
+module "vault_auth_backend" {
+  source = "../vault_k8s_auth"
+  path = local.cluster_name
+  host = azurerm_kubernetes_cluster.this.kube_config.0.host
+  ca_certificate = base64decode(azurerm_kubernetes_cluster.this.kube_config.0.cluster_ca_certificate)
+  token = azurerm_kubernetes_cluster.this.kube_config.0.password
 }
 
 ### Vault secret engine ##############
