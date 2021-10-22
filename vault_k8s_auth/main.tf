@@ -4,7 +4,7 @@ resource "vault_auth_backend" "this" {
 }
 
 resource "vault_kubernetes_auth_backend_config" "this" {
-  backend = vault_auth_backend.this.0.path
+  backend = vault_auth_backend.this.path
   kubernetes_host = var.host
   kubernetes_ca_cert = var.ca_certificate
   token_reviewer_jwt = var.token
