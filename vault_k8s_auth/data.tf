@@ -7,7 +7,7 @@ data "kubernetes_service_account" "vault-injector" {
 
 data "kubernetes_secret" "vault-injector-token" {
   metadata {
-    name = data.kubernetes_service_account.vault-injector.0.default_secret_name
+    name = data.kubernetes_service_account.vault-injector.default_secret_name
     namespace = var.token_reviewer_sa.namespace
   }
 }
