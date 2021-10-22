@@ -92,7 +92,7 @@ resource "azurerm_kubernetes_cluster" "this" {
     }
   }
   depends_on = [
-    azuread_service_principal_password.this
+    module.service_principal.password
   ]
 
   lifecycle {
