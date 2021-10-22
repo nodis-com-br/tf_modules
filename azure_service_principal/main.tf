@@ -30,7 +30,9 @@ resource "azuread_service_principal_password" "this" {
   end_date = timeadd(timestamp(), "87600h")
   value = null
   lifecycle {
-    ignore_changes = [end_date]
+    ignore_changes = [
+      end_date
+    ]
   }
 }
 

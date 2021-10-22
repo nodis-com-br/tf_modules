@@ -12,7 +12,9 @@ resource "azuread_service_principal_password" "this" {
   service_principal_id = azuread_service_principal.this.id
   end_date = timeadd(timestamp(), "87600h")
   lifecycle {
-    ignore_changes = [end_date]
+    ignore_changes = [
+      end_date
+    ]
   }
 }
 
