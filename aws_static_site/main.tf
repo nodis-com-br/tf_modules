@@ -8,19 +8,19 @@ module "bucket" {
   }
 }
 
-module "dns_record" {
-  source = "../aws_route53_record"
-  name = var.domain
-  route53_zone = var.route53_zone
-  type = "CNAME"
-  records = [
-    aws_cloudfront_distribution.this.domain_name
-  ]
-  providers = {
-    aws.dns = aws.dns
-    aws.current = aws.current
-  }
-}
+//
+//module "dns_record" {
+//  source = "../aws_route53_record"
+//  name = var.domain
+//  route53_zone = var.route53_zone
+//  type = "CNAME"
+//  records = [
+//    aws_cloudfront_distribution.this.domain_name
+//  ]
+//  providers = {
+//    aws.current = aws.dns
+//  }
+//}
 
 module "certificate" {
   source = "../aws_acm_certificate"

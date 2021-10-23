@@ -67,7 +67,7 @@ locals {
     }
     resource_accesses = {
       aad_admin = {
-        resource_app_id =  "00000002-0000-0000-c000-000000000000"
+        resource_app_id = "00000002-0000-0000-c000-000000000000"
         resource_access = {
           user_read = {
             type = "Scope"
@@ -84,7 +84,7 @@ locals {
         }
       }
       windows_graph_admin = {
-        resource_app_id =  "00000003-0000-0000-c000-000000000000"
+        resource_app_id = "00000003-0000-0000-c000-000000000000"
         resource_access = {
           user_read = {
             type = "Scope"
