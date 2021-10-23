@@ -13,7 +13,7 @@ module "dns_record" {
 
 module "certificate" {
   source = "../aws_acm_certificate"
-  domain_name = var.route53_zone.name
+  domain_name = var.name
   route53_zone = var.route53_zone
   providers = {
     aws.current = aws.current
