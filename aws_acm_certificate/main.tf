@@ -10,7 +10,7 @@ resource "aws_acm_certificate" "this" {
 
 resource "aws_route53_record" "certificate_validation" {
   provider = aws.dns
-  for_each = { for dvo in aws_acm_certificate.this.0.domain_validation_options : dvo.domain_name =>
+  for_each = { for dvo in aws_acm_certificate.this.domain_validation_options : dvo.domain_name =>
     {
       name   = dvo.resource_record_name
       record = dvo.resource_record_value
