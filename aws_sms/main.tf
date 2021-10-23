@@ -22,7 +22,7 @@ module "dns_txt_record" {
     aws_ses_domain_identity.this.verification_token
   ]
   providers = {
-    aws.dns = aws.dns
+    aws.current = aws.dns
   }
 }
 
