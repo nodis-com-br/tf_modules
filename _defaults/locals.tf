@@ -69,34 +69,34 @@ locals {
       aad_admin = {
         resource_app_id =  "00000002-0000-0000-c000-000000000000"
         resource_access = {
-          1 = {
+          user_read = {
             type = "Scope"
-            id = "311a71cc-e848-46a1-bdf8-97ff7156d8e6" # user_read
+            id = "311a71cc-e848-46a1-bdf8-97ff7156d8e6"
           }
-          2 = {
+          application_readwrite_all = {
             type = "Role"
-            id = "1cda74f2-2616-4834-b122-5cb1b07f8a59" # application_readwrite_all
+            id = "1cda74f2-2616-4834-b122-5cb1b07f8a59"
           }
-          3 = {
+          directory_readwrite_all = {
             type = "Role"
-            id = "78c8a3c8-a07e-4b9e-af1b-b5ccab50a175" # directory_readwrite_all
+            id = "78c8a3c8-a07e-4b9e-af1b-b5ccab50a175"
           }
         }
       }
       windows_graph_admin = {
         resource_app_id =  "00000003-0000-0000-c000-000000000000"
         resource_access = {
-          1 = {
+          user_read = {
             type = "Scope"
-            id = "e1fe6dd8-ba31-4d61-89e7-88639da4683d" # user_read
+            id = "e1fe6dd8-ba31-4d61-89e7-88639da4683d"
           }
-          2 = {
+          application_readwrite_all = {
             type = "Role"
-            id = "1bfefb4e-e0b5-418b-a88f-73c46d2cc8e9" # application_readwrite_all
+            id = "1bfefb4e-e0b5-418b-a88f-73c46d2cc8e9"
           }
-          3 = {
+          directory_readwrite_all = {
             type = "Role"
-            id = "19dbc75e-c2e2-444c-a770-ec69d8559fc7" # directory_readwrite_all
+            id = "19dbc75e-c2e2-444c-a770-ec69d8559fc7"
           }
         }
       }
