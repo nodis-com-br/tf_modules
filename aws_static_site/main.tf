@@ -28,7 +28,7 @@ module "certificate" {
   subject_alternative_names = var.alternative_domain_names
   route53_zone = var.route53_zone
   providers = {
-    aws.current = aws.currennt
+    aws.current = aws.current
     aws.dns = aws.dns
   }
 }
