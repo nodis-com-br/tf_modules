@@ -37,6 +37,6 @@ module "dns_cname_record" {
     "${element(aws_ses_domain_dkim.this.dkim_tokens, count.index)}.dkim.amazonses.com"
   ]
   providers = {
-    aws.dns = aws.dns
+    aws.current = aws.dns
   }
 }
