@@ -6,8 +6,17 @@ module "dns_record" {
   records = [
     module.load_balancer.this.dns_name
   ]
-  create_certificate = true
   providers = {
+    aws.dns = aws.dns
+  }
+}
+
+module "certificate" {
+  source = "../aws_acm_certificate"
+  domain_name = var.route53_zone.name
+  route53_zone = var.route53_zone
+  providers = {
+    aws.current = aws.currennt
     aws.dns = aws.dns
   }
 }
@@ -40,7 +49,7 @@ module "load_balancer" {
   ]
   forwarders = {
     web0001 = {
-      certificate_arn = module.dns_record.certificate.arn
+      certificate_arn = module.certificate.this.arn
       target_group = {
         vpc_id = var.vpc.id
         type = "instance"

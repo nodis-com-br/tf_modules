@@ -25,11 +25,6 @@ variable "route53_zone" {
   })
 }
 
-variable "create_certificate" {
-  type = bool
-  default = false
-}
-
 variable "alias" {
   default = null
 }

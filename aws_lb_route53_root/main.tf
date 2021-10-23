@@ -6,8 +6,18 @@ module "dns_record" {
     name = module.load_balancer.this.dns_name
     zone_id = module.load_balancer.this.zone_id
   }
-  create_certificate = true
+
   providers = {
+    aws.current = aws.dns
+  }
+}
+
+module "certificate" {
+  source = "../aws_acm_certificate"
+  domain_name = var.route53_zone.name
+  route53_zone = var.route53_zone
+  providers = {
+    aws.current = aws.currennt
     aws.dns = aws.dns
   }
 }
@@ -32,7 +42,7 @@ module "load_balancer" {
   ]
   redirectors = {
     https = {
-      certificate_arn = module.dns_record.certificate.arn
+      certificate_arn = module.certificate.this.arn
       action = {host = var.alias}}
   }
   builtin_redirectors = [
