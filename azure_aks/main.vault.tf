@@ -1,3 +1,19 @@
+### Vault secret engine ##############
+
+resource "vault_mount" "this" {
+  path = "k8s/${local.cluster_name}"
+  type = "vault-k8s-secret-engine"
+  options = {
+    jwt = azurerm_kubernetes_cluster.this.kube_config.0.password
+    host = azurerm_kubernetes_cluster.this.kube_config.0.host
+    ca_cert = azurerm_kubernetes_cluster.this.kube_config.0.cluster_ca_certificate
+    admin_role = "admin"
+    editor_role = "edit"
+    viewer_role = "view"
+    max_ttl = "720h"
+  }
+}
+
 ### Secrets ###########################
 
 resource "vault_generic_secret" "this" {
@@ -26,27 +42,5 @@ resource "vault_generic_secret" "endpoint" {
 }
 
 
-module "vault_auth_backend" {
-  count = var.vault_auth_backend ? 1 : 0
-  source = "../vault_k8s_auth"
-  path = local.cluster_name
-  host = azurerm_kubernetes_cluster.this.kube_config.0.host
-  ca_certificate = base64decode(azurerm_kubernetes_cluster.this.kube_config.0.cluster_ca_certificate)
-  token = data.kubernetes_secret.vault-injector-token.0.data.token
-}
 
-### Vault secret engine ##############
 
-resource "vault_mount" "this" {
-  path = "k8s/${local.cluster_name}"
-  type = "vault-k8s-secret-engine"
-  options = {
-    jwt = azurerm_kubernetes_cluster.this.kube_config.0.password
-    host = azurerm_kubernetes_cluster.this.kube_config.0.host
-    ca_cert = azurerm_kubernetes_cluster.this.kube_config.0.cluster_ca_certificate
-    admin_role = "admin"
-    editor_role = "edit"
-    viewer_role = "view"
-    max_ttl = "720h"
-  }
-}

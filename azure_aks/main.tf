@@ -121,3 +121,13 @@ resource "azurerm_private_dns_zone_virtual_network_link" "this" {
   resource_group_name = azurerm_kubernetes_cluster.this.node_resource_group
   virtual_network_id = each.value.id
 }
+
+### Vault #############################
+module "vault_auth_backend" {
+  count = var.vault_auth_backend ? 1 : 0
+  source = "../vault_k8s_auth"
+  path = local.cluster_name
+  host = azurerm_kubernetes_cluster.this.kube_config.0.host
+  ca_certificate = base64decode(azurerm_kubernetes_cluster.this.kube_config.0.cluster_ca_certificate)
+  token = data.kubernetes_secret.vault-injector-token.0.data.token
+}

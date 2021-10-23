@@ -1,13 +1,9 @@
-output "policy" {
-  value = aws_iam_policy.this
-}
-
-output "access_key" {
-  value = var.access_key ? aws_iam_access_key.this.0 : null
+output "kms_key" {
+  value = aws_kms_key.this
   sensitive = true
 }
 
-output "kms_key" {
-  value = aws_kms_key.this
+output "access_key" {
+  value = var.access_key ? module.user.0.access_key : null
   sensitive = true
 }
