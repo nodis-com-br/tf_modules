@@ -21,29 +21,13 @@ resource "aws_route53_record" "alias" {
   }
 }
 
-resource "aws_acm_certificate" "this" {
-  provider = aws.dns
+module "acm_certificate" {
+  source = "../aws_acm_certificate"
   count = var.create_certificate ? 1 : 0
-  domain_name  = var.name
-  validation_method = "DNS"
-  lifecycle {
-    create_before_destroy = true
+  domain_name = var.name
+  route53_zone = var.route53_zone
+  providers = {
+    aws.current = aws.current
+    aws.dns = aws.dns
   }
-}
-resource "aws_route53_record" "certificate_validation" {
-  provider = aws.dns
-  for_each = var.create_certificate ? {
-    for dvo in aws_acm_certificate.this.0.domain_validation_options : dvo.domain_name => {
-      name   = dvo.resource_record_name
-      record = dvo.resource_record_value
-      type   = dvo.resource_record_type
-    }
-  } : {}
-  zone_id = var.route53_zone.id
-  name    = each.value.name
-  type    = each.value.type
-  ttl = 300
-  records = [
-    each.value.record
-  ]
 }

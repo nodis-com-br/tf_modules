@@ -49,7 +49,6 @@ resource "azurerm_linux_virtual_machine" "this" {
   tags = local.tags
 }
 
-
 resource "azurerm_managed_disk" "this" {
   for_each = local.extra_disks
   name  = each.value.fullname

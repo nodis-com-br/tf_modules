@@ -3,5 +3,5 @@ output "this" {
 }
 
 output "certificate" {
-  value = var.create_certificate ? aws_acm_certificate.this.0 : null
+  value = var.create_certificate ? module.acm_certificate.this.0 : null
 }

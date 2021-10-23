@@ -1,3 +1,7 @@
+output "this" {
+  value = aws_s3_bucket.this
+}
+
 output "policy" {
   value = var.policy ? aws_iam_policy.this.0 : null
 }
