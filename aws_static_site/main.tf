@@ -24,7 +24,7 @@ resource "aws_cloudfront_distribution" "this" {
   enabled = true
   default_root_object = var.default_root_object
   is_ipv6_enabled = true
-  aliases = concat([var.domain], var.alternative_domain_names)
+//  aliases = concat([var.domain], var.alternative_domain_names)
   custom_error_response {
     error_caching_min_ttl = 60
     error_code = 403
@@ -87,15 +87,15 @@ resource "aws_iam_policy" "this" {
   })
 }
 
-module "dns_record" {
-  source = "../aws_route53_record"
-  name = var.domain
-  route53_zone = var.route53_zone
-  type = "CNAME"
-  records = [
-    aws_cloudfront_distribution.this.domain_name
-  ]
-  providers = {
-    aws.current = aws.dns
-  }
-}
+//module "dns_record" {
+//  source = "../aws_route53_record"
+//  name = var.domain
+//  route53_zone = var.route53_zone
+//  type = "CNAME"
+//  records = [
+//    aws_cloudfront_distribution.this.domain_name
+//  ]
+//  providers = {
+//    aws.current = aws.dns
+//  }
+//}
