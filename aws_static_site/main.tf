@@ -114,3 +114,17 @@ module "dns_record" {
     aws.current = aws.dns
   }
 }
+
+module "dns_record_alt" {
+  source = "../aws_route53_record"
+  for_each = var.cloudfront_enabled ? toset(var.alternative_domain_names) : []
+  name = each.key
+  route53_zone = var.route53_zone
+  type = "CNAME"
+  records = [
+    aws_cloudfront_distribution.this.domain_name
+  ]
+  providers = {
+    aws.current = aws.dns
+  }
+}
