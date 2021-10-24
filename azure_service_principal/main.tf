@@ -31,23 +31,15 @@ resource "azuread_application" "this" {
   }
 }
 
-//resource "azuread_application_pre_authorized" "this" {
-//  for_each = local.resource_accesses
-//  application_object_id = each.value.resource_app_id
-//  authorized_app_id = azuread_application.this.application_id
-//  permission_ids = [for r in each.value.resource_access : r.id]
-//}
-
 resource "null_resource" "grant" {
-  for_each = local.resource_accesses
+  for_each = local.grants
   provisioner "local-exec" {
     command = <<EOT
       sleep 5
-      az ad app permission grant --id ${azuread_application.this.application_id} --api ${each.value.resource_app_id} --scope "email offline_access openid profile User.Read"
+      az ad app permission grant --id ${azuread_application.this.application_id} --api ${each.value.resource_app_id} --scope "${each.value.scopes}"
     EOT
   }
 }
-
 
 resource "azuread_service_principal" "this" {
   application_id = azuread_application.this.application_id
