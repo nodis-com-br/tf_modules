@@ -9,22 +9,6 @@ resource "aws_s3_bucket" "this" {
   force_destroy = false
 }
 
-resource "aws_iam_policy" "this" {
-  count = var.policy ? 1 : 0
-  provider = aws.current
-  policy = local.default_policy
-  tags = {}
-}
-
-resource "vault_generic_secret" "this" {
-  count = alltrue([var.policy, var.save_policy_arn]) ? 1 : 0
-  path = "${local.vault_kv_path}/policy/${var.name}"
-  data_json = jsonencode({
-    target = "bucket"
-    arn = aws_iam_policy.this.0.arn
-  })
-}
-
 module "role" {
   source = "../aws_iam_role"
   count = var.role ? 1 : 0
@@ -45,4 +29,20 @@ module "user" {
   providers = {
     aws.current = aws.current
   }
+}
+
+resource "aws_iam_policy" "this" {
+  count = var.policy ? 1 : 0
+  provider = aws.current
+  policy = local.default_policy
+  tags = {}
+}
+
+resource "vault_generic_secret" "this" {
+  count = alltrue([var.policy, var.save_policy_arn]) ? 1 : 0
+  path = "${local.vault_kv_path}/policy/${var.name}"
+  data_json = jsonencode({
+    target = "bucket"
+    arn = aws_iam_policy.this.0.arn
+  })
 }
