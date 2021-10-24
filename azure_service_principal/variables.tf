@@ -27,3 +27,7 @@ variable "builtin_resource_accesses" {
 variable "resource_accesses" {
   default = {}
 }
+
+variable "homepage_url" {
+  default = null
+}

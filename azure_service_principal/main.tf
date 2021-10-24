@@ -5,6 +5,9 @@ module "defaults" {
 resource "azuread_application" "this" {
   display_name = var.name
   name = null
+  web {
+    homepage_url = var.homepage_url
+  }
   dynamic required_resource_access {
     for_each = local.resource_accesses
     content {
