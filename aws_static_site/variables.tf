@@ -1,4 +1,6 @@
-variable "name" {}
+variable name {}
+
+variable "bucket" {}
 
 variable "domain" {}
 

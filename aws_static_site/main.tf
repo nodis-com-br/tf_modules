@@ -1,6 +1,6 @@
 module "bucket" {
   source = "../aws_s3"
-  name = var.name
+  name = var.bucket
   policy = true
   role = false
   providers = {
@@ -29,33 +29,6 @@ module "certificate" {
   providers = {
     aws.current = aws.current
     aws.dns = aws.dns
-  }
-}
-
-module "role" {
-  source = "../aws_iam_role"
-  owner_arn = var.role_owner_arn
-  policy_arns = [
-    module.bucket.policy.arn
-  ]
-  policies = {
-    cloudfront = jsonencode({
-      Version = "2012-10-17"
-      Statement = [
-        {
-          Effect = "Allow"
-          Action = [
-            "cloudfront:CreateInvalidation"
-          ]
-          Resource = [
-            aws_cloudfront_distribution.this.arn
-          ]
-        }
-      ]
-    })
-  }
-  providers = {
-    aws.current = aws.current
   }
 }
 
@@ -105,4 +78,23 @@ resource "aws_cloudfront_distribution" "this" {
     minimum_protocol_version = "TLSv1.2_2019"
     ssl_support_method = "sni-only"
   }
+}
+
+resource "aws_iam_policy" "this" {
+  provider = aws.current
+  name = var.name
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "cloudfront:CreateInvalidation"
+        ]
+        Resource = [
+          aws_cloudfront_distribution.this.arn
+        ]
+      }
+    ]
+  })
 }
