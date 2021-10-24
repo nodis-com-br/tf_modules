@@ -7,6 +7,9 @@ resource "azuread_application" "this" {
   name = null
   web {
     homepage_url = var.homepage_url
+    implicit_grant {
+      access_token_issuance_enabled = false
+    }
   }
   dynamic required_resource_access {
     for_each = local.resource_accesses
