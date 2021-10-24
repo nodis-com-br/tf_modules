@@ -8,7 +8,6 @@ module "bucket" {
   }
 }
 
-//
 //module "dns_record" {
 //  source = "../aws_route53_record"
 //  name = var.domain
