@@ -3,5 +3,5 @@ output "bucket_policy" {
 }
 
 output "cloudfront_policy" {
-  value = aws_iam_policy.this
+  value = var.cloudfront_enabled ? aws_iam_policy.this.0 : null
 }

@@ -1,3 +1,7 @@
+module "defaults" {
+  source = "../_defaults"
+}
+
 module "bucket" {
   source = "../aws_s3"
   name = var.bucket
@@ -70,6 +74,7 @@ resource "aws_cloudfront_distribution" "this" {
 
 resource "aws_iam_policy" "this" {
   provider = aws.current
+  count = var.cloudfront_enabled ? 1 : 0
   name = var.name
   policy = jsonencode({
     Version = "2012-10-17"
@@ -87,8 +92,18 @@ resource "aws_iam_policy" "this" {
   })
 }
 
+resource "vault_generic_secret" "this" {
+  count = var.cloudfront_enabled ? 1 : 0
+  path = "${module.defaults.aws.vault_kv_path}/policy/${var.name}"
+  data_json = jsonencode({
+    target = "cloudfront"
+    arn = aws_iam_policy.this.0.arn
+  })
+}
+
 module "dns_record" {
   source = "../aws_route53_record"
+  count = var.cloudfront_enabled ? 1 : 0
   name = var.domain
   route53_zone = var.route53_zone
   type = "CNAME"
