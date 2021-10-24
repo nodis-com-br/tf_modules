@@ -1,6 +1,7 @@
 module "service_principal" {
   source = "../azure_service_principal"
   name = local.cluster_name
+  homepage_url = "https://${local.cluster_name}"
   create_password = true
   roles = {
     vnet = {
