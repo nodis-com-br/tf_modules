@@ -4,7 +4,6 @@ module "defaults" {
 
 resource "azuread_application" "this" {
   display_name = var.name
-  name = null
   web {
     homepage_url = var.homepage_url
     implicit_grant {
@@ -30,7 +29,7 @@ resource "azuread_application_pre_authorized" "this" {
   for_each = local.resource_accesses
   application_object_id = each.value.value.resource_app_id
   authorized_app_id = azuread_application.this.application_id
-  permission_ids  = [for r in each.value.resource_access : r.id]
+  permission_ids = [for r in each.value.resource_access : r.id]
 }
 
 
