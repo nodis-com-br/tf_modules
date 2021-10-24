@@ -6,13 +6,14 @@ module "service_principal" {
   builtin_resource_accesses = ["aad_admin"]
 }
 
-resource "vault_auth_backend" "this" {
+module "auth_backend" {
+  source = "../vault_auth_backend"
   type = "azure"
   path = var.path
 }
 
 resource "vault_azure_auth_backend_config" "example" {
-  backend = vault_auth_backend.this.path
+  backend = module.auth_backend.this.path
   tenant_id = data.azurerm_client_config.current.tenant_id
   client_id = module.service_principal.application.application_id
   client_secret = module.service_principal.password.value
