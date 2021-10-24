@@ -20,3 +20,7 @@ variable "default_root_object" {
 variable "origin_path" {
   default = "/www"
 }
+
+variable "cloudfront_enabled" {
+  default = true
+}
