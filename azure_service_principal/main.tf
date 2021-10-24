@@ -3,8 +3,8 @@ module "defaults" {
 }
 
 resource "azuread_application" "this" {
-//  display_name = var.name
-  name = var.name
+  display_name = var.name
+  name = null
   dynamic required_resource_access {
     for_each = local.resource_accesses
     content {
