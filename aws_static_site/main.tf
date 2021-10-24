@@ -54,6 +54,9 @@ module "role" {
       ]
     })
   }
+  providers = {
+    aws.current = aws.current
+  }
 }
 
 resource "aws_cloudfront_distribution" "this" {
