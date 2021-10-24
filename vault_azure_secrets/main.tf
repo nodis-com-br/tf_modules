@@ -1,6 +1,6 @@
 module "service_principal" {
   source = "../azure_service_principal"
-  name = "vault"
+  name = "vault-secrets"
   create_password = true
   builtin_resource_accesses = ["aad_admin"]
   builtin_roles = ["owner"]
