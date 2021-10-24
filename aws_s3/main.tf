@@ -20,6 +20,7 @@ resource "vault_generic_secret" "this" {
   count = alltrue([var.policy, var.save_policy_arn]) ? 1 : 0
   path = "${local.vault_kv_path}/policy/${var.name}"
   data_json = jsonencode({
+    target = "bucket"
     arn = aws_iam_policy.this.0.arn
   })
 }
