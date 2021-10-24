@@ -21,6 +21,7 @@ module "certificate" {
 }
 
 //resource "aws_cloudfront_distribution" "this" {
+//  provider = aws.current
 //  enabled = var.cloudfront_enabled
 //  default_root_object = var.default_root_object
 //  is_ipv6_enabled = true
@@ -68,24 +69,24 @@ module "certificate" {
 //  }
 //}
 
-resource "aws_iam_policy" "this" {
-  provider = aws.current
-  name = var.name
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Action = [
-          "cloudfront:CreateInvalidation"
-        ]
-        Resource = [
-          aws_cloudfront_distribution.this.arn
-        ]
-      }
-    ]
-  })
-}
+//resource "aws_iam_policy" "this" {
+//  provider = aws.current
+//  name = var.name
+//  policy = jsonencode({
+//    Version = "2012-10-17"
+//    Statement = [
+//      {
+//        Effect = "Allow"
+//        Action = [
+//          "cloudfront:CreateInvalidation"
+//        ]
+//        Resource = [
+//          aws_cloudfront_distribution.this.arn
+//        ]
+//      }
+//    ]
+//  })
+//}
 
 //module "dns_record" {
 //  source = "../aws_route53_record"
