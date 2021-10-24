@@ -38,6 +38,16 @@ resource "azuread_application" "this" {
 //  permission_ids = [for r in each.value.resource_access : r.id]
 //}
 
+resource "null_resource" "grant" {
+  for_each = local.resource_accesses
+  provisioner "local-exec" {
+    command = <<EOT
+      sleep 5
+      az ad app permission grant --id ${azuread_application.this.application_id} --api ${each.value.resource_app_id} --scope "email offline_access openid profile User.Read"
+    EOT
+  }
+}
+
 
 resource "azuread_service_principal" "this" {
   application_id = azuread_application.this.application_id
