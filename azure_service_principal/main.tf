@@ -7,6 +7,7 @@ resource "azuread_application" "this" {
   web {
     homepage_url = var.homepage_url
     implicit_grant {
+      id_token_issuance_enabled = true
       access_token_issuance_enabled = false
     }
   }
@@ -22,6 +23,11 @@ resource "azuread_application" "this" {
         }
       }
     }
+  }
+  lifecycle {
+    ignore_changes = [
+      api
+    ]
   }
 }
 
