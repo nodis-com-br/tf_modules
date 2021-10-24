@@ -7,7 +7,7 @@ resource "azuread_application" "this" {
   web {
     homepage_url = var.homepage_url
     implicit_grant {
-      id_token_issuance_enabled = true
+      id_token_issuance_enabled = false
       access_token_issuance_enabled = false
     }
   }
