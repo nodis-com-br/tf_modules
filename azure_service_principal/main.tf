@@ -40,7 +40,7 @@ resource "azuread_service_principal" "this" {
 resource "azuread_service_principal_password" "this" {
   count = var.create_password ? 1 : 0
   service_principal_id = azuread_service_principal.this.id
-  end_date = timeadd(timestamp(), "87600h")
+//  end_date = timeadd(timestamp(), "87600h")
   value = null
   lifecycle {
     ignore_changes = [
