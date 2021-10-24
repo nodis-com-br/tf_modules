@@ -92,19 +92,9 @@ resource "aws_iam_policy" "this" {
   })
 }
 
-resource "vault_generic_secret" "this" {
-  count = var.cloudfront_enabled ? 1 : 0
-  path = "${module.defaults.aws.vault_kv_path}/policy/${var.name}"
-  data_json = jsonencode({
-    target = "cloudfront"
-    arn = aws_iam_policy.this.0.arn
-  })
-}
-
-
 module "dns_record" {
   source = "../aws_route53_record"
-  for_each = var.cloudfront_enabled ? concat([var.domain], var.alternative_domain_names) : []
+  for_each = toset(var.cloudfront_enabled ? concat([var.domain], var.alternative_domain_names) : [])
   name = each.key
   route53_zone = var.route53_zone
   type = "CNAME"
@@ -115,3 +105,14 @@ module "dns_record" {
     aws.current = aws.dns
   }
 }
+
+resource "vault_generic_secret" "this" {
+  count = var.cloudfront_enabled ? 1 : 0
+  path = "${module.defaults.aws.vault_kv_path}/policy/${var.name}"
+  data_json = jsonencode({
+    target = "cloudfront"
+    arn = aws_iam_policy.this.0.arn
+  })
+}
+
+
