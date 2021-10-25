@@ -1,5 +1,5 @@
 module "defaults" {
-  source = "../_defaults"
+  source = "../_azure_defaults"
 }
 
 resource "azuread_application" "this" {

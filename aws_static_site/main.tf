@@ -1,5 +1,5 @@
 module "defaults" {
-  source = "../_defaults"
+  source = "../_aws_defaults"
 }
 
 module "bucket" {
