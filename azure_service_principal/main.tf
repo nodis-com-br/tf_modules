@@ -31,16 +31,6 @@ resource "azuread_application" "this" {
   }
 }
 
-resource "null_resource" "grant" {
-  for_each = local.grants
-  provisioner "local-exec" {
-    command = <<EOT
-      sleep 5
-      az ad app permission grant --id ${azuread_application.this.application_id} --api ${each.value.resource_app_id} --scope "${each.value.scopes}"
-    EOT
-  }
-}
-
 resource "azuread_service_principal" "this" {
   application_id = azuread_application.this.application_id
 }
@@ -67,4 +57,13 @@ resource "azurerm_role_assignment" "this" {
   scope = each.value.scope
   role_definition_name = each.value.definition_name
   principal_id = azuread_service_principal.this.object_id
+}
+
+resource "vault_generic_secret" "this" {
+  count = var.save_credentials ? 1 : 0
+  path = "${module.defaults.azure.vault_kv_path}/service_principal/${var.name}"
+  data_json = jsonencode({
+    client_id = azuread_application.this.application_id
+    client_secret = try(azuread_service_principal_password.this.0, {value = null}).value
+  })
 }

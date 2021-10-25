@@ -31,3 +31,7 @@ variable "resource_accesses" {
 variable "homepage_url" {
   default = null
 }
+
+variable "save_credentials" {
+  default = false
+}
