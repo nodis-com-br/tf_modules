@@ -110,7 +110,7 @@ module "dns_record" {
 }
 
 resource "vault_generic_secret" "this" {
-  count = var.cloudfront_enabled ? 1 : 0
+  count = var.cloudfront_policy ? 1 : 0
   path = "${module.defaults.aws.vault_kv_path}/policy/${var.name}"
   data_json = jsonencode({
     target = "cloudfront"
