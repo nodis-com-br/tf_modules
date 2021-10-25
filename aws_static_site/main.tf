@@ -74,22 +74,23 @@ resource "aws_cloudfront_distribution" "this" {
 
 resource "aws_iam_policy" "this" {
   provider = aws.current
-  count = var.cloudfront_enabled ? 1 : 0
+  count = var.cloudfront_policy ? 1 : 0
   name = var.name
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Action = [
-          "cloudfront:CreateInvalidation"
-        ]
-        Resource = [
-          aws_cloudfront_distribution.this.arn
-        ]
-      }
-    ]
-  })
+  policy = local.cloudfront_policy
+}
+
+module "role" {
+  source = "../aws_iam_role"
+  count = var.role ? 1 : 0
+  owner_arn = var.role_owner_arn
+  policy_arns = [
+    module.bucket.policy.arn,
+    aws_iam_policy.this.arn
+  ]
+  vault_kv_path = "${module.defaults.aws.vault_kv_path}/role/${var.name}"
+  providers = {
+    aws.current = aws.current
+  }
 }
 
 module "dns_record" {
