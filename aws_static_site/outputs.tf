@@ -7,5 +7,5 @@ output "cloudfront_policy" {
 }
 
 output "role" {
-  value = var.role ? module.role.this : null
+  value = var.role ? module.role.0.this : null
 }
