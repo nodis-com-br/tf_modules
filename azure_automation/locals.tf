@@ -24,17 +24,17 @@ locals {
       schedule = "daily"
       parameters = {
         resourcegroupname = var.rg.name
+        automationaccountname = azurerm_automation_account.this.name
       }
     }
     automated_snapshots = {
       log_verbose = "true"
       log_progress = "true"
       runbook_type = "PowerShell"
-      content = file("scripts/snapshots.ps1")
+      content = file("./scripts/snapshots.ps1")
       schedule = "week_days"
       parameters = {
         resourcegroupname = var.rg.name
-        automationaccountname = azurerm_automation_account.this.name
       }
     }
   }
