@@ -84,7 +84,7 @@ foreach($snap in Get-AzureRmSnapshot -ResourceGroupName $ResourceGroupName) {
 
     $SnapAge = New-TimeSpan –Start $snap.TimeCreated –End $now
 
-    if ($SnapAge -gt (New-TimeSpan -Days 7)) {
+    if ($SnapAge -gt (New-TimeSpan -Days 14)) {
 
         Remove-AzureRmSnapshot -ResourceGroupName $ResourceGroupName -SnapshotName $snap.name -Force -AsJob
 

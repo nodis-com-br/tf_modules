@@ -1,10 +1,4 @@
 locals {
-  modules = {
-    AzureRM_Resources = {
-      name = "AzureRM.Ressources"
-      uri = ""
-    }
-  }
   default_schedules = [
     "week_days",
     "daily"
@@ -28,13 +22,20 @@ locals {
       runbook_type = "PowerShell"
       content = data.http.update_modules_script.body
       schedule = "daily"
+      parameters = {
+        resourcegroupname = var.rg.name
+      }
     }
     automated_snapshots = {
       log_verbose = "true"
       log_progress = "true"
       runbook_type = "PowerShell"
-      content = data.local_file.snapshots_script.content
+      content = file("scripts/snapshots.ps1")
       schedule = "week_days"
+      parameters = {
+        resourcegroupname = var.rg.name
+        automationaccountname = azurerm_automation_account.this.name
+      }
     }
   }
   selected_runbooks = {for r in var.builtin_runbooks : r => local.builtin_runbooks[r]}
