@@ -1,4 +1,10 @@
 locals {
+  modules = {
+    AzureRM_Resources = {
+      name = "AzureRM.Ressources"
+      uri = ""
+    }
+  }
   default_schedules = [
     "week_days",
     "daily"

@@ -45,6 +45,6 @@ resource "azurerm_automation_job_schedule" "this" {
   runbook_name = azurerm_automation_runbook.this[each.key].name
   parameters = {
     resourcegroupname = var.rg.name
-    automationaccount = azurerm_automation_account.this.name
+    automationaccountname = azurerm_automation_account.this.name
   }
 }
