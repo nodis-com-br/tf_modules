@@ -31,7 +31,7 @@ locals {
       log_verbose = "true"
       log_progress = "true"
       runbook_type = "PowerShell"
-      content = file("./scripts/snapshots.ps1")
+      content = file("${path.module}/scripts/snapshots.ps1")
       schedule = "week_days"
       parameters = {
         resourcegroupname = var.rg.name
