@@ -5,6 +5,15 @@ locals {
       {
         Effect = "Allow"
         Action = [
+          "cloudfront:ListDistributions"
+        ]
+        Resource = [
+          "*"
+        ]
+      },
+      {
+        Effect = "Allow"
+        Action = [
           "cloudfront:CreateInvalidation"
         ]
         Resource = [
