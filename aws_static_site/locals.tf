@@ -8,7 +8,7 @@ locals {
           "cloudfront:ListDistributions"
         ]
         Resource = [
-          "*"
+          "arn:aws:cloudfront::*"
         ]
       },
       {
