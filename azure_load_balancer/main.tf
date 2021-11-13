@@ -19,15 +19,18 @@ resource "azurerm_lb" "this" {
   }
 }
 
-resource "aws_route53_record" "this" {
+module "dns_record" {
+  source = "../aws_route53_record"
   for_each = toset(var.domains)
-  zone_id = var.route53_zone_id
-  name = each.value
-  type = "A"
-  ttl = "300"
+  name = each.key
+  route53_zone = var.route53_zone
+  type = "CNAME"
   records = [
     var.type == "public" ? azurerm_public_ip.lb.0.ip_address : azurerm_lb.this.private_ip_address
   ]
+  providers = {
+    aws.current = aws.dns
+  }
 }
 
 

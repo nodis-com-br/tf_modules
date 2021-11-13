@@ -73,11 +73,16 @@ variable "vault_admin_role_default_ttl" {
   default = 604800
 }
 
-variable "vault_postgres_role_name" {
+variable "vault_role_name_prefix" {
   default = "vault"
 }
 
-variable "vault_password_version" {
-  default = 0
-  type = number
+variable "vault_initial_password" {
+  default = "Mv9MUyX4Eh3gm4Mn"
+  type = string
+}
+
+variable "vault_database_backends" {
+  default = []
+  type = list(string)
 }
