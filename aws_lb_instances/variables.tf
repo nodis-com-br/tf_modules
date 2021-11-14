@@ -28,3 +28,5 @@ variable "instances" {
 variable "instance_subnet_cidrs" {
   type = list(string)
 }
+
+variable "log_bucket_name" {}

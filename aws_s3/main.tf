@@ -35,7 +35,6 @@ resource "aws_iam_policy" "this" {
   count = var.policy ? 1 : 0
   provider = aws.current
   policy = local.default_policy
-  tags = {}
 }
 
 resource "vault_generic_secret" "this" {

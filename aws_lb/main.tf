@@ -1,7 +1,21 @@
+module "bucket" {
+  source = "../aws_s3"
+  name = var.log_bucket_name
+  policy = true
+  role = false
+  providers = {
+    aws.current = aws.current
+  }
+}
+
 resource "aws_alb" "this" {
   provider = aws.current
   subnets = var.subnet_ids
   security_groups = var.security_group_ids
+  access_logs {
+    bucket = var.log_bucket_name
+    enabled = true
+  }
 }
 
 resource "aws_alb_listener" "redirector" {
@@ -56,3 +70,4 @@ resource "aws_alb_target_group_attachment" "this" {
   target_group_arn = aws_alb_target_group.this[each.value.forwarder].arn
   target_id = each.value.id
 }
+

@@ -37,6 +37,7 @@ module "security_group" {
 module "load_balancer" {
   source = "../aws_lb"
   subnet_ids = var.subnet_ids
+  log_bucket_name = var.log_bucket_name
   security_group_ids = [
     module.security_group.this.id,
   ]

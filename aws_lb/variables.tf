@@ -18,3 +18,5 @@ variable "redirectors" {
 variable "forwarders" {
   default = {}
 }
+
+variable "log_bucket_name" {}
