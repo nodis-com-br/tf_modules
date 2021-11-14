@@ -1,6 +1,6 @@
 locals {
   vault_kv_path = var.vault_kv_path == null ? module.defaults.aws.vault_kv_path : var.vault_kv_path
-  default_policy = jsonencode({
+  access_policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
       {
@@ -39,5 +39,29 @@ locals {
         ]
       }
     ]
+  })
+  bucket_policy_statements = {
+    require_ssl = {
+      Principal: "*"
+      Effect: "Deny"
+      Action: [
+        "s3:*"
+      ]
+      Resource = [
+        "arn:aws:s3:::${var.name}",
+        "arn:aws:s3:::${var.name}/*"
+      ]
+      Condition: {
+        Bool: {
+          "aws:SecureTransport": "false"
+        }
+      }
+    }
+  }
+  default_bucket_policy_statements = ["require_ssl"]
+  selected_bucket_policy_statements = [for s in concat(var.bucket_policy_statements, local.default_bucket_policy_statements): local.bucket_policy_statements[s]]
+  bucket_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [for s in concat(var.extra_bucket_policy_statements, local.selected_bucket_policy_statements): s]
   })
 }

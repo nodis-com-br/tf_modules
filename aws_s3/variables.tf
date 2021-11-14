@@ -27,3 +27,12 @@ variable "save_role_arn" {
 variable "vault_kv_path" {
   default = null
 }
+
+variable "bucket_policy_statements" {
+  type = list(string)
+  default = []
+}
+
+variable "extra_bucket_policy_statements" {
+  default = []
+}
