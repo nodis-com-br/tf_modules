@@ -35,6 +35,11 @@ resource "aws_cloudfront_distribution" "this" {
     response_code = 200
     response_page_path = "/${var.default_root_object}"
   }
+  logging_config {
+    include_cookies = false
+    bucket = "${module.bucket.this.bucket}.s3.amazonaws.com"
+    prefix = "access_logs"
+  }
   default_cache_behavior {
     allowed_methods = ["GET", "HEAD"]
     cached_methods =  ["GET", "HEAD"]
