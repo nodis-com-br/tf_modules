@@ -1,7 +1,7 @@
 module "bucket" {
   source = "../aws_s3"
   name = var.log_bucket_name
-  policy = true
+  policy = false
   role = false
   providers = {
     aws.current = aws.current
@@ -13,7 +13,7 @@ module "bucket" {
         AWS = "arn:aws:iam::${local.elb_account_id[data.aws_region.current.name]}:root"
       }
       Action = "s3:PutObject"
-      Resource = "arn:aws:s3:::${var.log_bucket_name}/AWSLogs/*"
+      Resource = "arn:aws:s3:::${var.log_bucket_name}/AWSLogs/${data.aws_caller_identity.current.account_id}/*"
     },
     {
       Effect = "Allow"
@@ -21,12 +21,7 @@ module "bucket" {
         Service = "delivery.logs.amazonaws.com"
       }
       Action = "s3:PutObject"
-      Resource = "arn:aws:s3:::${var.log_bucket_name}/AWSLogs/*"
-//      Condition = {
-//        StringEquals = {
-//          "s3:x-amz-acl?" = "bucket-owner-full-control"
-//        }
-//      }
+      Resource = "arn:aws:s3:::${var.log_bucket_name}/AWSLogs/${data.aws_caller_identity.current.account_id}/*"
     },
     {
       Effect = "Allow"
@@ -44,7 +39,7 @@ resource "aws_alb" "this" {
   subnets = var.subnet_ids
   security_groups = var.security_group_ids
   access_logs {
-    bucket = module.bucket.this.bucket
+    bucket = module.bucket.this.id
     enabled = true
   }
 }
