@@ -18,4 +18,7 @@ locals {
       }
     ]
   ]) : target.id => target }
+  elb_account_id = {
+    us-east-1 = "127311923021"
+  }
 }

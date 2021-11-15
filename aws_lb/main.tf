@@ -6,6 +6,37 @@ module "bucket" {
   providers = {
     aws.current = aws.current
   }
+  extra_bucket_policy_statements = [
+    {
+      Effect = "Allow"
+      Principal = {
+        AWS = "arn:aws:iam::${local.elb_account_id[data.aws_region.current.name]}:root"
+      }
+      Action = "s3:PutObject"
+      Resource = "arn:aws:s3:::${var.log_bucket_name}/AWSLogs/*"
+    },
+    {
+      Effect = "Allow"
+      Principal = {
+        Service = "delivery.logs.amazonaws.com"
+      }
+      Action = "s3:PutObject"
+      Resource = "arn:aws:s3:::${var.log_bucket_name}/AWSLogs/*"
+//      Condition = {
+//        StringEquals = {
+//          "s3:x-amz-acl?" = "bucket-owner-full-control"
+//        }
+//      }
+    },
+    {
+      Effect = "Allow"
+      Principal = {
+        Service = "delivery.logs.amazonaws.com"
+      }
+      Action = "s3:GetBucketAcl"
+      Resource = "arn:aws:s3:::${var.log_bucket_name}"
+    }
+  ]
 }
 
 resource "aws_alb" "this" {
@@ -13,7 +44,7 @@ resource "aws_alb" "this" {
   subnets = var.subnet_ids
   security_groups = var.security_group_ids
   access_logs {
-    bucket = var.log_bucket_name
+    bucket = module.bucket.this.bucket
     enabled = true
   }
 }
