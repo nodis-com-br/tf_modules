@@ -5,9 +5,17 @@ module "defaults" {
 resource "aws_s3_bucket" "this" {
   provider = aws.current
   bucket = var.name
-  acl = "private"
+  acl = var.acl
   force_destroy = false
   policy = local.bucket_policy
+  server_side_encryption_configuration {
+    rule {
+      apply_server_side_encryption_by_default {
+        kms_master_key_id = var.server_side_encryption.kms_master_key_id
+        sse_algorithm = var.server_side_encryption.sse_algorithm
+      }
+    }
+  }
 }
 
 module "role" {

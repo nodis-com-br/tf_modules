@@ -14,22 +14,18 @@ resource "aws_default_security_group" "this" {
     provider = aws.current
     vpc_id = aws_vpc.this.id
     ingress {
-        protocol  = -1
-        self      = true
+        protocol = -1
+        self = true
         from_port = 0
-        to_port   = 0
-        cidr_blocks =local.allowed_ingress_cidr_blocks
+        to_port = 0
+        cidr_blocks = local.allowed_ingress_cidr_blocks
     }
     egress {
-        from_port   = 0
-        to_port     = 0
-        protocol    = "-1"
-        cidr_blocks = [
-            "0.0.0.0/0"
-        ]
-        ipv6_cidr_blocks = [
-            "::/0"
-        ]
+        from_port = 0
+        to_port = 0
+        protocol = "-1"
+        cidr_blocks = ["0.0.0.0/0"]
+        ipv6_cidr_blocks = ["::/0"]
     }
 }
 
