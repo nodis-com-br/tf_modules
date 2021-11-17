@@ -45,13 +45,8 @@ resource "aws_subnet" "public" {
     availability_zone = data.aws_availability_zones.this.names[count.index]
     map_public_ip_on_launch = true
     tags = merge(
-        { "Name" = "${var.account}-${var.name}-public_${count.index}" },
+        { Name = "${var.name}-public_${count.index}" },
         var.subnet_tags
     )
-    lifecycle {
-        ignore_changes = [
-            tags
-        ]
-    }
 }
 

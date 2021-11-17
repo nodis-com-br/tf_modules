@@ -6,7 +6,7 @@ resource "aws_vpc" "this" {
     enable_dns_support = true
     instance_tenancy = "default"
     tags = {
-        Name = "${var.account}-${var.name}"
+        Name = var.name
     }
 }
 
@@ -45,3 +45,62 @@ resource "aws_vpc_peering_connection_accepter" "this" {
 }
 
 
+module "bucket" {
+    source = "../aws_s3"
+    name = var.flow_logs_bucket_name
+    extra_bucket_policy_statements = [
+        {
+            Sid = "AWSLogDeliveryWrite"
+            Effect = "Allow"
+            Principal = {
+                Service = "delivery.logs.amazonaws.com"
+            }
+            Action = "s3:PutObject"
+            Resource = "arn:aws:s3:::${var.flow_logs_bucket_name}/AWSLogs/${data.aws_caller_identity.this.account_id}/*"
+            Condition = {
+                StringEquals = {
+                    "s3:x-amz-acl" = "bucket-owner-full-control"
+                    "aws:SourceAccount" = data.aws_caller_identity.this.account_id
+                }
+                ArnLike = {
+                    "aws:SourceArn" = "arn:aws:logs:${data.aws_region.this.name}:${data.aws_caller_identity.this.account_id}:*"
+                }
+            }
+        },
+        {
+            Sid = "AWSLogDeliveryCheck"
+            Effect = "Allow"
+            Principal = {
+                Service = "delivery.logs.amazonaws.com"
+            }
+            Action = [
+                "s3:GetBucketAcl",
+                "s3:ListBucket"
+            ]
+            Resource = "arn:aws:s3:::${var.flow_logs_bucket_name}"
+            Condition = {
+                StringEquals = {
+                    "aws:SourceAccount" = data.aws_caller_identity.this.account_id
+                },
+                ArnLike = {
+                    "aws:SourceArn" = "arn:aws:logs:${data.aws_region.this.name}:${data.aws_caller_identity.this.account_id}:*"
+                }
+            }
+        }
+    ]
+    providers = {
+        aws.current = aws.current
+    }
+}
+
+resource "aws_flow_log" "this" {
+    provider = aws.current
+    log_destination = module.bucket.this.arn
+    log_destination_type = "s3"
+    traffic_type = "ALL"
+    vpc_id = aws_vpc.this.id
+    destination_options {
+        file_format = "parquet"
+        per_hour_partition = true
+    }
+}

@@ -44,13 +44,8 @@ resource "aws_subnet" "private" {
     availability_zone = data.aws_availability_zones.this.names[count.index]
     map_public_ip_on_launch = false
     tags = merge({
-        "Name" = "${var.account}-${var.name}-private_${count.index}"
+        Name = "${var.name}-private_${count.index}"
     }, var.subnet_tags)
-    lifecycle {
-        ignore_changes = [
-            tags
-        ]
-    }
 }
 
 resource "aws_route_table_association" "private" {

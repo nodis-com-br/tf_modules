@@ -1,6 +1,6 @@
-variable "account" {}
-
 variable "name" {}
+
+variable "flow_logs_bucket_name" {}
 
 variable "ipv4_cidr" {}
 
