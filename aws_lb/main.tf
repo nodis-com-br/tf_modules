@@ -44,60 +44,61 @@ resource "aws_alb" "this" {
   }
 }
 
-resource "aws_alb_listener" "redirector" {
-  provider = aws.current
-  for_each = local.redirectors
-  load_balancer_arn = aws_alb.this.arn
+module "redirector" {
+  source = "../aws_lb_listener"
+  for_each = local.listeners
+  load_balancer = aws_alb.this
   port = try(each.value.port, "443")
   protocol = try(each.value.protocol, "HTTPS")
-  certificate_arn = try(each.value.certificate_arn, null)
-  default_action {
-    type  = "redirect"
-    redirect {
-      host = each.value.action.host
-      path = try(each.value.action.path, "/#{path}")
-      port = try(each.value.action.port, "443")
-      protocol = try(each.value.action.protocol, "HTTPS")
-      query = try(each.value.action.query, "#{query}")
-      status_code = try(each.value.action.status_code, "HTTP_301")
-    }
+  certificate = try(each.value.certificate, null)
+  actions = try(each.value.actions, {})
+  builtin_actions = try(each.value.builtin_actions, [])
+//    1 = {
+//      type = "redirect"
+//      options = {
+//        host = each.value.action.host
+//        port = try(each.value.action.port, "443")
+//        protocol = try(each.value.action.protocol, "HTTPS")
+//        status_code = try(each.value.action.status_code, "HTTP_301")
+//      }
+//    }
+//  }
+  providers = {
+    aws.current = aws.current
   }
 }
 
-
-module "redirector" {
+module "forwarder" {
   source = "../aws_lb_listener"
-  for_each = local.redirectors
+  for_each = var.forwarders
   load_balancer = aws_alb.this
   port = try(each.value.port, "443")
   protocol = try(each.value.protocol, "HTTPS")
   certificate = try(each.value.certificate, null)
   actions = {
     1 = {
-      type = "redirect"
-      options = {
-        host = each.value.action.host
-        port = try(each.value.action.port, "443")
-        protocol = try(each.value.action.protocol, "HTTPS")
-        status_code = try(each.value.action.status_code, "HTTP_301")
-      }
+      type = "forward"
+      target_group_arn = aws_alb_target_group.this[each.key].arn
     }
   }
-
-}
-
-resource "aws_alb_listener" "forwarder" {
-  provider = aws.current
-  for_each = var.forwarders
-  load_balancer_arn = aws_alb.this.arn
-  port = try(each.value.port, "443")
-  protocol = try(each.value.protocol, "HTTPS")
-  certificate_arn = try(each.value.certificate_arn, null)
-  default_action {
-    type = "forward"
-    target_group_arn = aws_alb_target_group.this[each.key].arn
+  providers = {
+    aws.current = aws.current
   }
 }
+
+
+//resource "aws_alb_listener" "forwarder" {
+//  provider = aws.current
+//  for_each = var.forwarders
+//  load_balancer_arn = aws_alb.this.arn
+//  port = try(each.value.port, "443")
+//  protocol = try(each.value.protocol, "HTTPS")
+//  certificate_arn = try(each.value.certificate.arn, null)
+//  default_action {
+//    type = "forward"
+//    target_group_arn = aws_alb_target_group.this[each.key].arn
+//  }
+//}
 
 resource "aws_alb_target_group" "this" {
   provider = aws.current

@@ -19,4 +19,14 @@ variable "forwarders" {
   default = {}
 }
 
+variable "listeners" {
+  default = {}
+}
+
+variable "builtin_listeners" {
+  type = list(string)
+  default = []
+}
+
+
 variable "log_bucket_name" {}

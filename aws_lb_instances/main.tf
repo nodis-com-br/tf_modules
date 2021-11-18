@@ -50,7 +50,7 @@ module "load_balancer" {
   ]
   forwarders = {
     web0001 = {
-      certificate_arn = module.certificate.this.arn
+      certificate = module.certificate.this
       target_group = {
         vpc_id = var.vpc.id
         type = "instance"
@@ -58,9 +58,24 @@ module "load_balancer" {
       }
     }
   }
-  builtin_redirectors = [
+  builtin_listeners = [
     "http_to_https"
   ]
+  listeners = {
+    web0001 = {
+      certificate = module.certificate.this
+      actions = {
+        1 = {
+          type = "forward"
+          target_group = {
+            vpc_id = var.vpc.id
+            type = "instance"
+            targets = var.instances
+          }
+        }
+      }
+    }
+  }
   providers = {
     aws.current = aws.current
   }

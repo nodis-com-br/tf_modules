@@ -6,12 +6,12 @@ variable "load_balancer" {
 
 variable "port" {
   type = number
-  default = "443"
+  default = "80"
 }
 
 variable "protocol" {
   type = string
-  protocol = "HTTPS"
+  default = "HTTP"
 }
 
 variable "certificate" {
@@ -23,7 +23,14 @@ variable "certificate" {
   }
 }
 
-variable "actions" {}
+variable "actions" {
+  default = {}
+}
+
+variable "builtin_actions" {
+  type = list(string)
+  default = []
+}
 
 variable "rules" {
   default = {}

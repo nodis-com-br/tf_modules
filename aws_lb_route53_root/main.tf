@@ -39,16 +39,24 @@ module "load_balancer" {
   subnet_ids = var.subnet_ids
   log_bucket_name = var.log_bucket_name
   security_group_ids = [
-    module.security_group.this.id,
+    module.security_group.this.id
   ]
-  redirectors = {
-    https = {
-      certificate_arn = module.certificate.this.arn
-      action = {host = var.alias}}
-  }
-  builtin_redirectors = [
+  builtin_listeners = [
     "http_to_https"
   ]
+  listeners = {
+    https = {
+      certificate = module.certificate.this
+      actions = {
+        1 = {
+          type = "redirect"
+          options = {
+            host = var.alias
+          }
+        }
+      }
+    }
+  }
   providers = {
     aws.current = aws.current
   }
