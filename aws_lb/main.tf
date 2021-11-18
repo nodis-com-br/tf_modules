@@ -64,6 +64,28 @@ resource "aws_alb_listener" "redirector" {
   }
 }
 
+
+module "redirector" {
+  source = "../aws_lb_listener"
+  for_each = local.redirectors
+  load_balancer = aws_alb.this
+  port = try(each.value.port, "443")
+  protocol = try(each.value.protocol, "HTTPS")
+  certificate = try(each.value.certificate, null)
+  actions = {
+    1 = {
+      type = "redirect"
+      options = {
+        host = each.value.action.host
+        port = try(each.value.action.port, "443")
+        protocol = try(each.value.action.protocol, "HTTPS")
+        status_code = try(each.value.action.status_code, "HTTP_301")
+      }
+    }
+  }
+
+}
+
 resource "aws_alb_listener" "forwarder" {
   provider = aws.current
   for_each = var.forwarders
