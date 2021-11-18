@@ -20,7 +20,7 @@ variable "subnet_ids" {
 }
 
 variable "instances" {
-  type = map(object({
+  type = list(object({
     id = string
   }))
 }

@@ -48,16 +48,16 @@ module "load_balancer" {
   security_group_ids = [
     module.security_group.this.id,
   ]
-  forwarders = {
-    web0001 = {
-      certificate = module.certificate.this
-      target_group = {
-        vpc_id = var.vpc.id
-        type = "instance"
-        targets = var.instances
-      }
-    }
-  }
+//  forwarders = {
+//    web0001 = {
+//      certificate = module.certificate.this
+//      target_group = {
+//        vpc_id = var.vpc.id
+//        type = "instance"
+//        targets = var.instances
+//      }
+//    }
+//  }
   builtin_listeners = [
     "http_to_https"
   ]
@@ -67,15 +67,21 @@ module "load_balancer" {
       actions = {
         1 = {
           type = "forward"
-          target_group = {
-            vpc_id = var.vpc.id
-            type = "instance"
-            targets = var.instances
-          }
+          target_group_arn = module.target_group.this.arn
         }
       }
     }
   }
+  providers = {
+    aws.current = aws.current
+  }
+}
+
+module "target_group" {
+  source = "../aws_lb_target_group"
+  target_type = "instance"
+  vpc = var.vpc
+  targets = var.instances
   providers = {
     aws.current = aws.current
   }

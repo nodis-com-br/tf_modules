@@ -46,6 +46,8 @@ module "load_balancer" {
   ]
   listeners = {
     https = {
+      port = "443"
+      protocol = "HTTPS"
       certificate = module.certificate.this
       actions = {
         1 = {

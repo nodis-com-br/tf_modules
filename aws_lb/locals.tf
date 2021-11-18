@@ -1,16 +1,7 @@
 locals {
-  target_group_attachments = {for target in flatten([
-    for fk, fv in var.forwarders : [
-      for t in fv.target_group.targets : {
-        forwarder = fk
-        id = t.id
-      }
-    ]
-  ]) : target.id => target }
   elb_account_id = {
     us-east-1 = "127311923021"
   }
-
   builtin_listeners = {
     http_to_https = {
       port = 80

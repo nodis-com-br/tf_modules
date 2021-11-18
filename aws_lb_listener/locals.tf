@@ -3,6 +3,7 @@ locals {
     redirect_to_https = {
       type = "redirect"
       options = {
+        port = "443"
         protocol = "HTTPS"
       }
     }
