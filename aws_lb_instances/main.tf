@@ -48,16 +48,6 @@ module "load_balancer" {
   security_group_ids = [
     module.security_group.this.id,
   ]
-//  forwarders = {
-//    web0001 = {
-//      certificate = module.certificate.this
-//      target_group = {
-//        vpc_id = var.vpc.id
-//        type = "instance"
-//        targets = var.instances
-//      }
-//    }
-//  }
   builtin_listeners = [
     "http_to_https"
   ]

@@ -25,34 +25,34 @@ resource "aws_alb_listener" "this" {
   }
 }
 
-//resource "aws_lb_listener_rule" "this" {
-//  provider = aws.current
-//  for_each = var.rules
-//  priority = each.key
-//  listener_arn = aws_alb_listener.this.arn
-//  action {
-//    type = var.actions[each.key + local.selected_builtin_actions_count].type
-//    dynamic "redirect" {
-//      for_each = var.actions[each.key].type == "redirect" ? {0 = var.actions[each.key + local.selected_builtin_actions_count].options} : {}
-//      content {
-//        host = try(redirect.value.host, null)
-//        path = try(redirect.value.path, null)
-//        port = try(redirect.value.port, null)
-//        protocol = try(redirect.value.protocol, null)
-//        query = try(redirect.value.query, null)
-//        status_code = try(redirect.value.status_code, "HTTP_301")
-//      }
-//    }
-//  }
-//  dynamic "condition" {
-//    for_each = each.value.conditions
-//    content {
-//      dynamic "host_header" {
-//        for_each = try(condition.value.host_header) != null ? {0 = condition.value.host_header} : {}
-//        content {
-//          values = host_header.value.values
-//        }
-//      }
-//    }
-//  }
-//}
+resource "aws_lb_listener_rule" "this" {
+  provider = aws.current
+  for_each = var.rules
+  priority = each.key
+  listener_arn = aws_alb_listener.this.arn
+  action {
+    type = each.value.type
+    dynamic "redirect" {
+      for_each = each.value.type == "redirect" ? {0 = each.value.options} : {}
+      content {
+        host = try(redirect.value.host, null)
+        path = try(redirect.value.path, null)
+        port = try(redirect.value.port, null)
+        protocol = try(redirect.value.protocol, null)
+        query = try(redirect.value.query, null)
+        status_code = try(redirect.value.status_code, "HTTP_301")
+      }
+    }
+  }
+  dynamic "condition" {
+    for_each = each.value.conditions
+    content {
+      dynamic "host_header" {
+        for_each = try(condition.value.host_header) != null ? {0 = condition.value.host_header} : {}
+        content {
+          values = condition.value.host_header
+        }
+      }
+    }
+  }
+}

@@ -53,6 +53,7 @@ module "listener" {
   certificate = try(each.value.certificate, null)
   actions = try(each.value.actions, {})
   builtin_actions = try(each.value.builtin_actions, [])
+  rules = try(each.value.rules, {})
   providers = {
     aws.current = aws.current
   }

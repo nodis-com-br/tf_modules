@@ -6,7 +6,6 @@ module "dns_record" {
     name = module.load_balancer.this.dns_name
     zone_id = module.load_balancer.this.zone_id
   }
-
   providers = {
     aws.current = aws.dns
   }
