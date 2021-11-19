@@ -32,3 +32,14 @@ variable "cloudfront_enabled" {
 variable "cloudfront_policy" {
   default = false
 }
+
+variable "geo_restriction" {
+  type = object({
+    locations = list(string)
+    type = string
+  })
+  default = {
+    locations = []
+    type = "none"
+  }
+}

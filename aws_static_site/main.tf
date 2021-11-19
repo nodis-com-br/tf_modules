@@ -65,8 +65,8 @@ resource "aws_cloudfront_distribution" "this" {
   }
   restrictions {
     geo_restriction {
-      locations = []
-      restriction_type = "none"
+      locations = var.geo_restriction.locations
+      restriction_type = var.geo_restriction.type
     }
   }
   viewer_certificate {
