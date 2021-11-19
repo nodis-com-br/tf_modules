@@ -1,16 +1,3 @@
-module "dns_record" {
-  source = "../aws_route53_record"
-  name = var.name
-  route53_zone = var.route53_zone
-  type = "CNAME"
-  records = [
-    module.load_balancer.this.dns_name
-  ]
-  providers = {
-    aws.current = aws.dns
-  }
-}
-
 module "certificate" {
   source = "../aws_acm_certificate"
   domain_name = var.name
@@ -36,6 +23,16 @@ module "security_group" {
       ipv6_cidr_blocks = []
     }
   }
+  providers = {
+    aws.current = aws.current
+  }
+}
+
+module "target_group" {
+  source = "../aws_lb_target_group"
+  target_type = "instance"
+  vpc = var.vpc
+  targets = var.instances
   providers = {
     aws.current = aws.current
   }
@@ -67,12 +64,16 @@ module "load_balancer" {
   }
 }
 
-module "target_group" {
-  source = "../aws_lb_target_group"
-  target_type = "instance"
-  vpc = var.vpc
-  targets = var.instances
+module "dns_record" {
+  source = "../aws_route53_record"
+  name = var.name
+  route53_zone = var.route53_zone
+  type = "CNAME"
+  records = [
+    module.load_balancer.this.dns_name
+  ]
   providers = {
-    aws.current = aws.current
+    aws.current = aws.dns
   }
 }
+
