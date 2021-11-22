@@ -1,7 +1,8 @@
 resource "aws_kms_key" "this" {
   provider = aws.current
   description = var.name
-  deletion_window_in_days = 10
+  deletion_window_in_days = var.deletion_window_in_days
+  enable_key_rotation = var.enable_key_rotation
 }
 
 module "user" {
