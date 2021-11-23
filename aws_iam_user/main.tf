@@ -28,19 +28,24 @@ resource "aws_iam_user_login_profile" "this" {
   }
 }
 
+resource "aws_iam_policy" "this" {
+  provider = aws.current
+  for_each = local.all_policies
+  policy = each.value
+}
+
 resource "aws_iam_user_policy_attachment" "this" {
+  provider = aws.current
+  for_each = local.all_policies
+  policy_arn = aws_iam_policy.this[each.key].arn
+  user = aws_iam_user.this.name
+}
+
+resource "aws_iam_user_policy_attachment" "that" {
   provider = aws.current
   for_each = toset(local.policy_arns)
   policy_arn = each.key
   user = aws_iam_user.this.name
-}
-
-resource "aws_iam_user_policy" "this" {
-  provider = aws.current
-  for_each = local.policies
-  name = each.key
-  user = aws_iam_user.this.name
-  policy = each.value
 }
 
 resource "aws_iam_user_policy" "assume_role" {
