@@ -7,9 +7,9 @@ module "vault_mount" {
 resource "vault_generic_endpoint" "mongodbatlas_secret_backend_config" {
   count = var.config == null ? 0 : 1
   depends_on = [
-    module.vault_mount.backend
+    module.vault_mount.this
   ]
-  path = "${module.vault_mount.backend.path}/config"
+  path = "${module.vault_mount.this.path}/config"
   ignore_absent_fields = true
   data_json = jsonencode(var.config)
 }

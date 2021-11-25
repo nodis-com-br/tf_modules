@@ -1,3 +1,3 @@
-output "backend" {
-  value = module.vault_mount.backend
+output "this" {
+  value = module.vault_mount.this
 }
