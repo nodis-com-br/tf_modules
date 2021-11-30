@@ -1,5 +1,5 @@
-variable "domain" {
-  type = string
+variable "domains" {
+  type = list(string)
 }
 
 variable "log_bucket_name" {}

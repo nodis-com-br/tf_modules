@@ -1,6 +1,7 @@
 module "certificate" {
   source = "../aws_acm_certificate"
-  domain_name = var.domain
+  domain_name = local.domain_name
+  subject_alternative_names = local.subject_alternative_names
   route53_zone = var.route53_zone
   providers = {
     aws.current = aws.current
@@ -52,14 +53,13 @@ module "load_balancer" {
 
 module "dns_record" {
   source = "../aws_route53_record"
-  name = var.domain
+  for_each = toset(var.domains)
+  name = each.value
   route53_zone = var.route53_zone
-  type = var.dns_type == "record" ? "CNAME" : "A"
-  records = var.dns_type == "record" ? [module.load_balancer.this.dns_name] : []
-  alias = var.dns_type == "alias" ? {
+  alias = {
     name = module.load_balancer.this.dns_name
     zone_id = module.load_balancer.this.zone_id
-  } : null
+  }
   providers = {
     aws.current = aws.dns
   }
