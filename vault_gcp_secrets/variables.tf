@@ -1,2 +1,5 @@
-variable "gcp_project" {}
+variable "project" {}
 
+variable "path" {
+  default = "gcp"
+}
