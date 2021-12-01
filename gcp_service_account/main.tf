@@ -5,6 +5,7 @@ resource "google_service_account" "this" {
 }
 
 resource "google_service_account_key" "this" {
+  count = var.account_key ? 1 : 0
   service_account_id = google_service_account.this.name
 }
 

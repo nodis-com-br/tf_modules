@@ -3,5 +3,5 @@ output "this" {
 }
 
 output "key" {
-  value = google_service_account_key.this
+  value = var.account_key ? google_service_account_key.this.0 : null
 }
