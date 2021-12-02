@@ -1,8 +1,8 @@
 resource "google_compute_instance" "this" {
   provider = google.current
   count = var.host_count
-  name = local.name
-  hostname = local.hostname
+  name = "${var.name}${format("%04.0f", count.index + 1)}"
+  hostname = "${var.name}${format("%04.0f", count.index + 1)}"
   machine_type = var.machine_type
   zone = var.zone
   tags = var.tags
