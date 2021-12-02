@@ -16,6 +16,8 @@ resource "azurerm_storage_account" "this" {
   location = azurerm_resource_group.this.location
   account_tier = var.storage_account_tier
   account_replication_type = var.storage_account_replication_type
+  queue_encryption_key_type = var.queue_encryption_key_type
+  table_encryption_key_type = var.table_encryption_key_type
 }
 
 module "automation_account" {

@@ -79,3 +79,7 @@ variable "private_domain" {
 }
 
 variable "boot_diagnostics_storage_account" {}
+
+variable "sku_tier" {
+  default = "Standard"
+}

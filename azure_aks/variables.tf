@@ -96,10 +96,6 @@ variable "vault_auth_backend" {
 }
 
 variable "vault_token_reviewer_sa" {
-  type = object({
-    namespace = string
-    name = string
-  })
   default = {
     name = "vault-injector"
     namespace = "vault-injector"

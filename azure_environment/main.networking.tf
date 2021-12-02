@@ -17,6 +17,7 @@ resource "azurerm_public_ip" "nat_gateway" {
   location = azurerm_resource_group.this.location
   allocation_method = "Static"
   sku = "Standard"
+  sku_tier = "Regional"
 }
 
 resource "azurerm_nat_gateway" "this" {

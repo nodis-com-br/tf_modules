@@ -66,3 +66,11 @@ variable "automation_builtin_runbooks" {
   type = list(string)
   default = []
 }
+
+variable "table_encryption_key_type" {
+  default = "Service"
+}
+
+variable "queue_encryption_key_type" {
+  default = "Service"
+}
