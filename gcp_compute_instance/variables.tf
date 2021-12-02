@@ -34,7 +34,7 @@ variable "guest_accelerator_count" {
 }
 
 variable "guest_accelerator_type" {
-  default = null
+  default = ""
 }
 
 variable "deletion_protection" {
@@ -51,10 +51,6 @@ variable "network" {
 
 variable "subnetwork" {
   default = {name = null}
-}
-
-variable "network_interfaces" {
-  default = {}
 }
 
 variable "access_config" {
