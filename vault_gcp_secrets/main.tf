@@ -1,11 +1,10 @@
 module "service_account" {
   source = "../gcp_service_account"
-  account_id = "vault-sa"
+  account_id = "vault"
   account_key = true
   project = var.project
   roles = [
     "roles/editor",
-    "roles/resourcemanager.projectIamAdmin"
   ]
 }
 
