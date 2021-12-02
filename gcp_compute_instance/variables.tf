@@ -18,7 +18,7 @@ variable "tags" {
 }
 
 variable "boot_disk_image" {
-  image = "debian-cloud/debian-11"
+  default = "debian-cloud/debian-11"
 }
 
 variable "boot_disk_size" {
