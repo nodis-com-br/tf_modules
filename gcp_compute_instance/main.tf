@@ -15,8 +15,8 @@ resource "google_compute_instance" "this" {
     }
   }
   network_interface {
-    network = var.network
-    subnetwork = var.subnetwork
+    network = var.network.name
+    subnetwork = var.subnetwork.name
     dynamic "access_config" {
       for_each = var.access_config
       content {
