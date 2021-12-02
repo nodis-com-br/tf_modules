@@ -46,11 +46,11 @@ variable "hostname" {
 }
 
 variable "network" {
-  default = null
+  default = {name = null}
 }
 
 variable "subnetwork" {
-  default = null
+  default = {name = null}
 }
 
 variable "network_interfaces" {
