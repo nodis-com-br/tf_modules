@@ -63,3 +63,11 @@ variable "access_config" {
     network_tier = null
   }]
 }
+
+variable "can_ip_forward" {
+  default = false
+}
+
+variable "attached_disks" {
+  default = {}
+}
