@@ -64,6 +64,6 @@ variable "access_config" {
   }))
   default = [{
     nat_ip = null
-    netwok_tier = null
+    network_tier = null
   }]
 }
