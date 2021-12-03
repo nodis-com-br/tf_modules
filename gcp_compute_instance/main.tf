@@ -9,7 +9,22 @@ resource "google_compute_disk" "this" {
   size = try(each.value.size, null)
 }
 
-
+resource "google_compute_resource_policy" "this" {
+  name = var.name
+  region = var.region
+  dynamic "instance_schedule_policy" {
+    for_each = var.instance_schedule_policy == null ? {} : {this = var.instance_schedule_policy}
+    content {
+      vm_start_schedule {
+        schedule = instance_schedule_policy.value.vm_start
+      }
+      vm_stop_schedule {
+        schedule = instance_schedule_policy.value.vm_stop
+      }
+      time_zone = instance_schedule_policy.value.time_zone
+    }
+  }
+}
 
 resource "google_compute_instance" "this" {
   provider = google.current
@@ -18,6 +33,7 @@ resource "google_compute_instance" "this" {
   machine_type = var.machine_type
   zone = var.zone
   tags = var.tags
+  resource_policies = [google_compute_resource_policy.this.self_link]
   allow_stopping_for_update = var.allow_stopping_for_update
   deletion_protection = var.deletion_protection
   can_ip_forward = var.can_ip_forward

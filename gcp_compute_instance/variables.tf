@@ -8,6 +8,8 @@ variable "machine_type" {
   default = "e2-medium"
 }
 
+variable "region" {}
+
 variable "zone" {
   default = "us-central1-a"
 }
@@ -70,4 +72,13 @@ variable "can_ip_forward" {
 
 variable "attached_disks" {
   default = {}
+}
+
+variable "instance_schedule_policy" {
+  type = object({
+    vm_start = string
+    vm_stop = string
+    time_zone = string
+  })
+  default = null
 }
