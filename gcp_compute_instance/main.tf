@@ -10,6 +10,8 @@ resource "google_compute_disk" "this" {
 }
 
 resource "google_compute_resource_policy" "this" {
+  provider = google.current
+  count = anytrue(local.policy_conditions) ? 1 : 0
   name = var.name
   region = var.region
   dynamic "instance_schedule_policy" {
@@ -33,7 +35,7 @@ resource "google_compute_instance" "this" {
   machine_type = var.machine_type
   zone = var.zone
   tags = var.tags
-  resource_policies = [google_compute_resource_policy.this.self_link]
+  resource_policies = anytrue(local.policy_conditions) ? [google_compute_resource_policy.this.0.self_link] : null
   allow_stopping_for_update = var.allow_stopping_for_update
   deletion_protection = var.deletion_protection
   can_ip_forward = var.can_ip_forward
