@@ -6,7 +6,12 @@ variable "secret_type" {
   default = "service_account_key"
 }
 
-variable "project" {}
+variable "project" {
+  type = object({
+    name = string
+    project_id = string
+  })
+}
 
 variable "roles" {
   type = list(string)

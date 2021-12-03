@@ -2,7 +2,7 @@ module "service_account" {
   source = "../gcp_service_account"
   account_id = "vault"
   account_key = true
-  project = var.project
+  project = var.project.project_id
   roles = [
     "roles/editor",
   ]
