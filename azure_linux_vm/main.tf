@@ -13,7 +13,6 @@ resource "azurerm_linux_virtual_machine" "this" {
   resource_group_name = var.rg.name
   size = var.size
   admin_username = "nodis"
-//  sku_tier = var.sku_tier
   availability_set_id = try(azurerm_availability_set.this.0.id, null)
   network_interface_ids = [
     azurerm_network_interface.this[count.index].id
