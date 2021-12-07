@@ -4,6 +4,7 @@ module "service_account" {
   account_key = true
   project = var.project.project_id
   roles = [
+    "roles/editor",
     "roles/iam.serviceAccountAdmin",
     "roles/iam.serviceAccountKeyAdmin"
   ]
