@@ -55,17 +55,6 @@ variable "subnetwork" {
   default = {name = null}
 }
 
-variable "access_config" {
-  type = list(object({
-    nat_ip = string
-    network_tier = string
-  }))
-  default = [{
-    nat_ip = null
-    network_tier = null
-  }]
-}
-
 variable "can_ip_forward" {
   default = false
 }
@@ -81,4 +70,8 @@ variable "instance_schedule_policy" {
     time_zone = string
   })
   default = null
+}
+
+variable "static_public_ip" {
+  default = false
 }

@@ -1,12 +1,12 @@
 resource "google_compute_disk" "this" {
   provider = google.current
-  for_each = var.attached_disks
+  for_each = local.attached_disks
   name = each.key
-  type = try(each.value.type, null)
-  zone = try(each.value.zone, null)
-  image = try(each.value.image, null)
-  labels = try(each.value.labels, null)
-  size = try(each.value.size, null)
+  type = each.value.type
+  zone = each.value.zone
+  image = each.value.image
+  labels = each.value.labels
+  size = each.value.size
 }
 
 resource "google_compute_resource_policy" "this" {
@@ -17,15 +17,29 @@ resource "google_compute_resource_policy" "this" {
   dynamic "instance_schedule_policy" {
     for_each = var.instance_schedule_policy == null ? {} : {this = var.instance_schedule_policy}
     content {
-      vm_start_schedule {
-        schedule = instance_schedule_policy.value.vm_start
-      }
-      vm_stop_schedule {
-        schedule = instance_schedule_policy.value.vm_stop
-      }
       time_zone = instance_schedule_policy.value.time_zone
+      dynamic vm_start_schedule {
+        for_each = instance_schedule_policy.value.vm_start == null ? {} : {this = instance_schedule_policy.value.vm_start}
+        content {
+          schedule = vm_start_schedule.value
+        }
+      }
+      dynamic vm_stop_schedule {
+        for_each = instance_schedule_policy.value.vm_stop == null ? {} : {this = instance_schedule_policy.value.vm_stop}
+        content {
+          schedule = vm_stop_schedule.value
+        }
+      }
     }
   }
+}
+
+
+resource "google_compute_address" "static" {
+  provider = google.current
+  count = var.static_public_ip ? var.host_count : 0
+  name = "${var.name}${format("%04.0f", count.index + 1)}"
+  region = var.region
 }
 
 resource "google_compute_instance" "this" {
@@ -46,7 +60,7 @@ resource "google_compute_instance" "this" {
     }
   }
   dynamic "attached_disk" {
-    for_each =  var.attached_disks
+    for_each = {for k, v in local.attached_disks : k => v if v.host_index == count.index}
     content {
       source = google_compute_disk.this[attached_disk.key].self_link
     }
@@ -55,10 +69,9 @@ resource "google_compute_instance" "this" {
     network = var.network.name
     subnetwork = var.subnetwork.name
     dynamic "access_config" {
-      for_each = var.access_config
+      for_each = var.static_public_ip ? {this = {nat_ip = google_compute_address.static[count.index].address}} : {}
       content {
         nat_ip = access_config.value.nat_ip
-        network_tier = access_config.value.network_tier
       }
     }
   }
@@ -69,4 +82,8 @@ resource "google_compute_instance" "this" {
     count = var.guest_accelerator_count
     type = var.guest_accelerator_type
   }
+//  service_account {
+//    email  = module.service_account.this.email
+//    scopes = ["cloud-platform"]
+//  }
 }
