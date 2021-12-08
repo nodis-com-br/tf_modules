@@ -3,7 +3,7 @@ resource "vault_gcp_secret_roleset" "this" {
   roleset = var.name
   secret_type  = var.secret_type
   project = var.project.project_id
-  token_scopes = ["https://www.googleapis.com/auth/cloud-platform"]
+  token_scopes = local.token_scopes
   binding {
     resource = "//cloudresourcemanager.googleapis.com/projects/${var.project.project_id}"
     roles = var.roles
