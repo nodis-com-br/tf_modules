@@ -18,3 +18,16 @@ resource "google_compute_subnetwork" "public" {
     metadata = var.log_config_metadata
   }
 }
+
+resource "google_compute_firewall" "allow" {
+  provider = google.current
+  for_each = var.firewall_allow_rules
+  name = "allow-${each.key}"
+  network = google_compute_network.this.name
+  allow {
+    protocol = try(each.value.protocol, null)
+    ports = try(each.value.ports, null)
+  }
+  target_tags = [each.key]
+  source_ranges = each.value.source_ranges
+}

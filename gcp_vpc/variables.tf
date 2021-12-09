@@ -25,3 +25,12 @@ variable "log_config_flow_sampling" {
 variable "log_config_metadata" {
   default = "INCLUDE_ALL_METADATA"
 }
+
+variable "firewall_allow_rules" {
+  default = {}
+  type = map(object({
+    protocol = string
+    ports = list(string)
+    source_ranges = list(string)
+  }))
+}
