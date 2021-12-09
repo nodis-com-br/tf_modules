@@ -75,3 +75,7 @@ variable "instance_schedule_policy" {
 variable "static_public_ip" {
   default = false
 }
+
+variable "ssh_keys" {
+  default = null
+}

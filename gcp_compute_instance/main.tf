@@ -82,6 +82,9 @@ resource "google_compute_instance" "this" {
     count = var.guest_accelerator_count
     type = var.guest_accelerator_type
   }
+  metadata = {
+    ssh-keys = var.ssh_keys
+  }
 //  service_account {
 //    email  = module.service_account.this.email
 //    scopes = ["cloud-platform"]
