@@ -65,5 +65,7 @@ resource "vault_generic_secret" "this" {
   data_json = jsonencode({
     client_id = azuread_application.this.application_id
     client_secret = try(azuread_service_principal_password.this.0, {value = null}).value
+    subscription_id = data.azurerm_client_config.current.subscription_id
+    tenant_id = data.azurerm_client_config.current.tenant_id
   })
 }
