@@ -83,3 +83,12 @@ variable "boot_diagnostics_storage_account" {}
 variable "sku_tier" {
   default = "Standard"
 }
+
+variable "identity_type" {
+  default = "SystemAssigned"
+}
+
+variable "identity_ids" {
+  type = list(string)
+  default = null
+}
