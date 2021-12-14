@@ -17,10 +17,4 @@ resource "vault_azure_secret_backend_role" "this" {
       scope =  azure_roles.value.scope
     }
   }
-//  lifecycle {
-//    ignore_changes = [
-//      azure_groups,
-//      azure_roles
-//    ]
-//  }
 }
