@@ -1,5 +1,3 @@
-variable "vault_addr" {}
-
 variable "path" {
   default = "azure"
 }

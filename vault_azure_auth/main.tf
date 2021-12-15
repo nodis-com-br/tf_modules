@@ -1,7 +1,6 @@
 module "service_principal" {
   source = "../azure_service_principal"
   name = var.service_principal_name
-  homepage_url = var.vault_addr
   create_password = true
   builtin_resource_accesses = ["aad_admin"]
 }
