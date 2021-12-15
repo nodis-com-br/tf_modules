@@ -3,6 +3,7 @@ module "service_principal" {
   name = var.service_principal_name
   create_password = true
   builtin_resource_accesses = ["aad_admin"]
+  homepage_url = var.homepage_url
 }
 
 module "auth_backend" {

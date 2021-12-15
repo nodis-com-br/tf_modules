@@ -7,5 +7,7 @@ variable "environment" {
 }
 
 variable "service_principal_name" {
-  default = "vault-secrets"
+  default = "vault-auth"
 }
+
+variable "homepage_url" {}
