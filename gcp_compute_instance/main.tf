@@ -1,3 +1,5 @@
+resource "time_static" "creation" {}
+
 resource "google_compute_disk" "this" {
   provider = google.current
   for_each = local.attached_disks
@@ -17,6 +19,7 @@ resource "google_compute_resource_policy" "this" {
   dynamic "instance_schedule_policy" {
     for_each = var.instance_schedule_policy == null ? {} : {this = var.instance_schedule_policy}
     content {
+      start_time = timeadd(time_static.creation.rfc3339, "1h")
       time_zone = instance_schedule_policy.value.time_zone
       dynamic vm_start_schedule {
         for_each = instance_schedule_policy.value.vm_start == null ? {} : {this = instance_schedule_policy.value.vm_start}
