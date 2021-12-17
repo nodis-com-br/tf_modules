@@ -1,3 +1,57 @@
+# Networking
+
+resource "azurerm_public_ip" "this" {
+  count = var.public_access ? var.host_count : 0
+  name = "${var.rg.name}-${var.name}${format("%04.0f", count.index + 1)}"
+  resource_group_name = var.rg.name
+  location = var.rg.location
+  sku = "Standard"
+  allocation_method = "Static"
+}
+
+resource "azurerm_network_interface" "this" {
+  count = var.host_count
+  name = "${var.rg.name}-${var.name}${format("%04.0f", count.index + 1)}"
+  location = var.rg.location
+  resource_group_name = var.rg.name
+  ip_configuration {
+    name = "internal"
+    subnet_id = var.subnet.id
+    private_ip_address_allocation = "Dynamic"
+    public_ip_address_id = try(azurerm_public_ip.this[count.index].id, null)
+  }
+}
+
+resource "azurerm_network_security_group" "this" {
+  name = "${var.rg.name}-${var.name}"
+  resource_group_name = var.rg.name
+  location = var.rg.location
+}
+
+resource "azurerm_network_security_rule" "this" {
+  for_each = var.ingress_rules
+  name = "${var.rg.name}-${var.name}-${each.key}"
+  resource_group_name = var.rg.name
+  network_security_group_name = azurerm_network_security_group.this.name
+  priority = 100 + index(keys(var.ingress_rules), each.key)
+  direction = "Inbound"
+  access = "Allow"
+  protocol = each.value.protocol
+  source_port_range = try(each.value.source_port_range, "*")
+  destination_port_range = try(each.value.destination_port_range, "*")
+  source_address_prefix = try(each.value.source_address_prefix, "*")
+  destination_address_prefix = "*"
+}
+
+resource "azurerm_network_interface_security_group_association" "this" {
+  count = var.host_count
+  network_interface_id = azurerm_network_interface.this[count.index].id
+  network_security_group_id = azurerm_network_security_group.this.id
+}
+
+
+# Virtual Machine
+
 resource "azurerm_availability_set" "this" {
   count = var.high_avaliability ? 1 : 0
   name = "${var.rg.name}-${var.name}"
@@ -80,3 +134,50 @@ resource "vault_generic_secret" "this" {
     tenant_id = azurerm_linux_virtual_machine.this[count.index].identity.0.tenant_id
   })
 }
+
+
+# DNS
+
+module "private_dns_record" {
+  source = "../aws_route53_record"
+  count = var.host_count
+  name = "${var.rg.name}-${var.name}${format("%04.0f", count.index + 1)}.${var.private_domain}"
+  route53_zone = var.route53_zone
+  records = [
+    azurerm_network_interface.this[count.index].private_ip_address
+  ]
+  providers = {
+    aws.current = aws.dns
+  }
+}
+
+//resource "aws_route53_record" "private" {
+//
+//  zone_id = _zone_id
+//  name = "${var.rg.name}-${var.name}${format("%04.0f", count.index + 1)}.${var.private_domain}"
+//  type = "A"
+//  ttl = "300"
+//  records = [
+//    azurerm_network_interface.this[count.index].private_ip_address
+//  ]
+//}
+
+module "public_dns_record" {
+  source = "../aws_route53_record"
+  count = var.domain == null ? 0 : 1
+  name = var.domain
+  route53_zone = var.route53_zone
+  records = [for ip in azurerm_public_ip.this : ip.ip_address]
+  providers = {
+    aws.current = aws.dns
+  }
+}
+
+//resource "aws_route53_record" "public" {
+//  count = var.domain == null ? 0 : 1
+//  zone_id = var.route53_zone_id
+//  name = var.domain
+//  type = "A"
+//  ttl = "300"
+//  records = [for ip in azurerm_public_ip.this : ip.ip_address]
+//}

@@ -68,7 +68,12 @@ variable "load_balancer" {
   default = false
 }
 
-variable "route53_zone_id" {}
+variable "route53_zone" {
+  type = object({
+    id = string
+    name = string
+  })
+}
 
 variable "domain" {
   default = null
