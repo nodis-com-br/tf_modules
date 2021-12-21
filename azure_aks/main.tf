@@ -22,6 +22,7 @@ resource "azurerm_kubernetes_cluster" "this" {
   dns_prefix = local.cluster_name
   kubernetes_version = var.kubernetes_version
   private_cluster_enabled = var.private_cluster_enabled
+  private_cluster_public_fqdn_enabled = var.private_cluster_public_fqdn_enabled
   service_principal {
     client_id = module.service_principal.application.application_id
     client_secret = module.service_principal.password.value

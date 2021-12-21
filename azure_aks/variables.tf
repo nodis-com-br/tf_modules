@@ -101,3 +101,7 @@ variable "vault_token_reviewer_sa" {
     namespace = "vault-injector"
   }
 }
+
+variable "private_cluster_public_fqdn_enabled" {
+  default = false
+}
