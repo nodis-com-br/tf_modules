@@ -87,34 +87,6 @@ resource "azurerm_kubernetes_cluster_node_pool" "this" {
   }
 }
 
-
-# Tunnelfront patch
-
-resource "null_resource" "tunnelfront-patch" {
-  triggers = {
-    endpoint = azurerm_kubernetes_cluster.this.kube_config.0.host
-    ca_crt = azurerm_kubernetes_cluster.this.kube_config.0.cluster_ca_certificate
-    token = azurerm_kubernetes_cluster.this.kube_config.0.password
-  }
-  provisioner "local-exec" {
-    command = <<EOF
-    echo "${base64decode(azurerm_kubernetes_cluster.this.kube_config.0.cluster_ca_certificate)}" > /tmp/${var.rg.name}-${var.name}.crt
-    kubectl \
-      --server="${azurerm_kubernetes_cluster.this.kube_config.0.host}" \
-      --certificate-authority=/tmp/${var.rg.name}-${var.name}.crt \
-      --token="${azurerm_kubernetes_cluster.this.kube_config.0.password}" \
-      --namespace kube-system \
-      patch deployment tunnelfront \
-      --patch='${data.local_file.tunnelfront-patch.content}'
-    rm -rf /tmp/${var.rg.name}-${var.name}.crt
-    EOF
-  }
-  depends_on = [
-    azurerm_private_dns_zone_virtual_network_link.this
-  ]
-}
-
-
 ### Networking ########################
 
 resource "azurerm_private_dns_zone_virtual_network_link" "this" {
@@ -173,11 +145,9 @@ resource "vault_generic_secret" "this" {
   })
 }
 
-//resource "vault_generic_secret" "endpoint" {
-//  path = "${local.vault_kv_path}/endpoint"
-//  data_json = jsonencode({
-//    uri = azurerm_kubernetes_cluster.this.kube_config.0.host
-//    host = local.endpoint_host
-//    address = data.dns_a_record_set.endpoint_host.addrs.0
-//  })
-//}
+resource "vault_generic_secret" "endpoint" {
+  path = "${local.vault_kv_path}/endpoint"
+  data_json = jsonencode({
+    uri = var.private_cluster_public_fqdn_enabled ? "https://${azurerm_kubernetes_cluster.this.fqdn}:443" : azurerm_kubernetes_cluster.this.kube_config.0.host
+  })
+}
