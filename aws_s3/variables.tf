@@ -48,3 +48,7 @@ variable "vault_kv_path" {
   default = null
 }
 
+variable "versioning" {
+  default = false
+}
+

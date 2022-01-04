@@ -8,6 +8,9 @@ resource "aws_s3_bucket" "this" {
   acl = var.acl
   force_destroy = false
   policy = local.bucket_policy
+  versioning {
+    enabled = var.versioning
+  }
   server_side_encryption_configuration {
     rule {
       apply_server_side_encryption_by_default {
