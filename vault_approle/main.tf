@@ -1,13 +1,12 @@
 resource "vault_policy" "this" {
-  for_each = var.policy_definitions
-  name = "approle_${var.name}_${each.key}"
-  policy = each.value
+  name = "approle_${var.name}"
+  policy = join("\n\n", var.policy_definitions)
 }
 
 resource "vault_approle_auth_backend_role" "this" {
   backend = var.backend.path
   role_name  = var.name
-  token_policies = concat(var.policies, [for k, v in vault_policy.this : v.name])
+  token_policies = [vault_policy.this.name]
   secret_id_bound_cidrs = var.secret_id_bound_cidrs
 }
 

@@ -1,7 +1,6 @@
 resource "vault_policy" "this" {
-  for_each = var.policy_definitions
-  name = "k8s-role_${var.backend}_${var.name}_${each.key}"
-  policy = each.value
+  name = "k8s_${var.name}"
+  policy = join("\n\n", var.policy_definitions)
 }
 
 
@@ -13,5 +12,5 @@ resource "vault_kubernetes_auth_backend_role" "this" {
   bound_service_account_namespaces = var.bound_service_account_namespaces
   token_ttl = var.token_ttl
   token_max_ttl = var.token_max_ttl
-  token_policies = concat(var.policies, [for k, v in vault_policy.this : v.name])
+  token_policies = [vault_policy.this.name]
 }
