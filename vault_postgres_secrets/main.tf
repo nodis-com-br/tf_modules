@@ -1,4 +1,5 @@
 resource "postgresql_role" "this" {
+  provider = postgresql
   name = "${var.role_name_prefix}-${var.database}"
   login = true
   password =  var.role_initial_password

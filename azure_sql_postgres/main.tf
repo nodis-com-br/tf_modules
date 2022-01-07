@@ -68,4 +68,7 @@ module "vault_backend" {
   database = each.key
   instace_name = local.name
   instace_addr = local.address
+  providers = {
+    postgresql = postgresql
+  }
 }
