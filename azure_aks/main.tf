@@ -79,7 +79,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "this" {
   max_count = each.value.max_count
   min_count = each.value.min_count
   vnet_subnet_id = var.subnet.id
-  orchestrator_version = var.kubernetes_version
+  orchestrator_version = try(each.value.kubernetes_version, var.kubernetes_version)
   lifecycle {
     ignore_changes = [
       node_labels
