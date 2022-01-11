@@ -9,6 +9,7 @@ resource "helm_release" "this" {
   create_namespace = var.create_namespace
   cleanup_on_fail = var.cleanup_on_fail
   timeout = var.timeout
+  wait = var.wait
   //  atomic                     = false
 //  dependency_update          = false
 //  disable_crd_hooks          = false
@@ -24,6 +25,6 @@ resource "helm_release" "this" {
 //  skip_crds                  = false
 
 //  verify                     = false
-//  wait                       = true
+//
 //  wait_for_jobs              = false
 }

@@ -25,5 +25,9 @@ variable "cleanup_on_fail" {
 }
 
 variable "timeout" {
-  default = 120
+  default = null
+}
+
+variable "wait" {
+  default = null
 }
