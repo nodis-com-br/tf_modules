@@ -1,7 +1,13 @@
-variable "owner_arn" {}
-
 variable "name" {
   default = null
+}
+
+variable "assume_role_policy" {
+  default = "iam_role"
+}
+
+variable "owner_arn" {
+  defaul = null
 }
 
 variable "policies" {

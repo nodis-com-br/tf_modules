@@ -29,13 +29,6 @@ variable "root_volume" {
 
 variable "tags" {}
 
-variable "volumes" {
-  default = {}
-  type = map(object({
-    size = string
-  }))
-}
-
 variable source_dest_check {
   default = "true"
 }
@@ -50,6 +43,10 @@ variable "ingress_rules" {
   }))
 }
 
+variable "builtin_ingress_rules" {
+  default = []
+}
+
 variable "egress_rules" {
   type = map(object({
     security_groups = list(string)
@@ -58,18 +55,16 @@ variable "egress_rules" {
     to_port = number
     cidr_blocks = list(string)
   }))
-  default = {
-    all = {
-      security_groups = []
-      protocol = -1
-      from_port = 0
-      to_port = 0
-      cidr_blocks = [
-        "0.0.0.0/0"]
-    }
-  }
+}
+
+variable "builtin_egress_rules" {
+  default = ["all"]
 }
 
 variable "dns_record" {
   default = null
+}
+
+variable "iam_instance_profile" {
+  default = false
 }
