@@ -5,7 +5,7 @@ module "defaults" {
 resource "aws_iam_role" "this" {
   provider = aws.current
   name = var.name
-  assume_role_policy = var.assume_role_policy
+  assume_role_policy = local.assume_role_policies[var.assume_role_policy]
   tags = {}
   lifecycle {
     ignore_changes = [
