@@ -32,6 +32,11 @@ resource "postgresql_grant" "database" {
     "CREATE",
     "TEMPORARY"
   ]
+  lifecycle {
+    ignore_changes = [
+      privileges
+    ]
+  }
 }
 
 resource "postgresql_grant" "schema" {
@@ -44,6 +49,11 @@ resource "postgresql_grant" "schema" {
   privileges = [
     "USAGE"
   ]
+  lifecycle {
+    ignore_changes = [
+      privileges
+    ]
+  }
 }
 
 resource "postgresql_grant" "tables" {
@@ -62,6 +72,11 @@ resource "postgresql_grant" "tables" {
     "TRUNCATE",
     "UPDATE"
   ]
+  lifecycle {
+    ignore_changes = [
+      privileges
+    ]
+  }
 }
 
 resource "postgresql_grant" "sequences" {
@@ -76,6 +91,11 @@ resource "postgresql_grant" "sequences" {
     "UPDATE",
     "USAGE"
   ]
+  lifecycle {
+    ignore_changes = [
+      privileges
+    ]
+  }
 }
 
 resource "postgresql_grant" "functions" {
@@ -88,4 +108,9 @@ resource "postgresql_grant" "functions" {
   privileges  = [
     "EXECUTE"
   ]
+  lifecycle {
+    ignore_changes = [
+      privileges
+    ]
+  }
 }
