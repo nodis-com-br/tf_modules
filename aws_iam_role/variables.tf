@@ -7,7 +7,7 @@ variable "assume_role_policy" {
 }
 
 variable "owner_arn" {
-  defaul = null
+  default = null
 }
 
 variable "policies" {
