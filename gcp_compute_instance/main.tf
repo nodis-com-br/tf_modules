@@ -92,4 +92,9 @@ resource "google_compute_instance" "this" {
 //    email  = module.service_account.this.email
 //    scopes = ["cloud-platform"]
 //  }
+  lifecycle {
+    ignore_changes = [
+      metadata["ssh-keys"]
+    ]
+  }
 }
