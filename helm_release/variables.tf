@@ -23,3 +23,7 @@ variable "create_namespace" {
 variable "cleanup_on_fail" {
   default = true
 }
+
+variable "timeout" {
+  default = 120
+}

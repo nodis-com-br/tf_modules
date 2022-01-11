@@ -1,5 +1,5 @@
 data "helm_template" "this" {
-  provider = helm.current
+  provider = helm
   name = var.name
   namespace = var.namespace
   repository = var.repository
