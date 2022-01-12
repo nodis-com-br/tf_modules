@@ -42,6 +42,9 @@ module "aws_user" {
 }
 
 resource "vault_aws_secret_backend" "this" {
+  path = var.path
   access_key = module.aws_user.access_key.id
   secret_key = module.aws_user.access_key.secret
+  default_lease_ttl_seconds = var.default_lease_ttl_seconds
+  max_lease_ttl_seconds = var.max_lease_ttl_seconds
 }
