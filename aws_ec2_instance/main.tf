@@ -13,6 +13,7 @@ module "security_group" {
 module "role" {
   source = "../aws_iam_role"
   count = var.instance_role ? 1 : 0
+  assume_role_policy = "ec2_instance"
   policies = var.instance_role_policies
   providers = {
     aws.current = aws.current
@@ -20,8 +21,9 @@ module "role" {
 }
 
 resource "aws_iam_instance_profile" "this" {
+  provider = aws.current
   count = var.instance_role ? 1 : 0
-  role = module.role.this.name
+  role = module.role.0.this.name
 }
 
 resource "aws_instance" "this" {

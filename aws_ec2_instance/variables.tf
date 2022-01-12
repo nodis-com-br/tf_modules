@@ -41,6 +41,7 @@ variable source_dest_check {
 }
 
 variable "ingress_rules" {
+  default = {}
   type = map(object({
     security_groups = list(string)
     protocol = string
@@ -55,6 +56,7 @@ variable "builtin_ingress_rules" {
 }
 
 variable "egress_rules" {
+  default = {}
   type = map(object({
     security_groups = list(string)
     protocol = string
@@ -89,4 +91,8 @@ variable "instance_role_policies" {
 
 variable "fixed_public_ip" {
   default = false
+}
+
+variable "domain" {
+  default = null
 }
