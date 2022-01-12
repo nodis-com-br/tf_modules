@@ -13,3 +13,7 @@ variable "policy_arns" {
 variable "role_arns" {
   default = []
 }
+
+variable "default_sts_ttl" {
+  default = 3600
+}
