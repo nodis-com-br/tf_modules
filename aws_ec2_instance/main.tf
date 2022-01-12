@@ -10,6 +10,19 @@ module "security_group" {
   }
 }
 
+module "role" {
+  source = "../aws_iam_role"
+  count = var.instance_role ? 1 : 0
+  policies = var.instance_role_policies
+  providers = {
+    aws.current = aws.current
+  }
+}
+
+resource "aws_iam_instance_profile" "this" {
+  count = var.instance_role ? 1 : 0
+  role = module.role.this.name
+}
 
 resource "aws_instance" "this" {
   provider = aws.current
@@ -20,7 +33,7 @@ resource "aws_instance" "this" {
   monitoring = false
   key_name = var.key_name
   subnet_id = element(var.subnets, (local.subnet_count + count.index) % local.subnet_count).id
-  iam_instance_profile =
+  iam_instance_profile = var.instance_role ? aws_iam_instance_profile.this.0.id : null
   vpc_security_group_ids = [
     module.security_group.this.id
   ]
@@ -36,52 +49,32 @@ resource "aws_instance" "this" {
   }, var.tags)
 }
 
-### Volumes ###########################
-
-//resource "aws_ebs_volume" "this" {
-//  provider = aws.current
-//  for_each = var.volumes
-//  availability_zone = aws_instance.this.0.availability_zone
-//  size = each.value.size
-//}
-//
-//resource "aws_volume_attachment" "this" {
-//  provider = aws.current
-//  for_each = var.volumes
-//  device_name = each.key
-//  volume_id   = aws_ebs_volume.this[each.key].id
-//  instance_id = aws_instance.this.0.id
-//}
-
 resource "aws_eip" "this" {
   provider = aws.current
-  count = var.dns_record != null ? 1 : 0
-  instance = aws_instance.this.0.id
+  count = var.fixed_public_ip ? var.host_count : 0
+  instance = aws_instance.this[count.index].id
   vpc = true
 }
-
-resource "aws_route53_record" "this" {
-  provider = aws.dns
-  count = var.dns_record != null ? 1 : 0
-  zone_id = var.dns_record.zone.id
-  name = var.dns_record.hostname
-  type = "A"
-  ttl = "300"
-  records = [
-    aws_eip.this.0.public_ip
-  ]
-}
-
-### DNS ###############################
 
 module "private_dns_record" {
   source = "../aws_route53_record"
   count = var.host_count
-  name = "${var.rg.name}-${var.name}${format("%04.0f", count.index + 1)}.${var.private_domain}"
+  name = "${var.account}-${var.name}${format("%04.0f", count.index + 1)}.${var.private_domain}"
   route53_zone = var.route53_zone
   records = [
-    azurerm_network_interface.this[count.index].private_ip_address
+    aws_instance.this[count.index].private_ip
   ]
+  providers = {
+    aws.current = aws.dns
+  }
+}
+
+module "public_dns_record" {
+  source = "../aws_route53_record"
+  count = var.domain == null ? 0 : 1
+  name = var.domain
+  route53_zone = var.route53_zone
+  records = [for i in aws_instance.this : i.public_ip]
   providers = {
     aws.current = aws.dns
   }

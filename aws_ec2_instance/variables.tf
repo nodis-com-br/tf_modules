@@ -1,5 +1,7 @@
 variable "name" {}
 
+variable account {}
+
 variable "host_count" {
   default = 1
 }
@@ -12,10 +14,15 @@ variable "type" {
 
 variable "key_name" {}
 
+variable "vpc" {
+  type = object({
+    id = string
+  })
+}
+
 variable "subnets" {
   type = list(object({
     id = string
-    vpc_id = string
   }))
 }
 
@@ -61,10 +68,25 @@ variable "builtin_egress_rules" {
   default = ["all"]
 }
 
-variable "dns_record" {
-  default = null
+variable "route53_zone" {
+  type = object({
+    name = string
+    id = string
+  })
 }
 
-variable "iam_instance_profile" {
+variable "private_domain" {
+  default = "awsvm.nodis.com.br"
+}
+
+variable "instance_role" {
+  default = false
+}
+
+variable "instance_role_policies" {
+  default = {}
+}
+
+variable "fixed_public_ip" {
   default = false
 }
