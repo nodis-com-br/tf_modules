@@ -6,6 +6,16 @@ locals {
       change_password = "arn:aws:iam::aws:policy/IAMUserChangePassword"
     }
     policies = {
+      admin = jsonencode({
+        Version = "2012-10-17"
+        Statement = [
+          {
+            Effect = "Allow"
+            Action = "*"
+            Resource = "*"
+          }
+        ]
+      })
       rekognition = jsonencode({
         Version = "2012-10-17",
         Statement = [
