@@ -4,6 +4,7 @@ resource "helm_release" "this" {
   namespace = var.namespace
   repository = var.repository
   chart = var.chart
+  version = var.chart_version
   values = var.values
   max_history = var.max_history
   create_namespace = var.create_namespace
