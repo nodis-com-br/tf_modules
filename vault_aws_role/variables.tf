@@ -17,3 +17,7 @@ variable "role_arns" {
 variable "default_sts_ttl" {
   default = 3600
 }
+
+variable "policy_document" {
+  default = null
+}
