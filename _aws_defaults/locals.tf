@@ -61,6 +61,16 @@ locals {
           }
         ]
       })
+      simple_mail_service = jsonencode({
+        Version = "2012-10-17"
+        Statement = [
+          {
+            Effect = "Allow"
+            Action = "ses:SendRawEmail"
+            Resource = "*"
+          }
+        ]
+      })
     }
     vault_kv_path = "secret/aws"
   }
