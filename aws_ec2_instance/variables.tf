@@ -42,13 +42,6 @@ variable source_dest_check {
 
 variable "ingress_rules" {
   default = {}
-  type = map(object({
-    security_groups = list(string)
-    protocol = string
-    from_port = number
-    to_port = number
-    cidr_blocks = list(string)
-  }))
 }
 
 variable "builtin_ingress_rules" {
@@ -57,13 +50,6 @@ variable "builtin_ingress_rules" {
 
 variable "egress_rules" {
   default = {}
-  type = map(object({
-    security_groups = list(string)
-    protocol = string
-    from_port = number
-    to_port = number
-    cidr_blocks = list(string)
-  }))
 }
 
 variable "builtin_egress_rules" {
