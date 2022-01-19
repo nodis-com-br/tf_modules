@@ -1,12 +1,14 @@
-module "defaults" {
-  source = "../_aws_defaults"
-}
-
 resource "aws_iam_user" "this" {
   provider = aws.current
   name = var.username
   path = "/"
 }
+
+module "defaults" {
+  source = "../_aws_defaults"
+  username = aws_iam_user.this.name
+}
+
 
 resource "aws_iam_access_key" "this" {
   provider = aws.current
@@ -30,13 +32,13 @@ resource "aws_iam_user_login_profile" "this" {
 
 resource "aws_iam_policy" "this" {
   provider = aws.current
-  for_each = local.all_policies
+  for_each = local.policies
   policy = each.value
 }
 
 resource "aws_iam_user_policy_attachment" "this" {
   provider = aws.current
-  for_each = local.all_policies
+  for_each = local.policies
   policy_arn = aws_iam_policy.this[each.key].arn
   user = aws_iam_user.this.name
 }
