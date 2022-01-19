@@ -95,6 +95,11 @@ variable "vault_auth_backend" {
   default = false
 }
 
+variable "vault_secret_backend" {
+  type = bool
+  default = false
+}
+
 variable "vault_token_reviewer_sa" {
   default = {
     name = "vault-injector"

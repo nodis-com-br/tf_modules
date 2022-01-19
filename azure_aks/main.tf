@@ -113,6 +113,7 @@ module "vault_auth_backend" {
 ### Vault secret engine ##############
 
 resource "vault_mount" "this" {
+  count = var.vault_secret_backend ? 1 : 0
   path = "k8s/${local.cluster_name}"
   type = "vault-k8s-secret-engine"
   options = {
