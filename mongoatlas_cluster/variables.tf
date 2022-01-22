@@ -14,7 +14,7 @@ variable "backup_enabled" {
   default = false
 }
 
-variable "provider_backup_enabled" {
+variable "cloud_backup" {
   default = true
 }
 

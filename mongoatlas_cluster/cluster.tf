@@ -10,7 +10,7 @@ resource "mongodbatlas_cluster" "this" {
   provider_disk_type_name  = var.provider_disk_type_name
   provider_instance_size_name = var.provider_instance_size_name
   provider_region_name = var.provider_region_name
-  provider_backup_enabled = var.provider_backup_enabled
+  cloud_backup = var.cloud_backup
   lifecycle {
     ignore_changes = [
       snapshot_backup_policy,
