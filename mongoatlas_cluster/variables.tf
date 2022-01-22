@@ -10,10 +10,6 @@ variable "replication_factor" {
   default = 3
 }
 
-variable "backup_enabled" {
-  default = false
-}
-
 variable "cloud_backup" {
   default = true
 }
