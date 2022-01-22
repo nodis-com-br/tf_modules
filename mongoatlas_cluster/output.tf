@@ -1,3 +1,3 @@
-output "cluster" {
+output "this" {
   value = mongodbatlas_cluster.this
 }
