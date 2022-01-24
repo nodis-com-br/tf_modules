@@ -10,4 +10,6 @@ variable "service_principal_name" {
   default = "vault-auth"
 }
 
-variable "homepage_url" {}
+variable "homepage_url" {
+  default = "https://management.azure.com/"
+}
