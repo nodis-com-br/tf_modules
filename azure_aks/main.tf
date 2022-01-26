@@ -115,7 +115,7 @@ module "vault_auth_backend" {
 resource "vault_mount" "this" {
   count = var.vault_secret_backend ? 1 : 0
   path = "k8s/${local.cluster_name}"
-  type = "vault-k8s-secret-engine"
+  type = "kubernetes"
   options = {
     jwt = azurerm_kubernetes_cluster.this.kube_config.0.password
     host = azurerm_kubernetes_cluster.this.kube_config.0.host
@@ -123,7 +123,7 @@ resource "vault_mount" "this" {
     admin_role = "admin"
     editor_role = "edit"
     viewer_role = "view"
-    max_ttl = "720h"
+    max_ttl = "768h"
   }
 }
 
