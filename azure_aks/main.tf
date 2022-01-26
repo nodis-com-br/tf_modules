@@ -101,30 +101,24 @@ resource "azurerm_private_dns_zone_virtual_network_link" "this" {
 ### Vault Auth Backend ################
 
 module "vault_auth_backend" {
-  count = var.vault_auth_backend ? 1 : 0
   source = "../vault_k8s_auth"
+  count = var.vault_auth_backend ? 1 : 0
   path = local.cluster_name
-  host = azurerm_kubernetes_cluster.this.kube_config.0.host
-  ca_certificate = base64decode(azurerm_kubernetes_cluster.this.kube_config.0.cluster_ca_certificate)
+  host = local.credentials.host
+  ca_certificate = local.credentials.cluster_ca_certificate
   token = data.kubernetes_secret.vault-injector-token.0.data.token
 }
 
 
 ### Vault secret engine ##############
 
-resource "vault_mount" "this" {
+module "vault_secrets_backend" {
+  source = "../vault_k8s_secrets"
   count = var.vault_secret_backend ? 1 : 0
-  path = "k8s/${local.cluster_name}"
-  type = "kubernetes"
-  options = {
-    jwt = azurerm_kubernetes_cluster.this.kube_config.0.password
-    host = azurerm_kubernetes_cluster.this.kube_config.0.host
-    ca_cert = azurerm_kubernetes_cluster.this.kube_config.0.cluster_ca_certificate
-    admin_role = "admin"
-    editor_role = "edit"
-    viewer_role = "view"
-    max_ttl = "768h"
-  }
+  path = "kubernetes/${local.cluster_name}"
+  host = local.credentials.host
+  jwt = azurerm_kubernetes_cluster.this.kube_config.0.password
+  ca_cert = local.credentials.cluster_ca_certificate
 }
 
 
@@ -136,7 +130,7 @@ resource "vault_generic_secret" "this" {
     raw = var.private_cluster_public_fqdn_enabled ? replace(azurerm_kubernetes_cluster.this.kube_config_raw, azurerm_kubernetes_cluster.this.kube_config.0.host, "https://${azurerm_kubernetes_cluster.this.fqdn}:443") : azurerm_kubernetes_cluster.this.kube_config_raw
     kubedict = jsonencode({
       cluster = {
-        server = var.private_cluster_public_fqdn_enabled ? "https://${azurerm_kubernetes_cluster.this.fqdn}:443" : azurerm_kubernetes_cluster.this.kube_config.0.host
+        server = local.credentials.host
         certificate-authority-data = azurerm_kubernetes_cluster.this.kube_config.0.cluster_ca_certificate
       }
       user = {
@@ -149,6 +143,6 @@ resource "vault_generic_secret" "this" {
 resource "vault_generic_secret" "endpoint" {
   path = "${local.vault_kv_path}/endpoint"
   data_json = jsonencode({
-    uri = var.private_cluster_public_fqdn_enabled ? "https://${azurerm_kubernetes_cluster.this.fqdn}:443" : azurerm_kubernetes_cluster.this.kube_config.0.host
+    uri = local.credentials.host
   })
 }
