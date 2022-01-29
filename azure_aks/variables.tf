@@ -95,9 +95,13 @@ variable "vault_auth_backend" {
   default = false
 }
 
-variable "vault_secret_backend" {
+variable "vault_secrets_backend" {
   type = bool
   default = false
+}
+
+variable "vault_secrets_backend_path" {
+  default = "kubernetes/"
 }
 
 variable "vault_token_reviewer_sa" {
@@ -109,4 +113,8 @@ variable "vault_token_reviewer_sa" {
 
 variable "private_cluster_public_fqdn_enabled" {
   default = false
+}
+
+variable "api_server_authorized_ip_ranges" {
+  default = null
 }

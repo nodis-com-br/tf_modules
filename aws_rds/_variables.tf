@@ -23,7 +23,7 @@ variable "max_storage" {}
 variable "deletion_protection" {}
 
 variable "public_accessible" {
-  default = true
+  default = false
 }
 
 variable "performance_insights_enabled" {

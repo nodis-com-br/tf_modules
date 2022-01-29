@@ -23,6 +23,7 @@ resource "azurerm_kubernetes_cluster" "this" {
   kubernetes_version = var.kubernetes_version
   private_cluster_enabled = var.private_cluster_enabled
   private_cluster_public_fqdn_enabled = var.private_cluster_public_fqdn_enabled
+  api_server_authorized_ip_ranges = var.api_server_authorized_ip_ranges
   service_principal {
     client_id = module.service_principal.application.application_id
     client_secret = module.service_principal.password.value
@@ -98,7 +99,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "this" {
 }
 
 
-### Vault Auth Backend ################
+### Vault #############################
 
 module "vault_auth_backend" {
   source = "../vault_k8s_auth"
@@ -109,20 +110,14 @@ module "vault_auth_backend" {
   token = data.kubernetes_secret.vault-injector-token.0.data.token
 }
 
-
-### Vault secret engine ##############
-
 module "vault_secrets_backend" {
   source = "../vault_k8s_secrets"
-  count = var.vault_secret_backend ? 1 : 0
-  path = "kubernetes/${local.cluster_name}"
+  count = var.vault_secrets_backend ? 1 : 0
+  path = "${var.vault_secrets_backend_path}${local.cluster_name}"
   host = local.credentials.host
-  jwt = azurerm_kubernetes_cluster.this.kube_config.0.password
   ca_cert = local.credentials.cluster_ca_certificate
-}
-
-
-### Secrets ###########################
+  jwt = azurerm_kubernetes_cluster.this.kube_config.0.password
+ }
 
 resource "vault_generic_secret" "this" {
   path = "${local.vault_kv_path}/kubeconfig/root"
