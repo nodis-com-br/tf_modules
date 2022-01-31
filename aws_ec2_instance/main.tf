@@ -51,6 +51,25 @@ resource "aws_instance" "this" {
   }, var.tags)
 }
 
+
+resource "aws_ebs_volume" "this" {
+  provider = aws.current
+  for_each = local.volumes
+  availability_zone = aws_instance.this[each.value.host_index].availability_zone
+  size = each.value.size
+}
+
+resource "aws_volume_attachment" "this" {
+  provider = aws.current
+  for_each = local.volumes
+  device_name = each.value.device_name
+  volume_id   = aws_ebs_volume.this[each.key].id
+  instance_id = aws_instance.this[each.value.host_index].id
+}
+
+
+
+
 resource "aws_eip" "this" {
   provider = aws.current
   count = var.fixed_public_ip ? var.host_count : 0

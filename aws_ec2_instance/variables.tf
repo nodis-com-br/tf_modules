@@ -82,3 +82,11 @@ variable "fixed_public_ip" {
 variable "domain" {
   default = null
 }
+
+variable "volumes" {
+  type = map(object({
+    size = number
+    device_name = string
+  }))
+  default = {}
+}
