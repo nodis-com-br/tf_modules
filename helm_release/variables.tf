@@ -4,7 +4,9 @@ variable "namespace" {
   default = "default"
 }
 
-variable "repository" {}
+variable "repository" {
+  default = null
+}
 
 variable "chart" {}
 
