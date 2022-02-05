@@ -11,21 +11,4 @@ resource "helm_release" "this" {
   cleanup_on_fail = var.cleanup_on_fail
   timeout = var.timeout
   wait = var.wait
-  //  atomic                     = false
-//  dependency_update          = false
-//  disable_crd_hooks          = false
-//  disable_openapi_validation = false
-//  disable_webhooks           = false
-//  force_update               = false
-//  lint                       = false
-//  recreate_pods              = false
-//  render_subchart_notes      = true
-//  replace                    = false
-//  reset_values               = false
-//  reuse_values               = false
-//  skip_crds                  = false
-
-//  verify                     = false
-//
-//  wait_for_jobs              = false
 }
