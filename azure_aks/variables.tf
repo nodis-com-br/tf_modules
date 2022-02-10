@@ -118,3 +118,8 @@ variable "private_cluster_public_fqdn_enabled" {
 variable "api_server_authorized_ip_ranges" {
   default = null
 }
+
+variable "custom_resource_definitions" {
+  default = []
+  type = list(string)
+}

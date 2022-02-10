@@ -118,3 +118,28 @@ module "vault_secrets_backend" {
   ca_cert = local.credentials.cluster_ca_certificate
   jwt = azurerm_kubernetes_cluster.this.kube_config.0.password
  }
+
+
+## Custom resource definitions ########
+
+resource "null_resource" "crd" {
+  for_each = toset(var.custom_resource_definitions)
+  triggers = {
+    endpoint = azurerm_kubernetes_cluster.this.name
+  }
+  depends_on = [
+    azurerm_private_dns_zone_virtual_network_link.this
+  ]
+  provisioner "local-exec" {
+    command = <<-EOF
+    echo "${base64decode(azurerm_kubernetes_cluster.this.kube_config.0.cluster_ca_certificate)}" > /tmp/${var.rg.name}-${var.name}.crt
+    kubectl \
+      --server="${azurerm_kubernetes_cluster.this.kube_config.0.host}" \
+      --certificate-authority=/tmp/${var.rg.name}-${var.name}.crt \
+      --token="${azurerm_kubernetes_cluster.this.kube_config.0.password}" \
+      apply -f ${each.key}
+    rm -rf /tmp/${var.rg.name}-${var.name}.crt
+    EOF
+  }
+
+}
