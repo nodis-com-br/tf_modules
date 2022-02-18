@@ -13,7 +13,8 @@ resource "mongodbatlas_cluster" "this" {
   lifecycle {
     ignore_changes = [
       snapshot_backup_policy,
-      bi_connector
+      bi_connector,
+      provider_disk_type_name
     ]
   }
 }
