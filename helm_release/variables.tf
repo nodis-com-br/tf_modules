@@ -31,7 +31,7 @@ variable "timeout" {
 }
 
 variable "wait" {
-  default = null
+  default = false
 }
 
 variable "chart_version" {
