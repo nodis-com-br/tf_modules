@@ -102,3 +102,34 @@ variable "newrelic_values" {
   type = list(string)
   default = []
 }
+
+
+variable "vault_injector" {
+  type = bool
+  default = true
+}
+
+variable "vault_injector_chart" {
+  type = string
+  default = "vault"
+}
+
+variable "vault_injector_chart_version" {
+  type = string
+  default = null
+}
+
+variable "vault_injector_repository" {
+  type = string
+  default = "https://helm.releases.hashicorp.com/"
+}
+
+variable "vault_injector_namespace" {
+  type = string
+  default = "vault-injector"
+}
+
+variable "vault_injector_values" {
+  type = list(string)
+  default = []
+}

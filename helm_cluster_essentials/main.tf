@@ -50,3 +50,17 @@ module "newrelic" {
     helm = helm
   }
 }
+
+module "vault_injector" {
+  source = "../helm_release"
+  count = var.vault_injector ? 1 : 0
+  name = "vault-injector"
+  namespace = var.vault_injector_namespace
+  chart = var.vault_injector_chart
+  chart_version = var.vault_injector_chart_version
+  repository = var.vault_injector_repository
+  values = var.vault_injector_values
+  providers = {
+    helm = helm
+  }
+}
