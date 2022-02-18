@@ -40,7 +40,7 @@ module "newrelic" {
   source = "../helm_release"
   name = "newrelic-bundle"
   namespace = var.newrelic_namespace
-  chart = var.newrelic_namespace
+  chart = var.newrelic_chart
   chart_version = var.newrelic_chart_version
   repository = var.newrelic_repository
   values = concat(var.newrelic_values, [local.default_values.newrelic])
