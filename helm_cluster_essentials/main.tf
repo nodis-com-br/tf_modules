@@ -1,6 +1,6 @@
 module "ghcr_credentials" {
   source = "../helm_release"
-  for_each = toset(var.ghcr_credentials_namespaces)
+  for_each = toset(var.ghcr_credentials ? var.ghcr_credentials_namespaces : [])
   name = "ghcr-credentials"
   namespace = each.key
   chart = var.ghcr_credentials_chart
@@ -13,7 +13,7 @@ module "ghcr_credentials" {
 
 module "kong_default_override" {
   source = "../helm_release"
-  for_each = toset(var.kong_default_override_namespaces)
+  for_each = toset(var.kong_default_override ? var.kong_default_override_namespaces : [])
   name = "default-override"
   namespace = each.key
   chart = var.kong_default_override_chart
@@ -26,6 +26,7 @@ module "kong_default_override" {
 
 module "endpoint_bots" {
   source = "../helm_release"
+  count = var.endpoint_bots ? 1 : 0
   name = "endpoint-bots"
   namespace = var.endpoint_bots_namespace
   chart = var.endpoint_bots_chart
@@ -38,6 +39,7 @@ module "endpoint_bots" {
 
 module "newrelic" {
   source = "../helm_release"
+  count = var.newrelic ? 1 : 0
   name = "newrelic-bundle"
   namespace = var.newrelic_namespace
   chart = var.newrelic_chart

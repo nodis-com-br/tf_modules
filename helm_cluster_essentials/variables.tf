@@ -1,3 +1,8 @@
+variable "ghcr_credentials" {
+  type = bool
+  default = true
+}
+
 variable "ghcr_credentials_chart" {
   type = string
   default = "nodis/secret"
@@ -16,6 +21,11 @@ variable "ghcr_credentials_namespaces" {
 variable "ghcr_credentials_values" {
   type = list(string)
   default = []
+}
+
+variable "kong_default_override" {
+  type = bool
+  default = true
 }
 
 variable "kong_default_override_chart" {
@@ -38,6 +48,11 @@ variable "kong_default_override_values" {
   default = []
 }
 
+variable "endpoint_bots" {
+  type = bool
+  default = true
+}
+
 variable "endpoint_bots_chart" {
   type = string
   default = "nodis/endpoint-bots"
@@ -56,6 +71,11 @@ variable "endpoint_bots_namespace" {
 variable "endpoint_bots_values" {
   type = list(string)
   default = []
+}
+
+variable "newrelic" {
+  type = bool
+  default = true
 }
 
 variable "newrelic_chart" {
