@@ -18,6 +18,11 @@ variable "default_sts_ttl" {
   default = 3600
 }
 
+
+variable "max_sts_ttl" {
+  default = null
+}
+
 variable "policy_document" {
   default = null
 }
