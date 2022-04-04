@@ -18,6 +18,7 @@ resource "azurerm_storage_account" "this" {
   account_replication_type = var.storage_account_replication_type
   queue_encryption_key_type = var.queue_encryption_key_type
   table_encryption_key_type = var.table_encryption_key_type
+  infrastructure_encryption_enabled = true
 }
 
 module "automation_account" {

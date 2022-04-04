@@ -68,7 +68,6 @@ resource "azurerm_subnet" "this" {
   virtual_network_name = azurerm_virtual_network.this.name
   address_prefixes = [cidrsubnet(var.address_space, var.subnet_newbits, count.index)]
   enforce_private_link_endpoint_network_policies = true
-  address_prefix = null
 }
 
 resource "azurerm_subnet_nat_gateway_association" "this" {
@@ -85,7 +84,6 @@ resource "azurerm_subnet" "gateway_subnet" {
   resource_group_name = azurerm_resource_group.this.name
   virtual_network_name = azurerm_virtual_network.this.name
   address_prefixes = [cidrsubnet(var.address_space, var.subnet_newbits, 63)]
-  address_prefix = null
 }
 
 # Peering #########
