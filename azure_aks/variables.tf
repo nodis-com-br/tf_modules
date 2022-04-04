@@ -123,3 +123,8 @@ variable "custom_resource_definitions" {
   default = []
   type = list(string)
 }
+
+variable "role_based_access_control_enabled" {
+  default = false
+  type = bool
+}
