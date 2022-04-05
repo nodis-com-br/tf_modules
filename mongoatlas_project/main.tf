@@ -11,6 +11,7 @@ resource "mongodbatlas_project_ip_access_list" "this" {
 }
 
 resource "vault_database_secret_backend_connection" "this" {
+  count = var.vault_secret_backend_config_name == null ? 0 : 1
   backend = var.vault_path
   name = var.vault_secret_backend_config_name
   root_rotation_statements = var.root_rotation_statements
