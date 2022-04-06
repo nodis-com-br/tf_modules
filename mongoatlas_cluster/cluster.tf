@@ -3,6 +3,7 @@ resource "mongodbatlas_cluster" "this" {
   name = var.name
   num_shards = var.num_shards
   replication_factor = var.replication_factor
+  auto_scaling_compute_enabled = var.auto_scaling_compute_enabled
   auto_scaling_disk_gb_enabled = var.auto_scaling_disk_gb_enabled
   mongo_db_major_version = var.mongo_db_major_version
   provider_name = var.provider_name

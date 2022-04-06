@@ -18,6 +18,10 @@ variable "auto_scaling_disk_gb_enabled" {
   default  = true
 }
 
+variable "auto_scaling_compute_enabled" {
+  default = false
+}
+
 variable "mongo_db_major_version" {
   default = "4.4"
 }
