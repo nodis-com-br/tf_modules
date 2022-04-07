@@ -130,6 +130,6 @@ variable "role_based_access_control_enabled" {
 }
 
 variable "public_network_access_enabled" {
-  default = false
+  default = true
   type = bool
 }

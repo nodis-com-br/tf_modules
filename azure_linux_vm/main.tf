@@ -7,6 +7,7 @@ resource "azurerm_public_ip" "this" {
   location = var.rg.location
   sku = "Standard"
   allocation_method = "Static"
+  zones = [1, 2, 3]
 }
 
 resource "azurerm_network_interface" "this" {

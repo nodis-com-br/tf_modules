@@ -4,6 +4,10 @@ variable "acl" {
   default = "private"
 }
 
+variable "versioning" {
+  default = "Suspended"
+}
+
 variable "bucket_policy_statements" {
   type = list(string)
   default = []
@@ -47,8 +51,3 @@ variable "save_role_arn" {
 variable "vault_kv_path" {
   default = null
 }
-
-variable "versioning" {
-  default = false
-}
-

@@ -5,20 +5,59 @@ module "defaults" {
 resource "aws_s3_bucket" "this" {
   provider = aws.current
   bucket = var.name
-  acl = var.acl
   force_destroy = false
-  policy = local.bucket_policy
-  versioning {
-    enabled = var.versioning
+  lifecycle {
+    ignore_changes = [
+      server_side_encryption_configuration
+    ]
   }
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        kms_master_key_id = var.server_side_encryption.kms_master_key_id
-        sse_algorithm = var.server_side_encryption.sse_algorithm
-      }
+}
+
+resource "aws_s3_bucket_acl" "this" {
+  provider = aws.current
+  bucket = aws_s3_bucket.this.id
+  acl = var.acl
+}
+
+resource "aws_s3_bucket_versioning" "this" {
+  provider = aws.current
+  bucket = aws_s3_bucket.this.id
+  versioning_configuration {
+    status = var.versioning
+  }
+}
+
+resource aws_s3_bucket_server_side_encryption_configuration "this" {
+  provider = aws.current
+  bucket = aws_s3_bucket.this.id
+  rule {
+    bucket_key_enabled = false
+    apply_server_side_encryption_by_default {
+      kms_master_key_id = var.server_side_encryption.kms_master_key_id
+      sse_algorithm = var.server_side_encryption.sse_algorithm
     }
   }
+}
+
+resource "aws_s3_bucket_policy" "this" {
+  provider = aws.current
+  bucket = aws_s3_bucket.this.id
+  policy = local.bucket_policy
+}
+
+resource "aws_iam_policy" "this" {
+  count = var.policy ? 1 : 0
+  provider = aws.current
+  policy = local.access_policy
+}
+
+resource "vault_generic_secret" "this" {
+  count = alltrue([var.policy, var.save_policy_arn]) ? 1 : 0
+  path = "${local.vault_kv_path}/policy/${var.name}"
+  data_json = jsonencode({
+    target = "bucket"
+    arn = aws_iam_policy.this.0.arn
+  })
 }
 
 module "role" {
@@ -41,19 +80,4 @@ module "user" {
   providers = {
     aws.current = aws.current
   }
-}
-
-resource "aws_iam_policy" "this" {
-  count = var.policy ? 1 : 0
-  provider = aws.current
-  policy = local.access_policy
-}
-
-resource "vault_generic_secret" "this" {
-  count = alltrue([var.policy, var.save_policy_arn]) ? 1 : 0
-  path = "${local.vault_kv_path}/policy/${var.name}"
-  data_json = jsonencode({
-    target = "bucket"
-    arn = aws_iam_policy.this.0.arn
-  })
 }

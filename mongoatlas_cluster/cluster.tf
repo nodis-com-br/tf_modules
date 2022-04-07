@@ -15,7 +15,8 @@ resource "mongodbatlas_cluster" "this" {
     ignore_changes = [
       snapshot_backup_policy,
       bi_connector,
-      provider_disk_type_name
+      provider_disk_type_name,
+      state_name
     ]
   }
 }

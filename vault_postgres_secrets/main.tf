@@ -25,7 +25,8 @@ resource "vault_database_secret_backend_connection" "this" {
   }
   lifecycle {
     ignore_changes = [
-      allowed_roles
+      allowed_roles,
+      postgresql
     ]
   }
 }
