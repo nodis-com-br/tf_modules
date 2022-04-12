@@ -1,3 +1,5 @@
+variable "name" {}
+
 variable "rg" {
   type = object({
     name = string
@@ -11,9 +13,6 @@ variable vnet {
     id = string
   })
 }
-
-variable "name" {}
-
 
 variable "node_admin_username" {
   type = string
@@ -81,30 +80,4 @@ variable "default_node_pool_vm_size" {
 
 variable "default_node_pool_enable_auto_scaling" {
   default = true
-}
-
-variable "domain" {
-  default = "nodis.com.br"
-}
-
-
-variable "vault_auth_backend" {
-  type = bool
-  default = false
-}
-
-variable "vault_secrets_backend" {
-  type = bool
-  default = false
-}
-
-variable "vault_secrets_backend_path" {
-  default = "kubernetes/"
-}
-
-variable "vault_token_reviewer_sa" {
-  default = {
-    name = "vault-injector"
-    namespace = "vault-injector"
-  }
 }
