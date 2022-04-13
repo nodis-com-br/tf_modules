@@ -1,4 +1,4 @@
 resource "kubectl_manifest" "this" {
-  for_each = {for d in local.http_manifests : md5(d) => d}
+  for_each = {for d in local.http_manifests : d.id => d}
   yaml_body = each.value
 }
