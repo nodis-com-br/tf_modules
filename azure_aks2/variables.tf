@@ -63,11 +63,11 @@ variable "default_node_pool_class" {
 }
 
 variable "default_node_pool_node_count" {
-  default = 1
+  default = null
 }
 
 variable "default_node_pool_min_count" {
-  default = null
+  default = 1
 }
 
 variable "default_node_pool_max_count" {
@@ -80,4 +80,11 @@ variable "default_node_pool_vm_size" {
 
 variable "default_node_pool_enable_auto_scaling" {
   default = true
+}
+
+variable "default_node_pool_subnet" {
+  default = null
+  type = object({
+    id = string
+  })
 }

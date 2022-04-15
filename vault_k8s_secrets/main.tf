@@ -8,6 +8,7 @@ resource "vault_generic_endpoint" "config" {
   path = "${module.vault_mount.this.path}/config"
   ignore_absent_fields = true
   disable_read = true
+  disable_delete = true
   data_json = jsonencode({
     host = var.host
     jwt = var.jwt

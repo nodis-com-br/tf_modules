@@ -3,7 +3,7 @@ variable "path" {
 }
 
 variable "type" {
-  default = "vault-plugin-secrets-github"
+  default = "github"
 }
 
 variable "app_id" {}

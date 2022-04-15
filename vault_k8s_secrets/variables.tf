@@ -1,7 +1,7 @@
 variable "path" {}
 
 variable "type" {
-  default = "vault-k8s-secret-engine"
+  default = "kubernetes"
 }
 
 variable "host" {}
@@ -11,15 +11,15 @@ variable "jwt" {}
 variable "ca_cert" {}
 
 variable "admin_role" {
-  default = "admin"
+  default = "cluster-admin"
 }
 
 variable "editor_role" {
-  default = "editor"
+  default = "edit"
 }
 
 variable "viewer_role" {
-  default = "viewer"
+  default = "view"
 }
 
 variable "max_ttl" {

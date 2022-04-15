@@ -60,7 +60,7 @@ variable "endpoint_bots_chart" {
 
 variable "endpoint_bots_chart_version" {
   type = string
-  default = "2.0.3"
+  default = "2.0.21"
 }
 
 variable "endpoint_bots_namespace" {

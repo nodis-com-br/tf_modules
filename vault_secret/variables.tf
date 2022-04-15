@@ -1,4 +1,7 @@
-variable "backend" {}
+variable "backend" {
+  default = {path = ""}
+  type = object({path = string})
+}
 
 variable "path" {}
 

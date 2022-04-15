@@ -21,6 +21,9 @@ resource "azurerm_kubernetes_cluster" "this" {
   private_cluster_public_fqdn_enabled = var.private_cluster_public_fqdn_enabled
   api_server_authorized_ip_ranges = var.api_server_authorized_ip_ranges
   role_based_access_control_enabled = var.role_based_access_control_enabled
+  key_vault_secrets_provider {
+    secret_rotation_enabled = true
+  }
   service_principal {
     client_id = module.service_principal.application.application_id
     client_secret = module.service_principal.password.value
@@ -45,7 +48,7 @@ resource "azurerm_kubernetes_cluster" "this" {
     min_count = try(local.default_node_pool.min_count, var.default_node_pool_min_count)
     max_count = try(local.default_node_pool.max_count, var.default_node_pool_max_count)
     vm_size = try(local.default_node_pool.vm_size, var.default_node_pool_vm_size)
-    vnet_subnet_id = try(local.default_node_pool.subnet.id)
+    vnet_subnet_id = try(local.default_node_pool.subnet.id, var.default_node_pool_subnet.id)
     orchestrator_version = try(local.default_node_pool.orchestrator_version, var.kubernetes_version)
     node_labels = {
       nodePoolName = try(local.default_node_pool.name, var.default_node_pool_name)
