@@ -2,16 +2,9 @@ variable "environment" {}
 
 variable "cluster_name" {}
 
-variable "cluster_credentials" {
-  type = object({
-    host = string
-    username = string
-    password = string
-    client_certificate = string
-    client_key = string
-    cluster_ca_certificate = string
-  })
-}
+variable "cluster_host" {}
+
+variable "cluster_ca_certificate" {}
 
 variable "http_manifests" {
   type = list(string)
@@ -23,6 +16,22 @@ variable "file_manifests" {
   default = []
 }
 
+
+#######################################
+
+variable "vault_secrets_service_account_name" {
+  default = "vault-secrets-backend"
+}
+
+variable "vault_secrets_service_account_ruleset" {
+  type = list(object({
+    api_groups = list(string)
+    resources = list(string)
+    verbs = list(string)
+  }))
+  default = []
+}
+
 variable "vault_secrets_backend_type" {
   default = "kubernetes"
 }
@@ -31,95 +40,108 @@ variable "vault_secrets_backend_path" {
   default = "kubernetes/"
 }
 
-variable "vault_injector_chart" {
+variable "vault_chart" {
   type = string
   default = "vault"
 }
 
-variable "vault_injector_chart_version" {
+variable "vault_chart_version" {
   type = string
   default = null
 }
 
-variable "vault_injector_repository" {
+variable "vault_chart_repository" {
   type = string
   default = "https://helm.releases.hashicorp.com/"
 }
 
-variable "vault_injector_namespace" {
+variable "vault_injector_chart_namespace" {
   type = string
   default = "vault-injector"
 }
 
-variable "vault_injector_values" {
+variable "vault_injector_chart_values" {
   type = list(string)
   default = []
 }
 
 variable "vault_token_reviewer_sa" {
-  default = {
-    name = "vault-injector"
-    namespace = "vault-injector"
-  }
+  default = "vault-injector"
 }
-
 
 #######################################
 
-variable "ghcr_credentials_namespaces" {
-  type = list(string)
-  default = ["default"]
-}
-
-variable "ghcr_credentials_chart" {
+variable "default_chart_repository" {
   type = string
-  default = "nodis/secret"
+  default = "https://charts.nodis.com.br/"
 }
 
-variable "ghcr_credentials_chart_version" {
+variable "secret_chart" {
+  type = string
+  default = "secret"
+}
+
+variable "secret_chart_version" {
   type = string
   default = "2.0.0"
 }
 
-
-variable "ghcr_credentials_values" {
-  type = list(string)
-  default = []
-}
-
-#######################################
-
 variable "kongingress_chart" {
   type = string
-  default = "nodis/kongingress"
+  default = "kongingress"
 }
 
 variable "kongingress_chart_version" {
   type = string
-  default = "2.0.1"
+  default = "2.0.2"
 }
-
-variable "kongingress_default_override_namespaces" {
-  type = list(string)
-  default = ["default"]
-}
-
-variable "kongingress_default_override_values" {
-  type = list(string)
-  default = []
-}
-
-
-#######################################
 
 variable "kongplugin_chart" {
   type = string
-  default = "nodis/kongplugin"
+  default = "kongplugin"
 }
 
 variable "kongplugin_chart_version" {
   type = string
   default = "2.0.1"
+}
+
+variable "endpoint_bots_chart" {
+  type = string
+  default = "endpoint-bots"
+}
+
+variable "endpoint_bots_chart_version" {
+  type = string
+  default = "2.0.21"
+}
+#######################################
+
+variable "secret_ghcr_credentials_chart_namespaces" {
+  type = list(string)
+  default = []
+}
+
+variable "secret_ghcr_credentials_chart_values" {
+  type = list(string)
+  default = []
+}
+
+#######################################
+
+variable "kongingress_default_override_namespaces_public" {
+  type = list(string)
+  default = []
+}
+
+variable "kongingress_default_override_namespaces_private" {
+  type = list(string)
+  default = []
+}
+
+variable "kongingress_default_override_values" {
+  type = list(string)
+  default = []
 }
 
 variable "kongplugin_prometheus_chart_values" {
@@ -136,16 +158,6 @@ variable "kongplugin_gh_auth_chart_values" {
 
 variable "endpoint_bots_name" {
   default = "endpoint-bots"
-}
-
-variable "endpoint_bots_chart" {
-  type = string
-  default = "nodis/endpoint-bots"
-}
-
-variable "endpoint_bots_chart_version" {
-  type = string
-  default = "2.0.21"
 }
 
 variable "endpoint_bots_namespace" {
@@ -251,42 +263,6 @@ variable "redis_namespace" {
 }
 
 variable "redis_chart_values" {
-  type = list(string)
-  default = []
-}
-
-
-#######################################
-
-variable "rabbitmq_name" {
-  default = "amqp0001"
-}
-
-variable "rabbitmq_chart" {
-  type = string
-  default = "nodis/rabbitmq-cluster"
-}
-
-variable "rabbitmq_chart_version" {
-  type = string
-  default = "2.0.8"
-}
-
-variable "rabbitmq_namespace" {
-  type = string
-  default = "rabbitmq"
-}
-
-variable "rabbitmq_chart_values" {
-  type = list(string)
-  default = []
-}
-
-variable "rabbitmq_vault_secret_path" {
-  default = null
-}
-
-variable "rabbitmq_vault_policy_definitions" {
   type = list(string)
   default = []
 }

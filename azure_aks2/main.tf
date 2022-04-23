@@ -5,8 +5,12 @@ module "service_principal" {
   create_password = true
   roles = {
     vnet = {
-      definition_name = "Network Contributor"
+      definition_name = "Reader"
       scope = var.vnet.id
+    }
+    subnet = {
+      definition_name = "Network Contributor"
+      scope = var.default_node_pool_subnet.id
     }
   }
 }
@@ -21,9 +25,6 @@ resource "azurerm_kubernetes_cluster" "this" {
   private_cluster_public_fqdn_enabled = var.private_cluster_public_fqdn_enabled
   api_server_authorized_ip_ranges = var.api_server_authorized_ip_ranges
   role_based_access_control_enabled = var.role_based_access_control_enabled
-  key_vault_secrets_provider {
-    secret_rotation_enabled = true
-  }
   service_principal {
     client_id = module.service_principal.application.application_id
     client_secret = module.service_principal.password.value

@@ -23,10 +23,7 @@ variable "node_admin_ssh_key" {
   type = string
 }
 
-variable "kubernetes_version" {
-  type = string
-  default = "1.20.5"
-}
+variable "kubernetes_version" {}
 
 variable "automatic_channel_upgrade" {
   default = "stable"

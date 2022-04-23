@@ -18,6 +18,10 @@ variable "max_history" {
   default = 1
 }
 
+variable "skip_crds" {
+  default = false
+}
+
 variable "create_namespace" {
   default = true
 }

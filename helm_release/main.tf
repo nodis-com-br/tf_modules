@@ -10,5 +10,6 @@ resource "helm_release" "this" {
   create_namespace = var.create_namespace
   cleanup_on_fail = var.cleanup_on_fail
   timeout = var.timeout
+  skip_crds = var.skip_crds
   wait = var.wait
 }
