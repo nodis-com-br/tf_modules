@@ -3,9 +3,9 @@ output "kubernetes_secret_backend" {
 }
 
 output "kubernetes_auth_backend" {
-  value = try(module.vault_auth_backend[0].this, null)
+  value = module.vault_auth_backend != null ? module.vault_auth_backend[0].this : null
 }
 
 output "rabbitmq_secrets_backend" {
-  value = try(vault_rabbitmq_secret_backend.this[0], null)
+  value = vault_rabbitmq_secret_backend.this != null ? vault_rabbitmq_secret_backend.this[0] : null
 }
