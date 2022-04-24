@@ -20,11 +20,12 @@ variable "helm_chart_version" {
   type = string
   default = "2.0.8"
 }
+
 variable "tls_values" {
   default = null
 }
 
-variable "tls_service_annotations_values" {
+variable "tls_service_annotation_values" {
   default = null
 }
 
