@@ -51,6 +51,10 @@ variable "vault_secret_path" {
   default = null
 }
 
+variable "vault_kv_backend" {
+  default = {path = "secret/"}
+}
+
 variable "kubernetes_auth_backend" {
   default = null
 }
