@@ -7,13 +7,6 @@ locals {
         strip_path = true
       }
     })
-    newrelic = jsonencode({
-      ksm = {enabled = true}
-      kubeEvents = {enabled = true}
-      logging = {enabled = true}
-      prometheus = {enabled = true}
-      newrelic-infrastructure = {privileged = true}
-    })
   }
 }
 
