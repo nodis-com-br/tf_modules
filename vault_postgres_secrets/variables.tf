@@ -1,11 +1,11 @@
 variable "name" {}
 
 
-variable "instace_name" {
+variable "instance_name" {
   default = null
 }
 
-variable "instace_addr" {}
+variable "instance_addr" {}
 
 variable "database" {
   default = "postgres"

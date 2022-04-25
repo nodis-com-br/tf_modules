@@ -17,10 +17,10 @@ resource "vault_database_secret_backend_connection" "this" {
     "ALTER ROLE \"${postgresql_role.this.name}\" WITH PASSWORD '{{password}}';"
   ]
   postgresql {
-    connection_url = "postgres://{{username}}:{{password}}@${var.instace_addr}/${var.database}?sslmode=require"
+    connection_url = "postgres://{{username}}:{{password}}@${var.instance_addr}/${var.database}?sslmode=require"
   }
   data = {
-    username = var.instace_name == null ? postgresql_role.this.name : "${postgresql_role.this.name}@${var.instace_name}"
+    username = var.instance_name == null ? postgresql_role.this.name : "${postgresql_role.this.name}@${var.instance_name}"
     password = var.role_initial_password
   }
   lifecycle {

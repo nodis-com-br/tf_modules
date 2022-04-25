@@ -4,3 +4,12 @@ output "access_info" {
     postgres_password = random_password.postgres_password.result
   }
 }
+
+output "credentials" {
+  value = {
+    host = local.host
+    port = 5432
+    username = "${var.admin_username}@${azurerm_postgresql_server.this.name}"
+    password = random_password.postgres_password.result
+  }
+}

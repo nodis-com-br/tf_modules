@@ -66,8 +66,8 @@ module "vault_backend" {
   source = "../vault_postgres_secrets"
   name = "${local.short_name}-${each.key}"
   database = each.key
-  instace_name = local.name
-  instace_addr = local.address
+  instance_name = local.name
+  instance_addr = local.host
   providers = {
     postgresql = postgresql
   }
