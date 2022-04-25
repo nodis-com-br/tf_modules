@@ -18,7 +18,7 @@ module "rabbitmq_k8s_auth_role" {
   source = "../vault_k8s_auth_role"
   count = var.kubernetes_auth_backend == null ? 0 : 1
   backend = var.kubernetes_auth_backend
-  name = "${var.environment}_${var.name}"
+  name = "${var.environment}-${var.name}"
   bound_service_account_names = ["${var.name}-server"]
   bound_service_account_namespaces = [var.namespace]
   policy_definitions = var.vault_policy_definitions
@@ -35,16 +35,9 @@ module "rabbitmq" {
   values = concat(var.helm_chart_values,
     var.tls_values != null ? [format(var.tls_values, "${var.name}-certificate")] : [],
     var.tls_service_annotation_values != null ? [format(var.tls_service_annotation_values, "${var.name}-certificate", "${var.name}.${var.subdomain}")] : [],
+    var.vault_values != null ? [format(var.vault_values, "${var.environment}-${var.name}", var.vault_secret_path)] : [],
   )
   providers = {
     helm = helm
   }
 }
-
-#resource "vault_rabbitmq_secret_backend" "this" {
-#  count = length(var.helm_chart_values) > 0 ? data.kubernetes_secret.default_user[0].data != null && data.kubernetes_service.this[0].metadata != null ? 1 : 0 : 0
-#  path = "rabbitmq/${var.environment}-${var.name}"
-#  connection_uri = "https://${data.kubernetes_service.this[0].metadata[0].annotations["nodis.com.br/managed-domain"]}:15671"
-#  username = data.kubernetes_secret.default_user[0].data.username
-#  password = data.kubernetes_secret.default_user[0].data.password
-#}

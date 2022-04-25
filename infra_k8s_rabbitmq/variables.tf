@@ -29,6 +29,14 @@ variable "tls_service_annotation_values" {
   default = null
 }
 
+variable "management_schema" {
+  default = "https"
+}
+
+variable "management_port" {
+  default = "15671"
+}
+
 variable "helm_chart_repository" {
   type = string
   default = "https://charts.nodis.com.br/"
@@ -50,4 +58,8 @@ variable "kubernetes_auth_backend" {
 variable "vault_policy_definitions" {
   type = list(string)
   default = []
+}
+
+variable "vault_values" {
+  default = null
 }
