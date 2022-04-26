@@ -1,8 +1,13 @@
+resource "random_password" "this" {
+  length  = 16
+  special = false
+}
+
 resource "postgresql_role" "this" {
   provider = postgresql
   name = "${var.role_name_prefix}-${var.database}"
   login = true
-  password =  var.role_initial_password
+  password = random_password.this.result
   create_role = true
   roles = [
     "postgres"
@@ -11,21 +16,21 @@ resource "postgresql_role" "this" {
 }
 
 resource "vault_database_secret_backend_connection" "this" {
-  backend = var.backend_path
   name = var.name
+  backend = var.backend_path
   root_rotation_statements = [
     "ALTER ROLE \"${postgresql_role.this.name}\" WITH PASSWORD '{{password}}';"
   ]
   postgresql {
-    connection_url = "postgres://{{username}}:{{password}}@${var.instance_addr}/${var.database}?sslmode=require"
+    connection_url = "postgres://{{username}}:{{password}}@${var.host}/${var.database}?sslmode=require"
   }
   data = {
-    username = var.instance_name == null ? postgresql_role.this.name : "${postgresql_role.this.name}@${var.instance_name}"
-    password = var.role_initial_password
+    username = "${postgresql_role.this.name}${var.login_name_suffix}"
+    password = postgresql_role.this.password
   }
+  allowed_roles = var.allowed_roles
   lifecycle {
     ignore_changes = [
-      allowed_roles,
       postgresql
     ]
   }

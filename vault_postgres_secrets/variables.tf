@@ -1,11 +1,6 @@
 variable "name" {}
 
-
-variable "instance_name" {
-  default = null
-}
-
-variable "instance_addr" {}
+variable "host" {}
 
 variable "database" {
   default = "postgres"
@@ -15,11 +10,15 @@ variable "role_name_prefix" {
   default = "vault"
 }
 
-variable "role_initial_password" {
-  default = "Mv9MUyX4Eh3gm4Mn"
-  type = string
-}
-
 variable "backend_path" {
   default = "postgres"
+}
+
+variable "login_name_suffix" {
+  default = ""
+}
+
+variable "allowed_roles" {
+  type = list(string)
+  default = []
 }
