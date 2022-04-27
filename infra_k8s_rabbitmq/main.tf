@@ -33,7 +33,7 @@ module "rabbitmq" {
   chart_version = var.helm_chart_version
   repository = var.helm_chart_repository
   values = concat(var.helm_chart_values,
-    var.vault_values != null ? [format(var.vault_values, "${var.vault_kv_backend.path}data/${var.vault_secret_path}", module.rabbitmq_k8s_auth_role[0].this.role_name)] : [],
+    var.vault_values != null ? [format(var.vault_values, "${var.vault_kv_backend.path}data/${var.vault_secret_path}", module.rabbitmq_k8s_auth_role[0].this.role_name, "${var.name}.${var.subdomain}")] : [],
     var.tls_values != null ? [format(var.tls_values, "${var.name}-certificate")] : [],
     var.tls_service_annotation_values != null ? [format(var.tls_service_annotation_values, "${var.name}-certificate", "${var.name}.${var.subdomain}")] : [],
   )

@@ -30,11 +30,11 @@ variable "tls_service_annotation_values" {
 }
 
 variable "management_schema" {
-  default = "https"
+  default = "http"
 }
 
 variable "management_port" {
-  default = "15671"
+  default = "15672"
 }
 
 variable "helm_chart_repository" {
