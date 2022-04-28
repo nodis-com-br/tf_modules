@@ -5,9 +5,9 @@ variable "path" {
 }
 
 variable "default_lease_ttl" {
-  default = null
+  default = "8h"
 }
 
 variable "max_lease_ttl" {
-  default = null
+  default = "768h"
 }
