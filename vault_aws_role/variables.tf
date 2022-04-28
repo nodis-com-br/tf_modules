@@ -18,7 +18,6 @@ variable "default_sts_ttl" {
   default = null
 }
 
-
 variable "max_sts_ttl" {
   default = null
 }
