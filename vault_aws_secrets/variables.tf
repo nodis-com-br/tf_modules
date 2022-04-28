@@ -3,9 +3,9 @@ variable "path" {
 }
 
 variable "default_lease_ttl_seconds" {
-  default = 2592000
+  default = null
 }
 
 variable "max_lease_ttl_seconds" {
-  default = 2592000
+  default = null
 }

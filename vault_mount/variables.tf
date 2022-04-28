@@ -7,11 +7,11 @@ variable "type" {
 }
 
 variable "default_lease_ttl_seconds" {
-  default = 3600
+  default = null
 }
 
 variable "max_lease_ttl_seconds" {
-  default = 0
+  default = null
 }
 
 variable "description" {

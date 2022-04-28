@@ -7,11 +7,11 @@ variable "audience" {
 }
 
 variable "token_ttl" {
-  default = 3600
+  default = null
 }
 
 variable "token_max_ttl" {
-  default = 3600
+  default = null
 }
 
 variable "bound_service_account_names" {

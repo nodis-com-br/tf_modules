@@ -3,11 +3,11 @@ variable "name" {}
 variable "backend" {}
 
 variable "ttl" {
-  default = 300
+  default = null
 }
 
 variable "max_ttl" {
-  default = 604800
+  default = null
 }
 
 variable "application_object_id" {

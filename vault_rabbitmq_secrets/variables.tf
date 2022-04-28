@@ -13,8 +13,8 @@ variable "user_tags" {
 }
 
 variable "default_lease_ttl_seconds" {
-  default = 3600
+  default = null
 }
 variable "max_lease_ttl_seconds" {
-  default = 604800
+  default = null
 }
