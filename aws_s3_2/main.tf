@@ -1,7 +1,3 @@
-module "defaults" {
-  source = "../_aws_defaults"
-}
-
 resource "aws_s3_bucket" "this" {
   provider = aws.current
   bucket = var.name
@@ -45,38 +41,22 @@ resource "aws_s3_bucket_policy" "this" {
   policy = local.bucket_policy
 }
 
-resource "aws_iam_policy" "this" {
-  count = var.policy ? 1 : 0
-  provider = aws.current
-  policy = local.access_policy
-}
-
-resource "vault_generic_secret" "this" {
-  count = alltrue([var.policy, var.save_policy_arn]) ? 1 : 0
-  path = "${local.vault_kv_path}/policy/${var.name}"
-  data_json = jsonencode({
-    target = "bucket"
-    arn = aws_iam_policy.this.0.arn
-  })
+module "policy" {
+  source = "../aws_iam_policy"
+  policy = coalesce(var.policy, local.default_policy)
+  providers = {
+    aws.current = aws.current
+  }
 }
 
 module "role" {
   source = "../aws_iam_role"
   count = var.role ? 1 : 0
   owner_arn = var.role_owner_arn
-  policies = {1 = local.access_policy}
-  vault_kv_path = var.save_role_arn ? "${local.vault_kv_path}/role/${var.name}" : null
-  providers = {
-    aws.current = aws.current
-  }
-}
-
-module "user" {
-  source = "../aws_iam_user"
-  count = var.access_key ? 1 : 0
-  username = aws_s3_bucket.this.bucket
-  access_key = true
-  policies = {1 = local.access_policy}
+  policy_arns = [module.policy.this.arn]
+  vault_role = var.vault_role
+  vault_credential_type = var.vault_credential_type
+  vault_backend = var.vault_backend
   providers = {
     aws.current = aws.current
   }

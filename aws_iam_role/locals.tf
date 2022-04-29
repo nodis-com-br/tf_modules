@@ -1,6 +1,8 @@
 locals {
-  selected_builtin_policy_arns = [for l in var.builtin_policy_arns : module.defaults.aws.policy_arns[l]]
-  policy_arns = concat(var.policy_arns, local.selected_builtin_policy_arns)
+  defaults = {
+    vault_backend = "aws"
+    vault_credential_type = "assume_role"
+  }
   assume_role_policies = {
     iam_role = jsonencode({
       Version = "2012-10-17"

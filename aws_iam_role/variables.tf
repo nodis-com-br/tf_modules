@@ -19,6 +19,7 @@ variable "builtin_policies" {
 }
 
 variable "policy_arns" {
+  type = list(string)
   default = []
 }
 
@@ -27,5 +28,17 @@ variable "builtin_policy_arns" {
 }
 
 variable "vault_kv_path" {
+  default = null
+}
+
+variable "vault_role" {
+  default = null
+}
+
+variable "vault_backend" {
+  default = null
+}
+
+variable "vault_credential_type" {
   default = null
 }

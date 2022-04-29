@@ -1,9 +1,11 @@
 variable "name" {}
 
-variable "backend" {}
+variable "backend" {
+  default = null
+}
 
 variable "credential_type" {
-  default = "iam_user"
+  default = null
 }
 
 variable "policy_arns" {
