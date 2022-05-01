@@ -58,8 +58,7 @@ resource "azurerm_kubernetes_cluster" "this" {
   }
   lifecycle {
     ignore_changes = [
-      network_profile,
-      default_node_pool,
+      network_profile
     ]
   }
   depends_on = [
