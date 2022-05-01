@@ -1,6 +1,6 @@
 variable "type" {
   type = string
-  default = "url"
+  default = "http"
 }
 
 variable "sources" {

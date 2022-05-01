@@ -1,5 +1,5 @@
 locals {
-  http_manifests = var.type == "url" ? flatten([
+  http_manifests = var.type == "http" ? flatten([
     for s in data.kubectl_file_documents.http : [
       for k, v in s.manifests : {
         id = k
