@@ -11,7 +11,7 @@ variable "type" {
 variable "common_name" {}
 
 variable "organization" {
-  default = "Nodis Tecnologia S.A"
+  default = "Nodis Tecnologia S.A."
 }
 
 variable "ttl" {
