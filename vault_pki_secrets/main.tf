@@ -17,6 +17,7 @@ resource "vault_pki_secret_backend_root_sign_intermediate" "this" {
   csr = vault_pki_secret_backend_intermediate_cert_request.this.csr
   ttl = var.ttl
   common_name = var.common_name
+  organization = var.organization
 }
 
 resource "vault_pki_secret_backend_intermediate_set_signed" "this" {
