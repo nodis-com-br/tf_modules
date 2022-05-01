@@ -7,5 +7,5 @@ output "csr" {
 }
 
 output "certificate" {
-  value = vault_pki_secret_backend_intermediate_set_signed.this.certificate
+  value = length(vault_pki_secret_backend_intermediate_set_signed.this) > 0 ? vault_pki_secret_backend_intermediate_set_signed.this[0].certificate : null
 }
