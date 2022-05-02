@@ -45,8 +45,8 @@ resource "aws_iam_user_policy_attachment" "this" {
 
 resource "aws_iam_user_policy_attachment" "that" {
   provider = aws.current
-  for_each = toset(local.policy_arns)
-  policy_arn = each.key
+  for_each = {for i, v in concat(var.policy_arns, local.selected_builtin_policy_arns) : i => v}
+  policy_arn = each.value
   user = aws_iam_user.this.name
 }
 

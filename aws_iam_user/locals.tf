@@ -12,8 +12,6 @@ locals {
   ]
   selected_policies = distinct(concat(var.builtin_policies, var.console ? local.console_policies : []))
   policies = merge(var.policies, {for l in local.selected_policies : l => module.defaults.aws.policies[l]})
-
   console_policy_arns = []
   selected_builtin_policy_arns = [for l in  distinct(concat(var.builtin_policy_arns, var.console ? local.console_policy_arns : [])) : module.defaults.aws.policy_arns[l]]
-  policy_arns = concat(var.policy_arns, local.selected_builtin_policy_arns)
 }

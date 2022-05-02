@@ -33,11 +33,3 @@ module "vault_role" {
   backend = var.vault_backend
   role_arns = [aws_iam_role.this.arn]
 }
-
-resource "vault_generic_secret" "this" {
-  count = var.vault_kv_path == null ? 0 : 1
-  path = var.vault_kv_path
-  data_json = jsonencode({
-    arn = aws_iam_role.this.arn
-  })
-}
