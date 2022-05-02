@@ -5,7 +5,6 @@ module "defaults" {
 module "bucket" {
   source = "../aws_s3"
   name = var.bucket
-  policy = false
   role = false
   providers = {
     aws.current = aws.current
@@ -113,14 +112,4 @@ module "dns_record" {
     aws.current = aws.dns
   }
 }
-
-resource "vault_generic_secret" "this" {
-  count = var.cloudfront_policy ? 1 : 0
-  path = "${module.defaults.aws.vault_kv_path}/policy/${var.name}"
-  data_json = jsonencode({
-    target = "cloudfront"
-    arn = aws_iam_policy.this.0.arn
-  })
-}
-
 
