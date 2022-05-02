@@ -28,30 +28,26 @@ variable "server_side_encryption" {
   }
 }
 
-variable "role" {
-  default = false
+variable "policy" {
+  default = null
 }
 
-variable "access_key" {
-  default = false
+variable "role" {
+  default = true
 }
 
 variable "role_owner_arn" {
   default = null
 }
 
-variable "policy" {
-  default = false
+variable "vault_backend" {
+  default = null
 }
 
-variable "save_policy_arn" {
-  default = true
+variable "vault_role" {
+  default = null
 }
 
-variable "save_role_arn" {
-  default = true
-}
-
-variable "vault_kv_path" {
+variable "vault_credential_type" {
   default = null
 }

@@ -1,5 +1,5 @@
 module "bucket" {
-  source = "../aws_s3_2"
+  source = "../aws_s3"
   name = var.bucket_name
   policy = false
   role = false

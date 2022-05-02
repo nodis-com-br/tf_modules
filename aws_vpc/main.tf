@@ -46,7 +46,7 @@ resource "aws_vpc_peering_connection_accepter" "this" {
 
 
 module "bucket" {
-    source = "../aws_s3_2"
+    source = "../aws_s3"
     role = false
     policy = false
     name = var.flow_logs_bucket_name

@@ -3,15 +3,15 @@ output "this" {
 }
 
 output "policy" {
-  value = var.policy ? aws_iam_policy.this.0 : null
+  value = try(module.policy[0].this, null)
 }
 
 output "role" {
-  value = var.role ? module.role.0.this : null
+  value = var.role ? module.role[0].this : null
   sensitive = true
 }
 
-output "access_key" {
-  value = var.access_key ? module.user.0.access_key : null
+output "vault_role" {
+  value = var.vault_role != null ? module.role[0].vault_role : null
   sensitive = true
 }
