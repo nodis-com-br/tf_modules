@@ -1,15 +1,19 @@
-variable "environment" {}
+variable "name" {}
 
-variable "name" {
-  default = "amqp0001"
+variable "domain" {}
+
+variable "management_schema" {
+  default = "https"
+}
+
+variable "management_port" {
+  default = "15671"
 }
 
 variable "namespace" {
   type = string
   default = "rabbitmq"
 }
-
-variable "subdomain" {}
 
 variable "helm_chart" {
   type = string
@@ -21,22 +25,6 @@ variable "helm_chart_version" {
   default = "2.0.8"
 }
 
-variable "tls_values" {
-  default = null
-}
-
-variable "tls_service_annotation_values" {
-  default = null
-}
-
-variable "management_schema" {
-  default = "https"
-}
-
-variable "management_port" {
-  default = "15671"
-}
-
 variable "helm_chart_repository" {
   type = string
   default = "https://charts.nodis.com.br/"
@@ -45,6 +33,10 @@ variable "helm_chart_repository" {
 variable "helm_chart_values" {
   type = list(string)
   default = []
+}
+
+variable "vault_role" {
+  default = null
 }
 
 variable "vault_secret_path" {
