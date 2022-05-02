@@ -5,7 +5,7 @@ module "defaults" {
 module "bucket" {
   source = "../aws_s3"
   name = var.bucket
-  po
+  policy = false
   role = false
   providers = {
     aws.current = aws.current
