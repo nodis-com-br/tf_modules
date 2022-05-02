@@ -3,7 +3,7 @@ output "this" {
 }
 
 output "policy" {
-  value = module.policy.this
+  value = try(module.policy[0].this, null)
 }
 
 output "role" {

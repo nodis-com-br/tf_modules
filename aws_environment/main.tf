@@ -23,7 +23,6 @@ module "developer_role" {
   count = var.developer_role ? 1 : 0
   owner_arn = var.role_owner_arn
   policy_arns = var.developer_role_policy_arns
-  vault_kv_path = var.save_role_arns ? "${local.vault_kv_path}/role/${var.name}-developer" : null
   providers = {
     aws.current = aws.current
   }

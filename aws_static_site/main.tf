@@ -3,9 +3,8 @@ module "defaults" {
 }
 
 module "bucket" {
-  source = "../aws_s3"
+  source = "../aws_s3_2"
   name = var.bucket
-  policy = true
   role = false
   providers = {
     aws.current = aws.current
