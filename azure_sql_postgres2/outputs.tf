@@ -10,3 +10,7 @@ output "credentials" {
     password = random_password.postgres_password.result
   }
 }
+
+output "short_name" {
+  value = "${var.rg.name}-${var.name}"
+}

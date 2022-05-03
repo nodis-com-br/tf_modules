@@ -61,14 +61,14 @@ resource "aws_route53_record" "this" {
   ]
 }
 
-module "vault_backend" {
-  for_each = toset(local.database_backends)
-  source = "../vault_postgres_secrets"
-  name = "${local.short_name}-${each.key}"
-  database = each.key
-  host = local.host
-  login_name_suffix = "@${local.name}"
-  providers = {
-    postgresql = postgresql
-  }
-}
+#module "vault_backend" {
+#  for_each = toset(local.database_backends)
+#  source = "../vault_postgres_secrets"
+#  name = "${local.short_name}-${each.key}"
+#  database = each.key
+#  host = local.host
+#  login_name_suffix = "@${local.name}"
+#  providers = {
+#    postgresql = postgresql
+#  }
+#}
