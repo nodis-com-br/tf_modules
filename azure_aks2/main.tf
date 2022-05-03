@@ -30,6 +30,7 @@ resource "azurerm_kubernetes_cluster" "this" {
     client_secret = module.service_principal.password.value
   }
   network_profile {
+    outbound_type = "userAssignedNATGateway"
     network_plugin = "kubenet"
     pod_cidr = "172.25.0.0/16"
     service_cidr = "172.16.0.0/16"
