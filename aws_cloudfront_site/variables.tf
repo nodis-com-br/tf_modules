@@ -9,11 +9,13 @@ variable "alternative_domain_names" {
   default = []
 }
 
-variable "role" {
-  default = false
+variable "role_owner_arn" {
+  default = null
 }
 
-variable "role_owner_arn" {}
+variable "vault_role" {
+  default = null
+}
 
 variable "route53_zone" {}
 

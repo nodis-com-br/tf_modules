@@ -85,7 +85,7 @@ resource "aws_iam_policy" "this" {
 
 module "role" {
   source = "../aws_iam_role"
-  count = var.role ? 1 : 0
+  count = var.role_owner_arn != null ? 1 : 0
   owner_arn = var.role_owner_arn
   policies = {
     cloudfront = local.cloudfront_policy
@@ -93,7 +93,7 @@ module "role" {
   policy_arns = [
     module.bucket.policy.arn
   ]
-  vault_kv_path = "${module.defaults.aws.vault_kv_path}/role/${var.name}"
+  vault_role = var.vault_role
   providers = {
     aws.current = aws.current
   }
