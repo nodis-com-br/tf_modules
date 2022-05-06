@@ -1,5 +1,4 @@
 locals {
-  vault_kv_path = "secret/azure/service_principal"
   extra_disks = {for disk in flatten([
     for host_index in range(var.host_count) : [
       for k, v in var.extra_disks : {

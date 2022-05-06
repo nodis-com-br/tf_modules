@@ -127,16 +127,6 @@ resource "azurerm_virtual_machine_data_disk_attachment" "this" {
   caching = "ReadWrite"
 }
 
-resource "vault_generic_secret" "this" {
-  count = var.host_count
-  path = "${local.vault_kv_path}/${var.rg.name}-${var.name}${format("%04.0f", count.index + 1)}"
-  data_json = jsonencode({
-    principal_id = azurerm_linux_virtual_machine.this[count.index].identity.0.principal_id
-    tenant_id = azurerm_linux_virtual_machine.this[count.index].identity.0.tenant_id
-  })
-}
-
-
 # DNS
 
 module "private_dns_record" {
