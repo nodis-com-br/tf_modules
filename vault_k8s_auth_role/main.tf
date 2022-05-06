@@ -1,5 +1,5 @@
 resource "vault_policy" "this" {
-  name = "k8s_${var.name}"
+  name = "${var.backend}_${var.name}"
   policy = join("\n\n", var.policy_definitions)
 }
 
