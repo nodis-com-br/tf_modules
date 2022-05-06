@@ -3,6 +3,22 @@ resource "mongodbatlas_project" "this" {
   org_id = var.org
 }
 
+resource "random_password" "this" {
+  length  = 16
+  special = false
+}
+
+resource "mongodbatlas_database_user" "this" {
+  username = "${var.name}-admin"
+  password = random_password.this.result
+  project_id = mongodbatlas_project.this.id
+  auth_database_name = "admin"
+  roles {
+    role_name = "readAnyDatabase"
+    database_name = "admin"
+  }
+}
+
 resource "mongodbatlas_project_ip_access_list" "this" {
   for_each = var.ip_access_list
   project_id = mongodbatlas_project.this.id
