@@ -18,7 +18,7 @@ module "vault_kv_secret" {
 module "rabbitmq_k8s_auth_role" {
   source = "../vault_k8s_auth_role"
   count = var.vault_role == null ? 0 : 1
-  backend = var.kubernetes_auth_backend
+  backend = try(var.kubernetes_auth_backend.path, var.kubernetes_auth_backend)
   name = var.vault_role
   bound_service_account_names = ["${var.name}-server"]
   bound_service_account_namespaces = [var.namespace]
