@@ -1,5 +1,5 @@
 resource "mongodbatlas_project" "this" {
-  name = var.name
+  name = "${var.name_prefix}-${var.name}"
   org_id = var.org
 }
 
@@ -37,10 +37,16 @@ resource "mongodbatlas_network_container" "this" {
 resource "mongodbatlas_network_peering" "this" {
   count = var.peering == null ? 0 : 1
   project_id = mongodbatlas_project.this.id
-  container_id = mongodbatlas_network_container.this.0.container_id
+  container_id = mongodbatlas_network_container.this[0].container_id
   provider_name = var.provider_name
   azure_directory_id = try(var.peering.azure_directory_id, null)
   azure_subscription_id = try(var.peering.azure_subscription_id, null)
   resource_group_name = try(var.peering.resource_group_name, null)
   vnet_name = try(var.peering.vnet_name, null)
+}
+
+module "vault_secrets_backend" {
+  source = "../vault_mount"
+  path = "mongodb/${var.name}"
+  type = "database"
 }

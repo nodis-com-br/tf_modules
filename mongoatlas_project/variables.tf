@@ -2,6 +2,10 @@ variable "org" {}
 
 variable "name" {}
 
+variable "name_prefix" {
+  default = "nodis"
+}
+
 variable "provider_name" {
   default = "AZURE"
 }

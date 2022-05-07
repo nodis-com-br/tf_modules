@@ -8,3 +8,7 @@ output "credentials" {
     password = mongodbatlas_database_user.this.password
   }
 }
+
+output "vault_secrets_backend" {
+  value = module.vault_secrets_backend.this
+}
