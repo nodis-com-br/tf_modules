@@ -47,7 +47,7 @@ variable "role_based_access_control_enabled" {
 }
 
 variable "network_outbound_type" {
-  default = "loadBalancer"
+  default = "userAssignedNATGateway"
 }
 
 variable "node_pools" {

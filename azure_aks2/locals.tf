@@ -11,7 +11,7 @@ locals {
     username = azurerm_kubernetes_cluster.this.kube_config.0.username
     password = azurerm_kubernetes_cluster.this.kube_config.0.password
   }
-  outbound_public_ip_id = tolist(azurerm_kubernetes_cluster.this.network_profile[0].load_balancer_profile[0].effective_outbound_ips)[0]
-  outbound_public_ip_id_splitted = split("/", local.outbound_public_ip_id)
-  outbound_public_ip_id_name = element(local.outbound_public_ip_id_splitted,length(local.outbound_public_ip_id_splitted) - 1)
+#  outbound_public_ip_id = tolist(azurerm_kubernetes_cluster.this.network_profile[0].load_balancer_profile[0].effective_outbound_ips)[0]
+#  outbound_public_ip_id_splitted = split("/", local.outbound_public_ip_id)
+#  outbound_public_ip_id_name = element(local.outbound_public_ip_id_splitted,length(local.outbound_public_ip_id_splitted) - 1)
 }
