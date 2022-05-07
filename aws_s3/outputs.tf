@@ -2,8 +2,8 @@ output "this" {
   value = aws_s3_bucket.this
 }
 
-output "policy" {
-  value = try(module.policy[0].this, null)
+output "policy_arn" {
+  value = try(module.policy[0].this.arn, null)
 }
 
 output "role" {
@@ -11,7 +11,7 @@ output "role" {
   sensitive = true
 }
 
-output "vault_role" {
-  value = var.vault_role != null ? module.role[0].vault_role : null
+output "vault_role_name" {
+  value = var.vault_role != null ? module.role[0].vault_role_name : null
   sensitive = true
 }
