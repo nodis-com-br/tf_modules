@@ -7,5 +7,5 @@ output "network_interfaces" {
 }
 
 output "public_ips" {
-  value = try(azurerm_public_ip.this)
+  value = [for ip in azurerm_public_ip.this : ip.ip_address]
 }

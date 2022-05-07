@@ -91,7 +91,7 @@ module "role" {
     cloudfront = local.cloudfront_policy
   }
   policy_arns = [
-    module.bucket.policy.arn
+    module.bucket.policy_arn
   ]
   vault_role = var.vault_role
   providers = {

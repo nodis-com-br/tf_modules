@@ -71,7 +71,7 @@ variable "instance_role" {
   default = false
 }
 
-variable "instance_role_policies" {
+variable "instance_policy_arns" {
   default = {}
 }
 

@@ -1,3 +1,3 @@
-output "developer_role" {
-  value = var.developer_role ? module.developer_role.0.this : null
+output "developer_role_arn" {
+  value = try(module.developer_role[0].this.arn, null)
 }

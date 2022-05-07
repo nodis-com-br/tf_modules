@@ -3,7 +3,11 @@ output "kms_key" {
   sensitive = true
 }
 
-output "access_key" {
-  value = var.access_key ? module.user.0.access_key : null
+output "access_key_id" {
+  value = try(module.user[0].access_key_id, null)
+}
+
+output "secret_access_key" {
+  value = try(module.user[0].secret_access_key, null)
   sensitive = true
 }

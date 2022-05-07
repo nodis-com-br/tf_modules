@@ -46,6 +46,10 @@ variable "role_based_access_control_enabled" {
   type = bool
 }
 
+variable "network_outbound_type" {
+  default = "loadBalancer"
+}
+
 variable "node_pools" {
   default = {}
 }

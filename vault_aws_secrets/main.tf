@@ -1,6 +1,6 @@
 module "aws_user" {
   source = "../aws_iam_user"
-  username = "vault"
+  username = var.username
   access_key = true
   policies = {
     vault = jsonencode({
@@ -43,8 +43,8 @@ module "aws_user" {
 
 resource "vault_aws_secret_backend" "this" {
   path = var.path
-  access_key = module.aws_user.access_key.id
-  secret_key = module.aws_user.access_key.secret
+  access_key = module.aws_user.access_key_id
+  secret_key = module.aws_user.secret_access_key
   default_lease_ttl_seconds = var.default_lease_ttl_seconds
   max_lease_ttl_seconds = var.max_lease_ttl_seconds
 }

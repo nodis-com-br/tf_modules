@@ -14,7 +14,7 @@ module "role" {
   source = "../aws_iam_role"
   count = var.instance_role ? 1 : 0
   assume_role_policy = "ec2_instance"
-  policies = var.instance_role_policies
+  policy_arns = var.instance_policy_arns
   providers = {
     aws.current = aws.current
   }

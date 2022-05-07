@@ -4,11 +4,6 @@ resource "postgresql_database" "this" {
   lc_collate = var.lc_collate
 }
 
-
-
-
-
-
 resource "random_password" "this" {
   count = var.create_role ? 1 : 0
   length  = 16
