@@ -6,7 +6,7 @@ variable "backend" {}
 
 variable "allowed_roles" {
   type = list(string)
-  default = []
+  default = null
 }
 
 variable "role_name_prefix" {
