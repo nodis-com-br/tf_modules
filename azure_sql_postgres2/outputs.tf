@@ -11,6 +11,6 @@ output "credentials" {
   }
 }
 
-output "short_name" {
-  value = "${var.rg.name}-${var.name}"
+output "vault_secrets_backend" {
+  value = module.vault_secrets_backend.this
 }

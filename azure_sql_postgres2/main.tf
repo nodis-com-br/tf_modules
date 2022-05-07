@@ -60,3 +60,9 @@ resource "aws_route53_record" "this" {
     azurerm_private_endpoint.this.0.private_service_connection.0.private_ip_address
   ]
 }
+
+module "vault_secrets_backend" {
+  source = "../vault_mount"
+  path = "postgres/${var.rg.name}-${var.name}"
+  type = "database"
+}
