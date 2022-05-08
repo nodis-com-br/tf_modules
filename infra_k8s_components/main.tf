@@ -38,7 +38,7 @@ module "vault_secrets_backend" {
   source = "../vault_k8s_secrets"
   count = length(var.vault_secrets_service_account_ruleset) > 0 ? 1 : 0
   type = var.vault_secrets_backend_type
-  path = "${var.vault_secrets_backend_path}${var.cluster_name}"
+  path = var.vault_backend_path
   host = var.cluster_host
   ca_cert = module.vault_secrets_service_account[0].ca_crt
   jwt = module.vault_secrets_service_account[0].token
@@ -61,10 +61,10 @@ module "vault_injector" {
 module "vault_auth_backend" {
   source = "../vault_k8s_auth"
   count = length(var.vault_injector_chart_values) > 0 ? 1 : 0
-  path =
+  path = var.vault_backend_path
   host = var.cluster_host
   ca_certificate = var.cluster_ca_certificate
-  token = data.kubernetes_secret.vault-injector-token.0.data.token
+  token = data.kubernetes_secret.vault-injector-token[0].data.token
   depends_on = [
     module.vault_injector
   ]
@@ -77,7 +77,7 @@ module "endpoint_bots_k8s_auth_role" {
   source = "../vault_k8s_auth_role"
   count = length(var.endpoint_bots_vault_policy_definitions) > 0 ? 1 : 0
   backend = module.vault_auth_backend[0].this.path
-  name = "${var.environment}-${var.endpoint_bots_name}"
+  name = var.endpoint_bots_name
   bound_service_account_names = [var.endpoint_bots_name]
   bound_service_account_namespaces = [var.endpoint_bots_namespace]
   policy_definitions = var.endpoint_bots_vault_policy_definitions

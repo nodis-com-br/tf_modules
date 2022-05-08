@@ -1,7 +1,3 @@
-variable "environment" {}
-
-variable "cluster_name" {}
-
 variable "cluster_host" {}
 
 variable "cluster_ca_certificate" {}

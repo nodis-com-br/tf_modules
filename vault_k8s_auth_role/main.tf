@@ -1,5 +1,5 @@
 resource "vault_policy" "this" {
-  name = "${var.backend}_${var.name}"
+  name = replace("${var.backend}_${var.name}", "/", "_")
   policy = join("\n\n", var.policy_definitions)
 }
 
