@@ -1,5 +1,5 @@
 resource "vault_azure_secret_backend_role" "this" {
-  backend = var.backend.path
+  backend = try(var.backend.path, var.backend)
   role = var.name
   ttl = var.ttl
   max_ttl = var.max_ttl

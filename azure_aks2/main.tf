@@ -27,7 +27,7 @@ resource "azurerm_kubernetes_cluster" "this" {
   role_based_access_control_enabled = var.role_based_access_control_enabled
   service_principal {
     client_id = module.service_principal.application.application_id
-    client_secret = module.service_principal.password.value
+    client_secret = module.service_principal.password
   }
   network_profile {
     outbound_type = var.network_outbound_type

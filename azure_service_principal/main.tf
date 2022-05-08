@@ -12,7 +12,7 @@ resource "azuread_application" "this" {
     }
   }
   dynamic required_resource_access {
-    for_each = local.resource_accesses
+    for_each = var.resource_accesses
     content {
       resource_app_id = required_resource_access.value.resource_app_id
       dynamic resource_access {
@@ -53,7 +53,7 @@ resource "azuread_group_member" "this" {
 }
 
 resource "azurerm_role_assignment" "this" {
-  for_each = local.roles
+  for_each = var.roles
   scope = each.value.scope
   role_definition_name = each.value.definition_name
   principal_id = azuread_service_principal.this.object_id
@@ -67,15 +67,4 @@ module "vault_role" {
   max_ttl = var.vault_max_ttl
   backend = var.vault_secrets_backend
   application_object_id = azuread_application.this.object_id
-}
-
-resource "vault_generic_secret" "this" {
-  count = var.save_credentials ? 1 : 0
-  path = "${var.vault_kv_backend}/azure/service_principal/${var.name}"
-  data_json = jsonencode({
-    client_id = azuread_application.this.application_id
-    client_secret = try(azuread_service_principal_password.this.0, {value = null}).value
-    subscription_id = data.azurerm_client_config.current.subscription_id
-    tenant_id = data.azurerm_client_config.current.tenant_id
-  })
 }

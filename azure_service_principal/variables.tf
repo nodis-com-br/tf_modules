@@ -20,10 +20,6 @@ variable "create_password" {
   default = false
 }
 
-variable "builtin_resource_accesses" {
-  default = []
-}
-
 variable "resource_accesses" {
   default = {}
 }

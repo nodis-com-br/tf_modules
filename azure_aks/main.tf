@@ -28,7 +28,7 @@ resource "azurerm_kubernetes_cluster" "this" {
   public_network_access_enabled = var.public_network_access_enabled
   service_principal {
     client_id = module.service_principal.application.application_id
-    client_secret = module.service_principal.password.value
+    client_secret = module.service_principal.password
   }
   network_profile {
     network_plugin = "kubenet"
