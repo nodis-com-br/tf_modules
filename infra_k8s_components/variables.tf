@@ -19,6 +19,8 @@ variable "file_manifests" {
 
 #######################################
 
+variable "vault_backend_path" {}
+
 variable "vault_secrets_service_account_name" {
   default = "vault-secrets-backend"
 }
@@ -34,10 +36,6 @@ variable "vault_secrets_service_account_ruleset" {
 
 variable "vault_secrets_backend_type" {
   default = "kubernetes"
-}
-
-variable "vault_secrets_backend_path" {
-  default = "kubernetes/"
 }
 
 variable "vault_chart" {

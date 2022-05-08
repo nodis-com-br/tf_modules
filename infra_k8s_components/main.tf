@@ -61,7 +61,7 @@ module "vault_injector" {
 module "vault_auth_backend" {
   source = "../vault_k8s_auth"
   count = length(var.vault_injector_chart_values) > 0 ? 1 : 0
-  path = var.cluster_name
+  path =
   host = var.cluster_host
   ca_certificate = var.cluster_ca_certificate
   token = data.kubernetes_secret.vault-injector-token.0.data.token
