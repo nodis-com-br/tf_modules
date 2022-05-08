@@ -41,7 +41,7 @@ resource "null_resource" "rotate_role_password" {
     password = vault_database_secret_backend_connection.this.data.password
   }
   provisioner "local-exec" {
-    command = "VAULT_TOKEN=${data.vault_generic_secret.token.data.id} vault write -force ${var.backend}/rotate-root/${vault_database_secret_backend_connection.this.name}"
+    command = "VAULT_TOKEN=${data.vault_generic_secret.token.data.id} vault write -force ${vault_database_secret_backend_connection.this.backend}/rotate-root/${vault_database_secret_backend_connection.this.name}"
   }
   depends_on = [
     vault_database_secret_backend_connection.this

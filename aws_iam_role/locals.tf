@@ -1,8 +1,4 @@
 locals {
-  defaults = {
-    vault_backend = "aws"
-    vault_credential_type = "assume_role"
-  }
   assume_role_policies = {
     iam_role = jsonencode({
       Version = "2012-10-17"

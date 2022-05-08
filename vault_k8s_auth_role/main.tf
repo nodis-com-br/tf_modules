@@ -1,11 +1,10 @@
 resource "vault_policy" "this" {
-  name = "${var.backend}_${var.name}"
+  name = replace("${try(var.backend.path, var.backend)}_${var.name}", "/", "_")
   policy = join("\n\n", var.policy_definitions)
 }
 
-
 resource "vault_kubernetes_auth_backend_role" "this" {
-  backend = var.backend
+  backend = try(var.backend.path, var.backend)
   role_name = var.name
   audience = var.audience
   bound_service_account_names = var.bound_service_account_names

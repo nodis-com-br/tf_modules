@@ -4,7 +4,7 @@ resource "vault_policy" "this" {
 }
 
 resource "vault_azure_auth_backend_role" "this" {
-  backend = var.backend.path
+  backend = try(var.backend.path, var.backend)
   role = var.role
   bound_service_principal_ids = var.bound_service_principal_ids
   bound_subscription_ids = var.bound_subscription_ids
