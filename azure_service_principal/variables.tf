@@ -35,3 +35,23 @@ variable "homepage_url" {
 variable "save_credentials" {
   default = false
 }
+
+variable "vault_secrets_backend" {
+  default = "azure/"
+}
+
+variable "vault_kv_backend" {
+  default = "secret/"
+}
+
+variable "vault_role" {
+  default = null
+}
+
+variable "vault_ttl" {
+  default = null
+}
+
+variable "vault_max_ttl" {
+  default = null
+}

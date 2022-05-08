@@ -59,9 +59,19 @@ resource "azurerm_role_assignment" "this" {
   principal_id = azuread_service_principal.this.object_id
 }
 
+module "vault_role" {
+  source = "../vault_azure_secrets_role"
+  count = var.vault_role != null ? 1 : 0
+  name = var.vault_role
+  ttl = var.vault_ttl
+  max_ttl = var.vault_max_ttl
+  backend = var.vault_secrets_backend
+  application_object_id = azuread_application.this.object_id
+}
+
 resource "vault_generic_secret" "this" {
   count = var.save_credentials ? 1 : 0
-  path = "${module.defaults.azure.vault_kv_path}/service_principal/${var.name}"
+  path = "${var.vault_kv_backend}/azure/service_principal/${var.name}"
   data_json = jsonencode({
     client_id = azuread_application.this.application_id
     client_secret = try(azuread_service_principal_password.this.0, {value = null}).value
