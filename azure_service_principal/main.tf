@@ -1,7 +1,3 @@
-module "defaults" {
-  source = "../_azure_defaults"
-}
-
 resource "azuread_application" "this" {
   display_name = var.name
   web {
