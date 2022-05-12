@@ -1,4 +1,4 @@
-### Manifests #########################
+# Manifests ###################################################################
 
 module "http_manifests" {
   source = "../kubectl_manifests"
@@ -20,8 +20,7 @@ module "file_manifests" {
   }
 }
 
-
-### Vault #############################
+# Vault #######################################################################
 
 module "vault_secrets_service_account" {
   source = "../kubernetes_service_account"
@@ -37,9 +36,9 @@ module "vault_secrets_service_account" {
 module "vault_secrets_backend" {
   source = "../vault_k8s_secrets"
   count = length(var.vault_secrets_service_account_ruleset) > 0 ? 1 : 0
-  type = var.vault_secrets_backend_type
-  path = var.vault_backend_path
-  host = var.cluster_host
+  type = var.vault_backend_type
+  path = "${var.vault_backend_type}/${var.cluster.this.name}"
+  host = var.cluster.credentials.host
   ca_cert = module.vault_secrets_service_account[0].ca_crt
   jwt = module.vault_secrets_service_account[0].token
 }
@@ -61,17 +60,16 @@ module "vault_injector" {
 module "vault_auth_backend" {
   source = "../vault_k8s_auth"
   count = length(var.vault_injector_chart_values) > 0 ? 1 : 0
-  path = var.vault_backend_path
-  host = var.cluster_host
-  ca_certificate = var.cluster_ca_certificate
+  path = "${var.vault_backend_type}/${var.cluster.this.name}"
+  host = var.cluster.credentials.host
+  ca_certificate = var.cluster.credentials.cluster_ca_certificate
   token = data.kubernetes_secret.vault-injector-token[0].data.token
   depends_on = [
     module.vault_injector
   ]
 }
 
-
-### Endpoint Bots #####################
+# botland #####################################################################
 
 module "endpoint_bots_k8s_auth_role" {
   source = "../vault_k8s_auth_role"
@@ -79,19 +77,19 @@ module "endpoint_bots_k8s_auth_role" {
   backend = module.vault_auth_backend[0].this.path
   name = var.endpoint_bots_name
   bound_service_account_names = [var.endpoint_bots_name]
-  bound_service_account_namespaces = [var.endpoint_bots_namespace]
+  bound_service_account_namespaces = [var.bots_namespace]
   policy_definitions = var.endpoint_bots_vault_policy_definitions
 }
 
 module "endpoint_bots" {
   source = "../helm_release"
-  count = length(var.endpoint_bots_values) > 0 ? 1 : 0
+  count = length(var.endpoint_bots_chart_values) > 0 ? 1 : 0
   name = var.endpoint_bots_name
-  namespace = var.endpoint_bots_namespace
+  namespace = var.bots_namespace
   chart = var.endpoint_bots_chart
   chart_version = var.endpoint_bots_chart_version
   repository = var.default_chart_repository
-  values = var.endpoint_bots_values
+  values = var.endpoint_bots_chart_values
   depends_on = [
     module.endpoint_bots_k8s_auth_role[0]
   ]
@@ -100,8 +98,35 @@ module "endpoint_bots" {
   }
 }
 
+module "ghcr_credentials_bot_k8s_auth_role" {
+  source = "../vault_k8s_auth_role"
+  count = length(var.ghcr_credentials_bot_vault_policy_definitions) > 0 ? 1 : 0
+  backend = module.vault_auth_backend[0].this.path
+  name = var.ghcr_credentials_bot_name
+  bound_service_account_names = [var.ghcr_credentials_bot_name]
+  bound_service_account_namespaces = [var.bots_namespace]
+  policy_definitions = var.ghcr_credentials_bot_vault_policy_definitions
+}
 
-### Kong Ingress Controllers ##########
+module "ghcr_credentials_bot" {
+  source = "../helm_release"
+  count = length(var.ghcr_credentials_bot_chart_values) > 0 ? 1 : 0
+  name = var.ghcr_credentials_bot_name
+  namespace = var.bots_namespace
+  chart = var.vault_bot_chart
+  chart_version = var.vault_bot_chart_version
+  repository = var.default_chart_repository
+  wait = false
+  values = var.ghcr_credentials_bot_chart_values
+  depends_on = [
+    module.ghcr_credentials_bot_k8s_auth_role[0]
+  ]
+  providers = {
+    helm = helm
+  }
+}
+
+# Kong ########################################################################
 
 module "kong_public" {
   source = "../helm_release"
@@ -221,22 +246,7 @@ module "kongplugin_gh_auth" {
   }
 }
 
-
-### Miscellanea ########################
-
-module "secret_ghcr_credentials" {
-  source = "../helm_release"
-  for_each = toset(var.secret_ghcr_credentials_chart_namespaces)
-  name = "ghcr-credentials"
-  namespace = each.key
-  chart = var.secret_chart
-  chart_version = var.secret_chart_version
-  repository = var.default_chart_repository
-  values = var.secret_ghcr_credentials_chart_values
-  providers = {
-    helm = helm
-  }
-}
+# Miscellanea #################################################################
 
 module "redis" {
   source = "../helm_release"

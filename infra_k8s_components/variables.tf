@@ -1,6 +1,16 @@
-variable "cluster_host" {}
+# Cluster #####################################################################
 
-variable "cluster_ca_certificate" {}
+variable "cluster" {
+  type = object({
+    this = object({name = string})
+    credentials = object({
+      host = string
+      cluster_ca_certificate = string
+    })
+  })
+}
+
+# Manifests ###################################################################
 
 variable "http_manifests" {
   type = list(string)
@@ -12,10 +22,11 @@ variable "file_manifests" {
   default = []
 }
 
+# Vault #######################################################################
 
-#######################################
-
-variable "vault_backend_path" {}
+variable "vault_backend_type" {
+  default = "kubernetes"
+}
 
 variable "vault_secrets_service_account_name" {
   default = "vault-secrets-backend"
@@ -28,10 +39,6 @@ variable "vault_secrets_service_account_ruleset" {
     verbs = list(string)
   }))
   default = []
-}
-
-variable "vault_secrets_backend_type" {
-  default = "kubernetes"
 }
 
 variable "vault_chart" {
@@ -63,7 +70,7 @@ variable "vault_token_reviewer_sa" {
   default = "vault-injector"
 }
 
-#######################################
+# Custom charts ###############################################################
 
 variable "default_chart_repository" {
   type = string
@@ -100,104 +107,17 @@ variable "kongplugin_chart_version" {
   default = "2.0.1"
 }
 
-variable "endpoint_bots_chart" {
+variable "vault_bot_chart" {
   type = string
-  default = "endpoint-bots"
+  default = "vault-bot"
 }
 
-variable "endpoint_bots_chart_version" {
+variable "vault_bot_chart_version" {
   type = string
-  default = "2.0.22"
-}
-#######################################
-
-variable "secret_ghcr_credentials_chart_namespaces" {
-  type = list(string)
-  default = []
+  default = "1.0.11"
 }
 
-variable "secret_ghcr_credentials_chart_values" {
-  type = list(string)
-  default = []
-}
-
-#######################################
-
-variable "kongingress_default_override_namespaces_public" {
-  type = list(string)
-  default = []
-}
-
-variable "kongingress_default_override_namespaces_private" {
-  type = list(string)
-  default = []
-}
-
-variable "kongingress_default_override_values" {
-  type = list(string)
-  default = []
-}
-
-variable "kongplugin_prometheus_chart_values" {
-  type = list(string)
-  default = []
-}
-
-variable "kongplugin_gh_auth_chart_values" {
-  type = list(string)
-  default = []
-}
-
-#######################################
-
-variable "endpoint_bots_name" {
-  default = "endpoint-bots"
-}
-
-variable "endpoint_bots_namespace" {
-  type = string
-  default = "botland"
-}
-
-variable "endpoint_bots_values" {
-  type = list(string)
-  default = []
-}
-
-variable "endpoint_bots_vault_policy_definitions" {
-  type = list(string)
-  default = []
-}
-
-#######################################
-
-variable "newrelic_chart" {
-  type = string
-  default = "nri-bundle"
-}
-
-variable "newrelic_chart_version" {
-  type = string
-  default = "3.4.0"
-}
-
-variable "newrelic_repository" {
-  type = string
-  default = "https://helm-charts.newrelic.com"
-}
-
-variable "newrelic_namespace" {
-  type = string
-  default = "newrelic"
-}
-
-variable "newrelic_values" {
-  type = list(string)
-  default = []
-}
-
-
-#######################################
+# Kong ########################################################################
 
 variable "kong_ingress_classes" {
   default = ["public", "private"]
@@ -233,8 +153,108 @@ variable "kong_private_chart_values" {
   default = []
 }
 
+variable "kongingress_default_override_namespaces_public" {
+  type = list(string)
+  default = []
+}
 
-#######################################
+variable "kongingress_default_override_namespaces_private" {
+  type = list(string)
+  default = []
+}
+
+variable "kongingress_default_override_values" {
+  type = list(string)
+  default = []
+}
+
+variable "kongplugin_prometheus_chart_values" {
+  type = list(string)
+  default = []
+}
+
+variable "kongplugin_gh_auth_chart_values" {
+  type = list(string)
+  default = []
+}
+
+# botland #####################################################################
+
+variable "bots_namespace" {
+  type = string
+  default = "botland"
+}
+
+# endpoint_bots #######################
+
+variable "endpoint_bots_name" {
+  default = "endpoint-bots"
+}
+
+variable "endpoint_bots_chart" {
+  type = string
+  default = "endpoint-bots"
+}
+
+variable "endpoint_bots_chart_version" {
+  type = string
+  default = "2.0.22"
+}
+
+variable "endpoint_bots_chart_values" {
+  type = list(string)
+  default = []
+}
+
+variable "endpoint_bots_vault_policy_definitions" {
+  type = list(string)
+  default = []
+}
+
+# ghcr_credentials_bot ################
+
+variable "ghcr_credentials_bot_name" {
+  default = "ghcr-credentials-bot"
+}
+
+variable "ghcr_credentials_bot_chart_values" {
+  type = list(string)
+  default = []
+}
+
+variable "ghcr_credentials_bot_vault_policy_definitions" {
+  type = list(string)
+  default = []
+}
+
+# New Relic ###################################################################
+
+variable "newrelic_chart" {
+  type = string
+  default = "nri-bundle"
+}
+
+variable "newrelic_chart_version" {
+  type = string
+  default = "3.4.0"
+}
+
+variable "newrelic_repository" {
+  type = string
+  default = "https://helm-charts.newrelic.com"
+}
+
+variable "newrelic_namespace" {
+  type = string
+  default = "newrelic"
+}
+
+variable "newrelic_values" {
+  type = list(string)
+  default = []
+}
+
+# Redis #######################################################################
 
 variable "redis_chart" {
   type = string
