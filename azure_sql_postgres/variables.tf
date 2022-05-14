@@ -29,7 +29,7 @@ variable "psql_version" {
 
 variable "public_access" {
   type = bool
-  default = true
+  default = false
 }
 
 variable "private_endpoint" {
