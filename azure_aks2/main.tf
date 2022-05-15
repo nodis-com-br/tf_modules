@@ -3,16 +3,10 @@ module "service_principal" {
   name = local.cluster_name
   homepage_url = "https://${var.name}.${var.rg.name}"
   create_password = true
-  roles = {
-    vnet = {
-      definition_name = "Reader"
-      scope = var.vnet.id
-    }
-    subnet = {
-      definition_name = "Network Contributor"
-      scope = var.default_node_pool_subnet.id
-    }
-  }
+  roles = merge(
+    var.vnet_id != null ? {vnet = {definition_name = "Reader", scope = var.vnet_id}} : {},
+    {for pool in local.node_pools : pool.name => {definition_name = "Network Contributor", scope = pool.vnet_subnet_id} if pool.vnet_subnet_id != null}
+  )
 }
 
 resource "azurerm_kubernetes_cluster" "this" {
@@ -44,17 +38,17 @@ resource "azurerm_kubernetes_cluster" "this" {
     }
   }
   default_node_pool {
-    name = try(local.default_node_pool.name, var.default_node_pool_name)
-    enable_auto_scaling = try(local.default_node_pool.enable_auto_scaling, var.default_node_pool_enable_auto_scaling)
-    node_count = try(local.default_node_pool.node_count, var.default_node_pool_node_count)
-    min_count = try(local.default_node_pool.min_count, var.default_node_pool_min_count)
-    max_count = try(local.default_node_pool.max_count, var.default_node_pool_max_count)
-    vm_size = try(local.default_node_pool.vm_size, var.default_node_pool_vm_size)
-    vnet_subnet_id = try(local.default_node_pool.subnet.id, var.default_node_pool_subnet.id)
-    orchestrator_version = try(local.default_node_pool.orchestrator_version, var.kubernetes_version)
+    name = local.node_pools[0].name
+    enable_auto_scaling = local.node_pools[0].enable_auto_scaling
+    node_count = local.node_pools[0].node_count
+    min_count = local.node_pools[0].min_count
+    max_count = local.node_pools[0].max_count
+    vm_size = local.node_pools[0].vm_size
+    vnet_subnet_id = local.node_pools[0].vnet_subnet_id
+    orchestrator_version = local.node_pools[0].orchestrator_version
     node_labels = {
-      nodePoolName = try(local.default_node_pool.name, var.default_node_pool_name)
-      nodePoolClass = try(local.default_node_pool.class, var.default_node_pool_class)
+      nodePoolName = local.node_pools[0].name
+      nodePoolClass = local.node_pools[0].class
     }
   }
   lifecycle {
@@ -65,22 +59,21 @@ resource "azurerm_kubernetes_cluster" "this" {
   depends_on = [
     module.service_principal
   ]
-
 }
 
 resource "azurerm_kubernetes_cluster_node_pool" "this" {
-  for_each = local.node_pools
-  name = each.key
+  for_each = length(local.node_pools) > 1 ? {for p in slice(local.node_pools, 1, length(local.node_pools)) : p.name => p} : {}
+  name = each.value.name
   kubernetes_cluster_id = azurerm_kubernetes_cluster.this.id
-  vnet_subnet_id = try(each.value.subnet.id)
-  enable_auto_scaling = try(each.value.enable_auto_scaling, var.default_node_pool_enable_auto_scaling)
-  node_count = try(each.value.node_count, var.default_node_pool_node_count)
-  min_count = try(each.value.min_count, var.default_node_pool_min_count)
-  max_count = try(each.value.max_count, var.default_node_pool_max_count)
-  vm_size = try(each.value.vm_size, var.default_node_pool_vm_size)
-  orchestrator_version = try(each.value.orchestrator_version, var.kubernetes_version)
+  vnet_subnet_id = each.value.vnet_subnet_id
+  enable_auto_scaling = each.value.enable_auto_scaling
+  node_count = each.value.node_count
+  min_count = each.value.min_count
+  max_count = each.value.max_count
+  vm_size = each.value.vm_size
+  orchestrator_version = each.value.orchestrator_version
   node_labels = {
-    nodePoolName = each.key
-    nodePoolClass = try(local.default_node_pool.class, var.default_node_pool_class)
+    nodePoolName = each.value.name
+    nodePoolClass = each.value.class
   }
 }

@@ -271,6 +271,7 @@ module "newrelic" {
   chart_version = var.newrelic_chart_version
   repository = var.newrelic_repository
   values = var.newrelic_values
+  wait = false
   providers = {
     helm = helm
   }
