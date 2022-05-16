@@ -95,7 +95,7 @@ locals {
               "iam:ChangePassword",
               "iam:GetUser"
             ]
-            Resource = "arn:aws:iam::*:user/${var.username}"
+            Resource = "arn:aws:iam::*:user/$${aws:username}"
           }
         ]
       })
@@ -111,7 +111,7 @@ locals {
               "iam:ListAccessKeys",
               "iam:UpdateAccessKey"
             ]
-            Resource = "arn:aws:iam::*:user/${var.username}"
+            Resource = "arn:aws:iam::*:user/$${aws:username}"
           }
         ]
       })
@@ -127,7 +127,7 @@ locals {
               "iam:UpdateSigningCertificate",
               "iam:UploadSigningCertificate"
             ]
-            Resource = "arn:aws:iam::*:user/${var.username}"
+            Resource = "arn:aws:iam::*:user/$${aws:username}"
           }
         ]
       })
@@ -144,7 +144,7 @@ locals {
               "iam:UpdateSSHPublicKey",
               "iam:UploadSSHPublicKey"
             ]
-            Resource = "arn:aws:iam::*:user/${var.username}"
+            Resource = "arn:aws:iam::*:user/$${aws:username}"
           }
         ]
       })
@@ -161,7 +161,7 @@ locals {
               "iam:ResetServiceSpecificCredential",
               "iam:UpdateServiceSpecificCredential"
             ]
-            Resource = "arn:aws:iam::*:user/${var.username}"
+            Resource = "arn:aws:iam::*:user/$${aws:username}"
           }
         ]
       })
@@ -175,7 +175,7 @@ locals {
               "iam:CreateVirtualMFADevice",
               "iam:DeleteVirtualMFADevice"
             ]
-            Resource = "arn:aws:iam::*:mfa/${var.username}"
+            Resource = "arn:aws:iam::*:mfa/$${aws:username}"
           }
         ]
       })
@@ -191,7 +191,7 @@ locals {
               "iam:ListMFADevices",
               "iam:ResyncMFADevice"
             ]
-            Resource = "arn:aws:iam::*:user/${var.username}"
+            Resource = "arn:aws:iam::*:user/$${aws:username}"
           }
         ]
       })
@@ -220,6 +220,5 @@ locals {
         ]
       })
     }
-    vault_kv_path = "secret/aws"
   }
 }

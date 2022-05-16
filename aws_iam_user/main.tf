@@ -4,12 +4,6 @@ resource "aws_iam_user" "this" {
   path = "/"
 }
 
-module "defaults" {
-  source = "../_aws_defaults"
-  username = aws_iam_user.this.name
-}
-
-
 resource "aws_iam_access_key" "this" {
   provider = aws.current
   count = var.access_key ? 1 : 0
@@ -32,20 +26,20 @@ resource "aws_iam_user_login_profile" "this" {
 
 resource "aws_iam_policy" "this" {
   provider = aws.current
-  for_each = local.policies
+  for_each = var.policies
   policy = each.value
 }
 
 resource "aws_iam_user_policy_attachment" "this" {
   provider = aws.current
-  for_each = local.policies
+  for_each = var.policies
   policy_arn = aws_iam_policy.this[each.key].arn
   user = aws_iam_user.this.name
 }
 
 resource "aws_iam_user_policy_attachment" "that" {
   provider = aws.current
-  for_each = {for i, v in concat(var.policy_arns, local.selected_builtin_policy_arns) : i => v}
+  for_each = {for i, v in var.policy_arns : i => v}
   policy_arn = each.value
   user = aws_iam_user.this.name
 }

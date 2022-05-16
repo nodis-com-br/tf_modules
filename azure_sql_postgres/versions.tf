@@ -6,8 +6,5 @@ terraform {
         aws.dns
       ]
     }
-    postgresql = {
-      source = "cyrilgdn/postgresql"
-    }
   }
 }

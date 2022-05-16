@@ -1,7 +1,3 @@
-module "defaults" {
-  source = "../_aws_defaults"
-}
-
 module "bucket" {
   source = "../aws_s3"
   name = var.bucket

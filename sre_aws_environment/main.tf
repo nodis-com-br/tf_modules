@@ -1,7 +1,3 @@
-module "defaults" {
-  source = "../_aws_defaults"
-}
-
 module "iam_password_policy" {
   source = "../aws_iam_account_password_policy"
   providers = {
