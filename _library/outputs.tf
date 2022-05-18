@@ -9,3 +9,7 @@ output "azure" {
 output "ttl" {
   value = local.ttl
 }
+
+output "vault" {
+  value = local.vault
+}

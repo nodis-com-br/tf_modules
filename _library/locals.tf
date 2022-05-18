@@ -10,4 +10,12 @@ locals {
     _30d = 60 * 60 * 24 * 30
     _32d = 60 * 60 * 24 * 32
   }
+  vault = {
+    policy = {
+      read = file("${path.module}/vault_policies/read_path.hcl")
+      write = file("${path.module}/vault_policies/write_path.hcl")
+      list = file("${path.module}/vault_policies/list_path.hcl")
+      deny = file("${path.module}/vault_policies/deny_path.hcl")
+    }
+  }
 }
