@@ -1,6 +1,5 @@
 locals {
   azure = {
-    client_config = data.azurerm_client_config.current
     roles = {
       contributor =  {
         definition_name = "Contributor"
