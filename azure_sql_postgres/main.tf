@@ -18,6 +18,7 @@ resource "azurerm_postgresql_server" "this" {
   ssl_enforcement_enabled = true
   ssl_minimal_tls_version_enforced = "TLS1_2"
   public_network_access_enabled = var.public_access
+
   tags = var.tags
   lifecycle {
     ignore_changes = [
