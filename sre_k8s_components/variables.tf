@@ -38,7 +38,18 @@ variable "vault_secrets_service_account_ruleset" {
     resources = list(string)
     verbs = list(string)
   }))
-  default = []
+  default = [
+    {
+      api_groups = [""]
+      resources = ["secrets", "serviceaccounts"]
+      verbs = ["get", "list", "watch", "create", "update", "patch", "delete"]
+    },
+    {
+      api_groups = ["rbac.authorization.k8s.io"]
+      resources = ["roles", "clusterroles", "rolebindings", "clusterrolebindings"]
+      verbs = ["*"]
+    }
+  ]
 }
 
 variable "vault_chart" {
