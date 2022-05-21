@@ -23,7 +23,7 @@ variable "skip_crds" {
 }
 
 variable "create_namespace" {
-  default = true
+  default = false
 }
 
 variable "cleanup_on_fail" {
