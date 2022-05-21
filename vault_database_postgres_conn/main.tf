@@ -18,6 +18,7 @@ resource "postgresql_role" "this" {
 resource "vault_database_secret_backend_connection" "this" {
   name = var.database
   backend = try(var.backend.path, var.backend)
+  verify_connection = var.verify_connection
   root_rotation_statements = [
     "ALTER ROLE \"${postgresql_role.this.name}\" WITH PASSWORD '{{password}}';"
   ]

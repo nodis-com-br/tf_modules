@@ -4,6 +4,10 @@ variable "database" {}
 
 variable "backend" {}
 
+variable "verify_connection" {
+  default = true
+}
+
 variable "allowed_roles" {
   type = list(string)
   default = null
