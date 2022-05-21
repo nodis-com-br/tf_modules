@@ -3,11 +3,11 @@ locals {
     roles = {
       contributor =  {
         definition_name = "Contributor"
-        scope = "/subscriptions/${data.azurerm_client_config.current.subscription_id}"
+        scope = "/subscriptions/${var.azure_subscription_id}"
       }
       owner =  {
         definition_name = "Owner"
-        scope = "/subscriptions/${data.azurerm_client_config.current.subscription_id}"
+        scope = "/subscriptions/${var.azure_subscription_id}"
       }
     }
     resource_accesses = {
