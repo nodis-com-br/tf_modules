@@ -52,5 +52,32 @@ locals {
         }
       }
     }
+    source_image_reference = {
+      debian_10 = {
+        publisher = "debian"
+        offer = "debian-10"
+        sku = "10"
+        version = "latest"
+      }
+      pfsense_plus = {
+        publisher = "netgate"
+        offer = "netgate-pfsense-plus-fw-vpn-router"
+        sku = "netgate-pfsense-plus"
+        version = "21.05.0"
+      }
+      windows_server_2019 = {
+        publisher = "MicrosoftWindowsServer"
+        offer = "WindowsServer"
+        sku = "2019-Datacenter"
+        version = "latest"
+      }
+    }
+    marketplace_plans = {
+      pfsense_plus = {
+        name = "netgate-pfsense-plus"
+        product = "netgate-pfsense-plus-fw-vpn-router"
+        publisher = "netgate"
+      }
+    }
   }
 }
