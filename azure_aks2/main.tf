@@ -5,7 +5,7 @@ module "service_principal" {
   create_password = true
   roles = merge(
     var.vnet_id != null ? {vnet = {definition_name = "Reader", scope = var.vnet_id}} : {},
-    {for pool in local.node_pools : pool.name => {definition_name = "Network Contributor", scope = pool.vnet_subnet_id} if pool.vnet_subnet_id != null}
+    {for id in local.subnet_ids : id => {definition_name = "Network Contributor", scope = id}}
   )
 }
 
@@ -38,17 +38,17 @@ resource "azurerm_kubernetes_cluster" "this" {
     }
   }
   default_node_pool {
-    name = local.node_pools[0].name
-    enable_auto_scaling = local.node_pools[0].enable_auto_scaling
-    node_count = local.node_pools[0].node_count
-    min_count = local.node_pools[0].min_count
-    max_count = local.node_pools[0].max_count
-    vm_size = local.node_pools[0].vm_size
-    vnet_subnet_id = local.node_pools[0].vnet_subnet_id
-    orchestrator_version = local.node_pools[0].orchestrator_version
+    name = local.node_pools[local.default_pool_index].name
+    enable_auto_scaling = local.node_pools[local.default_pool_index].enable_auto_scaling
+    node_count = local.node_pools[local.default_pool_index].node_count
+    min_count = local.node_pools[local.default_pool_index].enable_auto_scaling ? local.node_pools[local.default_pool_index].min_count : null
+    max_count = local.node_pools[local.default_pool_index].enable_auto_scaling ? local.node_pools[local.default_pool_index].max_count : null
+    vm_size = local.node_pools[local.default_pool_index].vm_size
+    vnet_subnet_id = local.node_pools[local.default_pool_index].vnet_subnet_id
+    orchestrator_version = local.node_pools[local.default_pool_index].orchestrator_version
     node_labels = {
-      nodePoolName = local.node_pools[0].name
-      nodePoolClass = local.node_pools[0].class
+      nodePoolName = local.node_pools[local.default_pool_index].name
+      nodePoolClass = local.node_pools[local.default_pool_index].class
     }
   }
   lifecycle {
@@ -62,14 +62,14 @@ resource "azurerm_kubernetes_cluster" "this" {
 }
 
 resource "azurerm_kubernetes_cluster_node_pool" "this" {
-  for_each = length(local.node_pools) > 1 ? {for p in slice(local.node_pools, 1, length(local.node_pools)) : p.name => p} : {}
+  for_each = {for i, v in local.node_pools : v.name => v if i != local.default_pool_index}
   name = each.value.name
   kubernetes_cluster_id = azurerm_kubernetes_cluster.this.id
   vnet_subnet_id = each.value.vnet_subnet_id
   enable_auto_scaling = each.value.enable_auto_scaling
   node_count = each.value.node_count
-  min_count = each.value.min_count
-  max_count = each.value.max_count
+  min_count = each.value.enable_auto_scaling ? each.value.min_count : null
+  max_count = each.value.enable_auto_scaling ? each.value.max_count : null
   vm_size = each.value.vm_size
   orchestrator_version = each.value.orchestrator_version
   node_labels = {

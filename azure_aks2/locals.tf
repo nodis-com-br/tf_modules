@@ -2,6 +2,7 @@ locals {
   cluster_name = "${var.rg.name}-${var.name}"
   node_pools = [for k, v in var.node_pools : {
     name = k
+    default = try(v.default, false)
     enable_auto_scaling = try(v.enable_auto_scaling, var.default_node_pool_enable_auto_scaling)
     node_count = try(v.node_count, var.default_node_pool_node_count)
     min_count = try(v.min_count, var.default_node_pool_min_count)
@@ -11,4 +12,6 @@ locals {
     orchestrator_version = try(v.orchestrator_version, var.kubernetes_version)
     class = try(v.class, var.default_node_pool_class)
   }]
+  subnet_ids = distinct([for pool in local.node_pools : pool.vnet_subnet_id])
+  default_pool_index = try(index(local.node_pools.*.default, true), 0)
 }
