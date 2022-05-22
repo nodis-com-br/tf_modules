@@ -51,6 +51,7 @@ module "vault_injector" {
   chart = var.vault_chart
   chart_version = var.vault_chart_version
   repository = var.vault_chart_repository
+  create_namespace = true
   values = var.vault_injector_chart_values
   providers = {
     helm = helm
@@ -89,6 +90,7 @@ module "endpoint_bots" {
   chart = var.endpoint_bots_chart
   chart_version = var.endpoint_bots_chart_version
   repository = var.default_chart_repository
+  create_namespace = true
   values = var.endpoint_bots_chart_values
   depends_on = [
     module.endpoint_bots_k8s_auth_role[0]
@@ -116,7 +118,7 @@ module "ghcr_credentials_bot" {
   chart = var.vault_bot_chart
   chart_version = var.vault_bot_chart_version
   repository = var.default_chart_repository
-  wait = false
+  create_namespace = true
   values = var.ghcr_credentials_bot_chart_values
   depends_on = [
     module.ghcr_credentials_bot_k8s_auth_role[0]
@@ -137,6 +139,7 @@ module "kong_public" {
   chart_version = var.kong_chart_version
   repository = var.kong_chart_repository
   values = var.kong_public_chart_values
+  create_namespace = true
   skip_crds = true
   depends_on = [
     module.http_manifests
@@ -154,6 +157,7 @@ module "kong_private" {
   chart = var.kong_chart
   chart_version = var.kong_chart_version
   repository = var.kong_chart_repository
+  create_namespace = true
   skip_crds = true
   values = var.kong_private_chart_values
   depends_on = [
@@ -172,6 +176,7 @@ module "kongingress_default_override_public" {
   chart = var.kongingress_chart
   repository = var.default_chart_repository
   chart_version = var.kongingress_chart_version
+  create_namespace = true
   values = concat(var.kongingress_default_override_values, [
     jsonencode({
       annotations = {"kubernetes.io/ingress.class" = "kong-public"}
@@ -193,6 +198,7 @@ module "kongingress_default_override_private" {
   chart = var.kongingress_chart
   repository = var.default_chart_repository
   chart_version = var.kongingress_chart_version
+  create_namespace = true
   values = concat(var.kongingress_default_override_values, [
     jsonencode({
       annotations = {"kubernetes.io/ingress.class" = "kong-private"}
@@ -256,6 +262,7 @@ module "redis" {
   chart = var.redis_chart
   chart_version = var.redis_chart_version
   repository = var.redis_chart_repository
+  create_namespace = true
   values = var.redis_chart_values
   providers = {
     helm = helm
@@ -271,7 +278,7 @@ module "newrelic" {
   chart_version = var.newrelic_chart_version
   repository = var.newrelic_repository
   values = var.newrelic_values
-  wait = false
+  create_namespace = true
   providers = {
     helm = helm
   }

@@ -32,6 +32,7 @@ module "rabbitmq" {
   chart = var.helm_chart
   chart_version = var.helm_chart_version
   repository = var.helm_chart_repository
+  create_namespace = true
   values = var.helm_chart_values
   providers = {
     helm = helm

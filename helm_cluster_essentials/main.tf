@@ -5,6 +5,7 @@ module "ghcr_credentials" {
   namespace = each.key
   chart = var.ghcr_credentials_chart
   chart_version = var.ghcr_credentials_chart_version
+  create_namespace = true
   values = var.ghcr_credentials_values
   providers = {
     helm = helm
@@ -18,6 +19,7 @@ module "kong_default_override" {
   namespace = each.key
   chart = var.kong_default_override_chart
   chart_version = var.kong_default_override_chart_version
+  create_namespace = true
   values = concat(var.kong_default_override_values, [local.default_values.kong_default_override])
   providers = {
     helm = helm
@@ -31,6 +33,7 @@ module "endpoint_bots" {
   namespace = var.endpoint_bots_namespace
   chart = var.endpoint_bots_chart
   chart_version = var.endpoint_bots_chart_version
+  create_namespace = true
   values = var.endpoint_bots_values
   providers = {
     helm = helm
@@ -45,6 +48,7 @@ module "newrelic" {
   chart = var.newrelic_chart
   chart_version = var.newrelic_chart_version
   repository = var.newrelic_repository
+  create_namespace = true
   values = var.newrelic_values
   providers = {
     helm = helm
@@ -59,6 +63,7 @@ module "vault_injector" {
   chart = var.vault_injector_chart
   chart_version = var.vault_injector_chart_version
   repository = var.vault_injector_repository
+  create_namespace = true
   values = var.vault_injector_values
   providers = {
     helm = helm
