@@ -50,6 +50,17 @@ resource "azurerm_kubernetes_cluster" "this" {
       nodePoolName = local.node_pools[local.default_pool_index].name
       nodePoolClass = local.node_pools[local.default_pool_index].class
     }
+    dynamic "linux_os_config" {
+      for_each =  local.node_pools[local.default_pool_index].linux_os_config
+      content {
+        dynamic "sysctl_config" {
+          for_each = try(linux_os_config.value.sysctl_config, {})
+          content {
+            vm_max_map_count = try(sysctl_config.value.vm_max_map_count, null)
+          }
+        }
+      }
+    }
   }
   lifecycle {
     ignore_changes = [
@@ -75,5 +86,16 @@ resource "azurerm_kubernetes_cluster_node_pool" "this" {
   node_labels = {
     nodePoolName = each.value.name
     nodePoolClass = each.value.class
+  }
+  dynamic "linux_os_config" {
+    for_each =  each.value.linux_os_config
+    content {
+      dynamic "sysctl_config" {
+        for_each = try(linux_os_config.value.sysctl_config, [])
+        content {
+          vm_max_map_count = try(sysctl_config.value.vm_max_map_count, null)
+        }
+      }
+    }
   }
 }

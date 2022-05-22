@@ -1,7 +1,15 @@
-data "kubernetes_secret" "default_user" {
+data "kubernetes_secret" "this" {
   provider = kubernetes
   metadata {
-    name = "${module.rabbitmq.this.name}-default-user"
-    namespace = module.rabbitmq.this.namespace
+    name = "${module.elasticsearch.this.name}-es-elastic-user"
+    namespace = module.elasticsearch.this.namespace
+  }
+}
+
+data "kubernetes_service" "this" {
+  provider = kubernetes
+  metadata {
+    name = "${module.elasticsearch.this.name}-es-http"
+    namespace = module.elasticsearch.this.namespace
   }
 }

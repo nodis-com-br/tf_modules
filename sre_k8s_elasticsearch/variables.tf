@@ -1,33 +1,31 @@
 variable "name" {}
 
-variable "domain" {}
-
-variable "management_schema" {
+variable "schema" {
   default = "https"
 }
 
-variable "management_port" {
-  default = "15671"
+variable "port" {
+  default = "9200"
 }
 
 variable "namespace" {
   type = string
-  default = "rabbitmq"
+  default = "elasticsearch"
 }
 
 variable "helm_chart" {
   type = string
-  default = "rabbitmq-cluster"
+  default = "elasticsearch"
 }
 
 variable "helm_chart_version" {
   type = string
-  default = "2.0.8"
+  default = "2.0.2"
 }
 
 variable "helm_chart_repository" {
   type = string
-  default = "https://charts.nodis.com.br/"
+  default = "https://charts.nodis.com.br"
 }
 
 variable "helm_chart_values" {
@@ -35,27 +33,17 @@ variable "helm_chart_values" {
   default = []
 }
 
-variable "vault_role" {
-  default = null
+variable "vault_bot_chart" {
+  type = string
+  default = "vault-bot"
 }
 
-variable "vault_secret_path" {
-  default = null
+variable "vault_bot_chart_version" {
+  type = string
+  default = "1.0.13"
 }
 
-variable "vault_kv_backend" {
-  default = {path = "secret/"}
-}
-
-variable "kubernetes_auth_backend" {
-  default = null
-}
-
-variable "vault_policy_definitions" {
+variable "aws_bot_chart_values" {
   type = list(string)
   default = []
-}
-
-variable "vault_values" {
-  default = null
 }
