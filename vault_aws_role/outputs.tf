@@ -3,6 +3,6 @@ output "this" {
   sensitive = true
 }
 
-output "sts_role_path" {
-  value = "${vault_aws_secret_backend_role.this.backend}/sts/${vault_aws_secret_backend_role.this.name}"
+output "role_path" {
+  value = "${vault_aws_secret_backend_role.this.backend}/${vault_aws_secret_backend_role.this.credential_type == "assumed_role" ? "sts" : "creds"}/${vault_aws_secret_backend_role.this.name}"
 }

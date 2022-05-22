@@ -7,7 +7,7 @@ output "vault_role_name" {
   sensitive = true
 }
 
-output "vault_sts_role_path" {
-  value = var.vault_role != null ? module.vault_role[0].sts_role_path : null
+output "vault_role_path" {
+  value = var.vault_role != null ? module.vault_role[0].role_path : null
   sensitive = true
 }
