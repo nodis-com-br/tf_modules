@@ -1,5 +1,7 @@
 variable "name" {}
 
+variable "environment" {}
+
 variable "schema" {
   default = "https"
 }

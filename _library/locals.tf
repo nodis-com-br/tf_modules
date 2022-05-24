@@ -16,7 +16,6 @@ locals {
       write = file("${path.module}/vault_policies/write_path.hcl")
       list = file("${path.module}/vault_policies/list_path.hcl")
       deny = file("${path.module}/vault_policies/deny_path.hcl")
-      read2 = jsonencode({path = {"%[1]s" = {capabilities = ["read"]}}})
     }
   }
 }

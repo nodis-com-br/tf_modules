@@ -5,9 +5,9 @@ output "this" {
 output "credentials" {
   sensitive = true
   value = {
-    url = "${var.schema}://${try(data.kubernetes_service.this.metadata[0].annotations["nodis.com.br/managed-domain"], data.kubernetes_service.this.spec[0].load_balancer_ip)}:${var.port}"
     username = "elastic"
-    password = data.kubernetes_secret.this.data.elastic
+    password = try(data.kubernetes_secret.this.data.elastic, null)
+    url = try("${var.schema}://${data.kubernetes_service.this.metadata[0].annotations["nodis.com.br/managed-domain"]}:${var.port}", null)
   }
 }
 

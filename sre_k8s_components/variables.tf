@@ -59,7 +59,7 @@ variable "vault_chart" {
 
 variable "vault_chart_version" {
   type = string
-  default = null
+  default = "0.16.1"
 }
 
 variable "vault_chart_repository" {
