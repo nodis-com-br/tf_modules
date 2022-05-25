@@ -10,7 +10,7 @@ module "vault_kv_secret" {
   path = var.vault_secret_path
   backend = var.vault_kv_backend
   data_json = jsonencode({
-    username = "admin"
+    username = var.vault_secret_username
     password = random_password.this[0].result
   })
 }

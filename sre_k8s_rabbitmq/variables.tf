@@ -39,6 +39,10 @@ variable "vault_role" {
   default = null
 }
 
+variable "vault_secret_username" {
+  default = "admin"
+}
+
 variable "vault_secret_path" {
   default = null
 }
