@@ -24,44 +24,23 @@ resource "aws_iam_user_login_profile" "this" {
   }
 }
 
-resource "aws_iam_policy" "this" {
+resource "aws_iam_user_policy" "this" {
   provider = aws.current
-  for_each = var.policies
-  policy = each.value
+  user = aws_iam_user.this.name
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = concat(var.policy_statements, [for a in var.assume_role_arns : {
+      Effect = "Allow",
+      Action = ["sts:AssumeRole"],
+      Resource = a
+    }])
+  })
 }
 
 resource "aws_iam_user_policy_attachment" "this" {
   provider = aws.current
-  for_each = var.policies
-  policy_arn = aws_iam_policy.this[each.key].arn
-  user = aws_iam_user.this.name
-}
-
-resource "aws_iam_user_policy_attachment" "that" {
-  provider = aws.current
   for_each = {for i, v in var.policy_arns : i => v}
   policy_arn = each.value
   user = aws_iam_user.this.name
-}
-
-resource "aws_iam_user_policy" "assume_role" {
-  provider = aws.current
-  for_each = toset(var.assume_role_arns)
-  user = aws_iam_user.this.name
-  policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Effect = "Allow",
-        Action = [
-          "sts:AssumeRole"
-        ],
-        Resource = [
-          each.key
-        ]
-      }
-    ]
-  })
-
 }
 

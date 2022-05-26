@@ -34,7 +34,7 @@ resource "aws_instance" "this" {
   instance_type = var.type
   monitoring = false
   key_name = var.key_name
-  subnet_id = element(var.subnets, (local.subnet_count + count.index) % local.subnet_count).id
+  subnet_id = element(var.subnets, (length(var.subnets) + count.index) % local.subnet_count).id
   iam_instance_profile = var.instance_role ? aws_iam_instance_profile.this.0.id : null
   vpc_security_group_ids = [
     module.security_group.this.id
@@ -45,10 +45,7 @@ resource "aws_instance" "this" {
     volume_size = var.root_volume.volume_size
     delete_on_termination = var.root_volume.delete_on_termination
   }
-
-  tags = merge({
-    Name = "${var.name}${format("%04.0f", count.index + 1)}"
-  }, var.tags)
+  tags = merge({Name = "${var.name}${format("%04.0f", count.index + 1)}"}, var.tags)
 }
 
 
@@ -66,10 +63,6 @@ resource "aws_volume_attachment" "this" {
   volume_id   = aws_ebs_volume.this[each.key].id
   instance_id = aws_instance.this[each.value.host_index].id
 }
-
-
-
-
 resource "aws_eip" "this" {
   provider = aws.current
   count = var.fixed_public_ip ? var.host_count : 0

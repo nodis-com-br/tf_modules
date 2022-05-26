@@ -10,23 +10,17 @@ module "user" {
   count = var.access_key ? 1 : 0
   username = var.username == null ? var.name : var.username
   access_key = true
-  policies = {
-    this = jsonencode({
-      Version = "2012-10-17",
-      Statement = [
-        {
-          Sid = "VaultKMSUnseal"
-          Effect = "Allow",
-          Action = [
-            "kms:Encrypt",
-            "kms:Decrypt",
-            "kms:DescribeKey"
-          ],
-          Resource = ["*"]
-        }
-      ]
-    })
-  }
+  policy_statements = [{
+    Sid = "VaultKMSUnseal"
+    Effect = "Allow",
+    Action = [
+      "kms:Encrypt",
+      "kms:Decrypt",
+      "kms:DescribeKey"
+    ],
+    Resource = ["*"]
+  }]
+
   providers = {
     aws.current = aws.current
   }

@@ -121,7 +121,7 @@ resource "aws_iam_role" "sa" {
 
 resource "aws_iam_role_policy_attachment" "sa" {
   provider = aws.current
-  for_each = {for sa in local.policiy_attachments : "${sa.service_account}-${sa.policy.name}" => sa}
+  for_each = {for sa in local.policy_attachments : "${sa.service_account}-${sa.policy.name}" => sa}
   role = aws_iam_role.sa[each.value.service_account].name
   policy_arn = each.value.policy.arn
 }
