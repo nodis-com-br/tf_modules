@@ -10,17 +10,13 @@ variable "assume_role_policy" {
   default = null
 }
 
-variable "policies" {
-  default = {}
+variable "policy_statements" {
+  default = []
 }
 
 variable "policy_arns" {
   type = list(string)
   default = []
-}
-
-variable "vault_kv_path" {
-  default = null
 }
 
 variable "vault_role" {

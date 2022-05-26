@@ -1,12 +1,12 @@
 module "bucket" {
   source = "../aws_s3"
   name = var.log_bucket_name
-  policy = false
-  role = false
+  create_policy = false
+  create_role = false
   providers = {
     aws.current = aws.current
   }
-  extra_bucket_policy_statements = [
+  bucket_policy_statements = [
     {
       Effect = "Allow"
       Principal = {

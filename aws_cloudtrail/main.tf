@@ -2,7 +2,7 @@ module "bucket" {
   source = "../aws_s3"
   name = var.bucket_name
   policy = false
-  role = false
+  create_role = false
   bucket_policy_statements = [
     {
       Sid = "AWSCloudTrailAclCheck"

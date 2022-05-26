@@ -1,7 +1,7 @@
 module "bucket" {
   source = "../aws_s3"
   name = var.bucket
-  role = false
+  create_role = false
   providers = {
     aws.current = aws.current
   }
@@ -72,36 +72,22 @@ resource "aws_cloudfront_distribution" "this" {
   }
 }
 
-module "invalidation_policy" {
-  source = "../aws_iam_policy"
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Action = ["cloudfront:ListDistributions"]
-        Resource = ["*"]
-      },
-      {
-        Effect = "Allow"
-        Action = ["cloudfront:CreateInvalidation"]
-        Resource = [aws_cloudfront_distribution.this.arn]
-      }
-    ]
-  })
-  providers = {
-    aws.current = aws.current
-  }
-}
-
 module "role" {
   source = "../aws_iam_role"
   count = var.role_owner_arn != null ? 1 : 0
   assume_role_principal = {AWS = var.role_owner_arn}
-  policy_arns = [
-    module.bucket.policy_arn,
-    module.invalidation_policy.this.arn
-  ]
+  policy_statements = concat(module.bucket.access_policy_statements, [
+    {
+      Effect = "Allow"
+      Action = ["cloudfront:ListDistributions"]
+      Resource = ["*"]
+    },
+    {
+      Effect = "Allow"
+      Action = ["cloudfront:CreateInvalidation"]
+      Resource = [aws_cloudfront_distribution.this.arn]
+    }
+  ])
   vault_role = var.vault_role
   providers = {
     aws.current = aws.current

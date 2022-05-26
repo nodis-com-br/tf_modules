@@ -23,12 +23,12 @@ variable "server_side_encryption" {
   }
 }
 
-variable "policy" {
-  default = null
+variable "create_policy" {
+  default = false
 }
 
-variable "role" {
-  default = true
+variable "create_role" {
+  default = false
 }
 
 variable "role_owner_arn" {

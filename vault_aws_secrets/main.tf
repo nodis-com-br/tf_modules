@@ -25,9 +25,7 @@ module "aws_user" {
     },
     {
       Effect = "Allow"
-      Action = [
-        "sts:AssumeRole"
-      ]
+      Action = ["sts:AssumeRole"]
       Resource = ["arn:aws:iam::*:role/*"]
     }
   ]

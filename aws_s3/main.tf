@@ -38,13 +38,28 @@ resource aws_s3_bucket_server_side_encryption_configuration "this" {
 resource "aws_s3_bucket_policy" "this" {
   provider = aws.current
   bucket = aws_s3_bucket.this.id
-  policy = local.bucket_policy
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = concat(var.bucket_policy_statements, [{
+      Principal: "*"
+      Effect: "Deny"
+      Action: ["s3:*"]
+      Resource = [
+        "arn:aws:s3:::${aws_s3_bucket.this.bucket}",
+        "arn:aws:s3:::${aws_s3_bucket.this.bucket}/*"
+      ]
+      Condition: {Bool: {"aws:SecureTransport": "false"}}
+    }])
+  })
 }
 
 module "policy" {
   source = "../aws_iam_policy"
-  count = var.policy != false ? 1 : 0
-  policy = coalesce(var.policy, local.access_policy)
+  count = var.create_policy ? 1 : 0
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = local.access_policy_statements
+  })
   providers = {
     aws.current = aws.current
   }
@@ -52,9 +67,9 @@ module "policy" {
 
 module "role" {
   source = "../aws_iam_role"
-  count = var.role ? 1 : 0
+  count = var.create_role ? 1 : 0
   assume_role_principal = {AWS = var.role_owner_arn}
-  policy_arns = [module.policy[0].this.arn]
+  policy_statements = local.access_policy_statements
   vault_role = var.vault_role
   vault_credential_type = var.vault_credential_type
   vault_backend = var.vault_backend

@@ -20,9 +20,12 @@ resource "aws_iam_role" "this" {
 
 resource "aws_iam_role_policy" "this" {
   provider = aws.current
-  for_each = var.policies
+  count = length(var.policy_statements) > 0 ? 1 : 0
   role = aws_iam_role.this.id
-  policy = each.value
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = var.policy_statements
+  })
 }
 
 resource "aws_iam_role_policy_attachment" "this" {
