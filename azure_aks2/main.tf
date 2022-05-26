@@ -77,8 +77,8 @@ resource "azurerm_kubernetes_cluster_node_pool" "this" {
   name = each.value.name
   kubernetes_cluster_id = azurerm_kubernetes_cluster.this.id
   vnet_subnet_id = each.value.vnet_subnet_id
-  enable_auto_scaling = each.value.enable_auto_scaling
   node_count = each.value.node_count
+  enable_auto_scaling = each.value.enable_auto_scaling
   min_count = each.value.enable_auto_scaling ? each.value.min_count : null
   max_count = each.value.enable_auto_scaling ? each.value.max_count : null
   vm_size = each.value.vm_size
