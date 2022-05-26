@@ -3,7 +3,7 @@ module "bucket" {
   name = var.bucket_name
   policy = false
   role = false
-  extra_bucket_policy_statements = [
+  bucket_policy_statements = [
     {
       Sid = "AWSCloudTrailAclCheck"
       Effect = "Allow"

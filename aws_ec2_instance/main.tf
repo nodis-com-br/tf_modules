@@ -13,7 +13,7 @@ module "security_group" {
 module "role" {
   source = "../aws_iam_role"
   count = var.instance_role ? 1 : 0
-  assume_role_policy = "ec2_instance"
+  assume_role_principal = {Service = "ec2.amazonaws.com"}
   policy_arns = var.instance_policy_arns
   providers = {
     aws.current = aws.current

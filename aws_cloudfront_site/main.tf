@@ -72,22 +72,35 @@ resource "aws_cloudfront_distribution" "this" {
   }
 }
 
-resource "aws_iam_policy" "this" {
-  provider = aws.current
-  count = var.cloudfront_policy ? 1 : 0
-  name = var.name
-  policy = local.cloudfront_policy
+module "invalidation_policy" {
+  source = "../aws_iam_policy"
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = ["cloudfront:ListDistributions"]
+        Resource = ["*"]
+      },
+      {
+        Effect = "Allow"
+        Action = ["cloudfront:CreateInvalidation"]
+        Resource = [aws_cloudfront_distribution.this.arn]
+      }
+    ]
+  })
+  providers = {
+    aws.current = aws.current
+  }
 }
 
 module "role" {
   source = "../aws_iam_role"
   count = var.role_owner_arn != null ? 1 : 0
-  owner_arn = var.role_owner_arn
-  policies = {
-    cloudfront = local.cloudfront_policy
-  }
+  assume_role_principal = {AWS = var.role_owner_arn}
   policy_arns = [
-    module.bucket.policy_arn
+    module.bucket.policy_arn,
+    module.invalidation_policy.this.arn
   ]
   vault_role = var.vault_role
   providers = {

@@ -1,7 +1,14 @@
 resource "aws_iam_role" "this" {
   provider = aws.current
   name = var.name
-  assume_role_policy = local.assume_role_policies[var.assume_role_policy]
+  assume_role_policy = coalesce(var.assume_role_policy, jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Action = "sts:AssumeRole"
+      Principal = var.assume_role_principal
+      Effect = "Allow"
+    }]
+  }))
   tags = {}
   lifecycle {
     ignore_changes = [

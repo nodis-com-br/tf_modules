@@ -2,11 +2,11 @@ variable "name" {
   default = null
 }
 
-variable "assume_role_policy" {
-  default = "iam_role"
+variable "assume_role_principal" {
+  default = null
 }
 
-variable "owner_arn" {
+variable "assume_role_policy" {
   default = null
 }
 
@@ -14,16 +14,8 @@ variable "policies" {
   default = {}
 }
 
-variable "builtin_policies" {
-  default = []
-}
-
 variable "policy_arns" {
   type = list(string)
-  default = []
-}
-
-variable "builtin_policy_arns" {
   default = []
 }
 

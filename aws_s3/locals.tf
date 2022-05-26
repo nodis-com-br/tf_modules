@@ -1,15 +1,11 @@
 locals {
-  default_access_policy = jsonencode({
+  access_policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
       {
         Effect = "Allow",
-        Action = [
-          "s3:ListAllMyBuckets"
-        ],
-        Resource = [
-          "arn:aws:s3:::*"
-        ]
+        Action = ["s3:ListAllMyBuckets"],
+        Resource = ["arn:aws:s3:::*"]
       },
       {
         Effect = "Allow",
@@ -19,9 +15,7 @@ locals {
           "s3:ListBucketMultipartUploads",
           "s3:ListBucketVersions"
         ],
-        Resource = [
-          aws_s3_bucket.this.arn
-        ]
+        Resource = [aws_s3_bucket.this.arn]
       },
       {
         Effect = "Allow",

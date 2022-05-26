@@ -44,7 +44,7 @@ resource "aws_s3_bucket_policy" "this" {
 module "policy" {
   source = "../aws_iam_policy"
   count = var.policy != false ? 1 : 0
-  policy = coalesce(var.policy, local.default_access_policy)
+  policy = coalesce(var.policy, local.access_policy)
   providers = {
     aws.current = aws.current
   }
@@ -53,7 +53,7 @@ module "policy" {
 module "role" {
   source = "../aws_iam_role"
   count = var.role ? 1 : 0
-  owner_arn = var.role_owner_arn
+  assume_role_principal = {AWS = var.role_owner_arn}
   policy_arns = [module.policy[0].this.arn]
   vault_role = var.vault_role
   vault_credential_type = var.vault_credential_type

@@ -17,7 +17,7 @@ module "cloudtrail" {
 module "developer_role" {
   source = "../aws_iam_role"
   count = var.developer_role ? 1 : 0
-  owner_arn = var.role_owner_arn
+  assume_role_principal = {AWS = var.role_owner_arn}
   policy_arns = var.developer_role_policy_arns
   providers = {
     aws.current = aws.current

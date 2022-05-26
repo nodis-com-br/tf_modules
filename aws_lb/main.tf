@@ -6,7 +6,7 @@ module "bucket" {
   providers = {
     aws.current = aws.current
   }
-  extra_bucket_policy_statements = [
+  bucket_policy_statements = [
     {
       Effect = "Allow"
       Principal = {

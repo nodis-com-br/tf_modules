@@ -50,7 +50,7 @@ module "bucket" {
     role = false
     policy = false
     name = var.flow_logs_bucket_name
-    extra_bucket_policy_statements = [
+    bucket_policy_statements = [
         {
             Sid = "AWSLogDeliveryWrite"
             Effect = "Allow"
