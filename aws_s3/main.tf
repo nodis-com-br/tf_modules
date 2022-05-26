@@ -44,7 +44,7 @@ resource "aws_s3_bucket_policy" "this" {
 module "policy" {
   source = "../aws_iam_policy"
   count = var.policy != false ? 1 : 0
-  policy = coalesce(var.policy, local.default_policy)
+  policy = coalesce(var.policy, local.default_access_policy)
   providers = {
     aws.current = aws.current
   }
