@@ -209,7 +209,7 @@ variable "endpoint_bots_chart" {
 
 variable "endpoint_bots_chart_version" {
   type = string
-  default = "2.0.22"
+  default = "2.0.23"
 }
 
 variable "endpoint_bots_chart_values" {
