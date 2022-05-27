@@ -43,6 +43,7 @@ resource "aws_cloudfront_distribution" "this" {
     min_ttl = 0
     target_origin_id = "s3-${module.bucket.this.bucket}"
     viewer_protocol_policy = "redirect-to-https"
+    compress = true
     forwarded_values {
       headers = []
       query_string = false
