@@ -8,3 +8,11 @@ variable "project" {
 variable "path" {
   default = "gcp"
 }
+
+variable "default_lease_ttl_seconds" {
+  default = null
+}
+
+variable "max_lease_ttl_seconds" {
+  default = null
+}

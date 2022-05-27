@@ -10,18 +10,9 @@ module "service_account" {
 }
 
 resource "vault_gcp_secret_backend" "this" {
-  credentials = base64decode(module.service_account.key.private_key)
+  credentials = base64decode(module.service_account.key["private_key"])
   path = var.path
+  default_lease_ttl_seconds = var.default_lease_ttl_seconds
+  max_lease_ttl_seconds = var.max_lease_ttl_seconds
 }
 
-//resource "null_resource" "rotate_role_password" {
-//  triggers = {
-//    private_key = module.service_account.key.private_key
-//  }
-//  provisioner "local-exec" {
-//    command = "VAULT_TOKEN=${data.vault_generic_secret.token.data.id} vault write -force ${var.path}/config/rotate-root"
-//  }
-//  depends_on = [
-//    vault_gcp_secret_backend.this
-//  ]
-//}
