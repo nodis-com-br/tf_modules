@@ -1,3 +1,3 @@
 locals {
-  repository = jsondecode(module.workload.this.metadata[0].values)["image"]["repository"]
+  rendered_values = jsondecode(module.workload.this.metadata[0].values)
 }

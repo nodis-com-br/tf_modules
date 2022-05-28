@@ -1,8 +1,7 @@
-variable "backend" {
-  default = {path = ""}
-  type = object({path = string})
-}
-
 variable "path" {}
+
+variable "backend" {
+  default = "secret/"
+}
 
 variable "data_json" {}

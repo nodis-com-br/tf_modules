@@ -2,10 +2,6 @@ output "this" {
   value = vault_generic_secret.this
 }
 
-output "path" {
-  value = var.path
-}
-
-output "backend" {
-  value = var.backend
+output "data_path" {
+  value = "${try(var.backend.path, var.backend)}data/${var.path}"
 }

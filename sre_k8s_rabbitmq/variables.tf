@@ -1,6 +1,8 @@
 variable "name" {}
 
-variable "domain" {}
+variable "domain" {
+  default = "rabbitmq.local"
+}
 
 variable "management_schema" {
   default = "https"
@@ -35,12 +37,16 @@ variable "helm_chart_values" {
   default = []
 }
 
+variable "enable_vault" {
+  default = false
+}
+
 variable "vault_role" {
   default = null
 }
 
-variable "vault_secret_username" {
-  default = "admin"
+variable "vault_pki_issuer_path" {
+  default = "pki/rabbitmq/issue/server"
 }
 
 variable "vault_secret_path" {
@@ -48,18 +54,9 @@ variable "vault_secret_path" {
 }
 
 variable "vault_kv_backend" {
-  default = {path = "secret/"}
+  default = "secret/"
 }
 
 variable "kubernetes_auth_backend" {
-  default = null
-}
-
-variable "vault_policy_definitions" {
-  type = list(string)
-  default = []
-}
-
-variable "vault_values" {
   default = null
 }

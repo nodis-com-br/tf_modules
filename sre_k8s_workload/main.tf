@@ -13,11 +13,11 @@ module "workload" {
 
 resource "null_resource" "set_latest_tag" {
   triggers = {
-    repository = local.repository
+    repository = local.rendered_values["image"]["repository"]
   }
   provisioner "local-exec" {
     interpreter = ["/bin/bash", "-c"]
-    command = "kubectl set image --kubeconfig <(echo '${var.kubeconfig}') --namespace ${var.namespace} ${var.helm_chart}/${var.name} ${var.name}=${var.registry}/${local.repository}${data.external.current_version.result.tag}"
+    command = "kubectl set image --kubeconfig <(echo '${var.kubeconfig}') --namespace ${var.namespace} ${var.helm_chart}/${var.name} ${var.name}=${var.registry}/${local.rendered_values["image"]["repository"]}${data.external.current_version.result.tag}"
   }
   depends_on = [
     module.workload.this,
