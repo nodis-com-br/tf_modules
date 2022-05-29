@@ -264,30 +264,3 @@ variable "newrelic_values" {
   type = list(string)
   default = []
 }
-
-# Redis #######################################################################
-
-variable "redis_chart" {
-  type = string
-  default = "redis"
-}
-
-variable "redis_chart_version" {
-  type = string
-  default = null
-}
-
-variable "redis_chart_repository" {
-  type = string
-  default = "https://charts.bitnami.com/bitnami"
-}
-
-variable "redis_namespace" {
-  type = string
-  default = "redis"
-}
-
-variable "redis_chart_values" {
-  type = list(string)
-  default = []
-}

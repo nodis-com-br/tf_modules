@@ -254,21 +254,6 @@ module "kongplugin_gh_auth" {
 
 # Miscellanea #################################################################
 
-module "redis" {
-  source = "../helm_release"
-  count = length(var.redis_chart_values) > 0 ? 1 : 0
-  name = "redis"
-  namespace = var.redis_namespace
-  chart = var.redis_chart
-  chart_version = var.redis_chart_version
-  repository = var.redis_chart_repository
-  create_namespace = true
-  values = var.redis_chart_values
-  providers = {
-    helm = helm
-  }
-}
-
 module "newrelic" {
   source = "../helm_release"
   count = length(var.newrelic_values) > 0 ? 1 : 0
