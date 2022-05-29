@@ -4,6 +4,10 @@ variable "path" {
 
 variable "host" {}
 
-variable "ca_certificate" {}
+variable "ca_certificate" {
+  default = null
+}
 
-variable "token" {}
+variable "token" {
+  default = null
+}
