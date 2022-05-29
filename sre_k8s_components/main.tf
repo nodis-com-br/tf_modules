@@ -20,7 +20,7 @@ module "vault_auth_backend" {
   count = length(var.vault_injector_chart_values) > 0 ? 1 : 0
   path = "${var.vault_backend_type}/${var.cluster.this.name}"
   host = var.cluster.credentials.host
-#  ca_certificate = var.cluster.credentials.cluster_ca_certificate
+  ca_certificate = var.cluster.credentials.cluster_ca_certificate
 #  token = data.kubernetes_secret.vault-injector-token[0].data.token
   depends_on = [
     module.vault_injector
