@@ -5,9 +5,9 @@ variable "path" {
 variable "host" {}
 
 variable "ca_certificate" {
-  default = null
+  default = ""
 }
 
 variable "token" {
-  default = null
+  default = ""
 }
