@@ -117,8 +117,9 @@ module "vault_secrets_backend" {
   count = var.vault_secrets_backend ? 1 : 0
   path = "${var.vault_secrets_backend_path}${local.cluster_name}"
   host = local.credentials.host
-  ca_cert = local.credentials.cluster_ca_certificate
-  jwt = azurerm_kubernetes_cluster.this.kube_config.0.password
+  providers = {
+    kubernetes = kubernetes
+  }
  }
 
 

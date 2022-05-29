@@ -12,8 +12,6 @@ module "elasticsearch" {
   }
 }
 
-
-
 module "vault_secrets_backend" {
   source = "../vault_mount"
   path = "elasticsearch/${var.environment}-${var.name}"

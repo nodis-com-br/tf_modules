@@ -1,47 +1,4 @@
-# Manifests ###################################################################
-
-module "http_manifests" {
-  source = "../kubectl_manifests"
-  count = length(var.http_manifests) > 0 ? 1 : 0
-  type = "http"
-  sources = var.http_manifests
-  providers = {
-    kubectl = kubectl
-  }
-}
-
-module "file_manifests" {
-  source = "../kubectl_manifests"
-  count = length(var.file_manifests) > 0 ? 1 : 0
-  type = "file"
-  sources = var.file_manifests
-  providers = {
-    kubectl = kubectl
-  }
-}
-
 # Vault #######################################################################
-
-module "vault_secrets_service_account" {
-  source = "../kubernetes_service_account"
-  count = length(var.vault_secrets_service_account_ruleset) > 0 ? 1 : 0
-  name = var.vault_secrets_service_account_name
-  namespace = "kube-system"
-  cluster_role_rules = var.vault_secrets_service_account_ruleset
-  providers = {
-    kubernetes = kubernetes
-  }
-}
-
-module "vault_secrets_backend" {
-  source = "../vault_k8s_secrets"
-  count = length(var.vault_secrets_service_account_ruleset) > 0 ? 1 : 0
-  type = var.vault_backend_type
-  path = "${var.vault_backend_type}/${var.cluster.this.name}"
-  host = var.cluster.credentials.host
-  ca_cert = module.vault_secrets_service_account[0].ca_crt
-  jwt = module.vault_secrets_service_account[0].token
-}
 
 module "vault_injector" {
   source = "../helm_release"
@@ -141,9 +98,6 @@ module "kong_public" {
   values = var.kong_public_chart_values
   create_namespace = true
   skip_crds = true
-  depends_on = [
-    module.http_manifests
-  ]
   providers = {
     helm = helm
   }
@@ -160,9 +114,6 @@ module "kong_private" {
   create_namespace = true
   skip_crds = true
   values = var.kong_private_chart_values
-  depends_on = [
-    module.http_manifests
-  ]
   providers = {
     helm = helm
   }
@@ -182,9 +133,6 @@ module "kongingress_default_override_public" {
       annotations = {"kubernetes.io/ingress.class" = "kong-public"}
     })
   ])
-  depends_on = [
-    module.http_manifests
-  ]
   providers = {
     helm = helm
   }
@@ -204,9 +152,6 @@ module "kongingress_default_override_private" {
       annotations = {"kubernetes.io/ingress.class" = "kong-private"}
     })
   ])
-  depends_on = [
-    module.http_manifests
-  ]
   providers = {
     helm = helm
   }
@@ -224,9 +169,6 @@ module "kongplugin_prometheus" {
       annotations = {"kubernetes.io/ingress.class" = "kong-${each.key}"}
     })
   ])
-  depends_on = [
-    module.http_manifests
-  ]
   providers = {
     helm = helm
   }
@@ -244,9 +186,6 @@ module "kongplugin_gh_auth" {
       annotations = {"kubernetes.io/ingress.class" = "kong-${each.key}"}
     })
   ])
-  depends_on = [
-    module.http_manifests
-  ]
   providers = {
     helm = helm
   }

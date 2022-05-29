@@ -10,18 +10,6 @@ variable "cluster" {
   })
 }
 
-# Manifests ###################################################################
-
-variable "http_manifests" {
-  type = list(string)
-  default = []
-}
-
-variable "file_manifests" {
-  type = list(string)
-  default = []
-}
-
 # Vault #######################################################################
 
 variable "vault_backend_type" {
