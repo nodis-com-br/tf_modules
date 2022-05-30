@@ -29,7 +29,7 @@ module "rabbitmq_k8s_auth_role" {
   bound_service_account_namespaces = [var.namespace]
   policy_definitions = [
     "path \"${module.vault_kv_secret[0].data_path}\" {capabilities = [\"read\"]}",
-    "path \"${var.vault_pki_issuer_path}\" {capabilities = [\"create\"]}"
+    "path \"${var.vault_pki_issuer_path}\" {capabilities = [\"create\", \"update\"]}"
   ]
 }
 
