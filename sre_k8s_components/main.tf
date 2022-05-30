@@ -145,23 +145,6 @@ module "kongingress_default_override_private" {
   }
 }
 
-module "kongplugin_prometheus" {
-  source = "../helm_release"
-  for_each = toset(length(var.kongplugin_prometheus_chart_values) > 0 ? var.kong_ingress_classes : [])
-  name = "prometheus-${each.key}"
-  chart = var.kongplugin_chart
-  chart_version = var.kongplugin_chart_version
-  repository = var.default_chart_repository
-  values = concat(var.kongplugin_prometheus_chart_values, [
-    jsonencode({
-      annotations = {"kubernetes.io/ingress.class" = "kong-${each.key}"}
-    })
-  ])
-  providers = {
-    helm = helm
-  }
-}
-
 module "kongplugin_gh_auth" {
   source = "../helm_release"
   for_each = toset(length(var.kongplugin_gh_auth_chart_values) > 0 ? var.kong_ingress_classes : [])

@@ -86,7 +86,7 @@ variable "vault_bot_chart" {
 
 variable "vault_bot_chart_version" {
   type = string
-  default = "1.0.11"
+  default = "1.1.1"
 }
 
 # Kong ########################################################################
