@@ -15,24 +15,12 @@ module "vault_injector" {
   }
 }
 
-module "vault_auth_backend" {
-  source = "../vault_k8s_auth"
-  count = length(var.vault_injector_chart_values) > 0 ? 1 : 0
-  path = "${var.vault_backend_type}/${var.cluster.this.name}"
-  host = var.cluster.credentials.host
-  ca_certificate = var.cluster.credentials.cluster_ca_certificate
-#  token = data.kubernetes_secret.vault-injector-token[0].data.token
-  depends_on = [
-    module.vault_injector
-  ]
-}
-
 # botland #####################################################################
 
 module "endpoint_bots_k8s_auth_role" {
   source = "../vault_k8s_auth_role"
   count = length(var.endpoint_bots_vault_policy_definitions) > 0 ? 1 : 0
-  backend = module.vault_auth_backend[0].this.path
+  backend = "kubernetes/${var.cluster.this.name}"
   name = var.endpoint_bots_name
   bound_service_account_names = [var.endpoint_bots_name]
   bound_service_account_namespaces = [var.bots_namespace]
@@ -60,7 +48,7 @@ module "endpoint_bots" {
 module "ghcr_credentials_bot_k8s_auth_role" {
   source = "../vault_k8s_auth_role"
   count = length(var.ghcr_credentials_bot_vault_policy_definitions) > 0 ? 1 : 0
-  backend = module.vault_auth_backend[0].this.path
+  backend = "kubernetes/${var.cluster.this.name}"
   name = var.ghcr_credentials_bot_name
   bound_service_account_names = [var.ghcr_credentials_bot_name]
   bound_service_account_namespaces = [var.bots_namespace]

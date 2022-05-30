@@ -16,30 +16,6 @@ variable "vault_backend_type" {
   default = "kubernetes"
 }
 
-variable "vault_secrets_service_account_name" {
-  default = "vault-secrets-backend"
-}
-
-variable "vault_secrets_service_account_ruleset" {
-  type = list(object({
-    api_groups = list(string)
-    resources = list(string)
-    verbs = list(string)
-  }))
-  default = [
-    {
-      api_groups = [""]
-      resources = ["secrets", "serviceaccounts"]
-      verbs = ["get", "list", "watch", "create", "update", "patch", "delete"]
-    },
-    {
-      api_groups = ["rbac.authorization.k8s.io"]
-      resources = ["roles", "clusterroles", "rolebindings", "clusterrolebindings"]
-      verbs = ["*"]
-    }
-  ]
-}
-
 variable "vault_chart" {
   type = string
   default = "vault"
@@ -65,9 +41,6 @@ variable "vault_injector_chart_values" {
   default = []
 }
 
-variable "vault_token_reviewer_sa" {
-  default = "vault-injector"
-}
 
 # Custom charts ###############################################################
 

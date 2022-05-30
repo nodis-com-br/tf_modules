@@ -108,8 +108,9 @@ module "vault_auth_backend" {
   count = var.vault_auth_backend ? 1 : 0
   path = local.cluster_name
   host = local.credentials.host
-  ca_certificate = local.credentials.cluster_ca_certificate
-  token = data.kubernetes_secret.vault-injector-token.0.data.token
+  providers = {
+    kubernetes = kubernetes
+  }
 }
 
 module "vault_secrets_backend" {

@@ -2,7 +2,18 @@ module "service_account" {
   source = "../kubernetes_service_account"
   name = var.service_account_name
   namespace = "kube-system"
-  cluster_role_rules = var.service_account_ruleset
+  cluster_role_rules = [
+    {
+      api_groups = [""]
+      resources = ["secrets", "serviceaccounts"]
+      verbs = ["get", "list", "watch", "create", "update", "patch", "delete"]
+    },
+    {
+      api_groups = ["rbac.authorization.k8s.io"]
+      resources = ["roles", "clusterroles", "rolebindings", "clusterrolebindings"]
+      verbs = ["*"]
+    }
+  ]
   providers = {
     kubernetes = kubernetes
   }
