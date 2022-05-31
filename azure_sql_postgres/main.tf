@@ -15,8 +15,8 @@ resource "azurerm_postgresql_server" "this" {
   administrator_login = var.admin_username
   administrator_login_password = random_password.postgres_password.result
   version = var.psql_version
-  ssl_enforcement_enabled = true
-  ssl_minimal_tls_version_enforced = "TLS1_2"
+  ssl_enforcement_enabled = var.ssl_enforcement_enabled
+  ssl_minimal_tls_version_enforced = var.ssl_minimal_tls_version_enforced
   public_network_access_enabled = var.public_access
 
   tags = var.tags

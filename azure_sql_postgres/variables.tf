@@ -43,6 +43,13 @@ variable "subnet" {
 
 variable "sku_name" {}
 
+variable "ssl_enforcement_enabled" {
+  default = true
+}
+variable "ssl_minimal_tls_version_enforced" {
+  default = "TLS1_2"
+}
+
 variable "allowed_sources" {
   default = {}
   type = map(object({
@@ -55,6 +62,7 @@ variable "tags" {
   default = {}
 }
 
+
 variable "route53_zone_id" {}
 
 variable "name_prefix" {
@@ -63,26 +71,4 @@ variable "name_prefix" {
 
 variable "private_domain" {
   default = "azurepsql.nodis.com.br"
-}
-
-variable "vault_path" {
-  default = "postgres"
-}
-
-variable "vault_admin_role_default_ttl" {
-  default = 604800
-}
-
-variable "vault_role_name_prefix" {
-  default = "vault"
-}
-
-variable "vault_initial_password" {
-  default = "Mv9MUyX4Eh3gm4Mn"
-  type = string
-}
-
-variable "vault_database_backends" {
-  default = []
-  type = list(string)
 }
