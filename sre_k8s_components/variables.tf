@@ -12,10 +12,6 @@ variable "cluster" {
 
 # Vault #######################################################################
 
-variable "vault_backend_type" {
-  default = "kubernetes"
-}
-
 variable "vault_chart" {
   type = string
   default = "vault"
@@ -44,39 +40,9 @@ variable "vault_injector_chart_values" {
 
 # Custom charts ###############################################################
 
-variable "default_chart_repository" {
+variable "helm_chart_repository" {
   type = string
   default = "https://charts.nodis.com.br/"
-}
-
-variable "secret_chart" {
-  type = string
-  default = "secret"
-}
-
-variable "secret_chart_version" {
-  type = string
-  default = "2.0.0"
-}
-
-variable "kongingress_chart" {
-  type = string
-  default = "kongingress"
-}
-
-variable "kongingress_chart_version" {
-  type = string
-  default = "2.0.2"
-}
-
-variable "kongplugin_chart" {
-  type = string
-  default = "kongplugin"
-}
-
-variable "kongplugin_chart_version" {
-  type = string
-  default = "2.0.1"
 }
 
 variable "vault_bot_chart" {
@@ -87,67 +53,6 @@ variable "vault_bot_chart" {
 variable "vault_bot_chart_version" {
   type = string
   default = "1.1.1"
-}
-
-# Kong ########################################################################
-
-variable "kong_ingress_classes" {
-  default = ["public", "private"]
-}
-
-variable "kong_chart" {
-  type = string
-  default = "kong"
-}
-
-variable "kong_chart_version" {
-  type = string
-  default = null
-}
-
-variable "kong_chart_repository" {
-  type = string
-  default = "https://charts.konghq.com"
-}
-
-variable "kong_namespace" {
-  type = string
-  default = "kong"
-}
-
-variable "kong_public_chart_values" {
-  type = list(string)
-  default = []
-}
-
-variable "kong_private_chart_values" {
-  type = list(string)
-  default = []
-}
-
-variable "kongingress_default_override_namespaces_public" {
-  type = list(string)
-  default = []
-}
-
-variable "kongingress_default_override_namespaces_private" {
-  type = list(string)
-  default = []
-}
-
-variable "kongingress_default_override_values" {
-  type = list(string)
-  default = []
-}
-
-variable "kongplugin_prometheus_chart_values" {
-  type = list(string)
-  default = []
-}
-
-variable "kongplugin_gh_auth_chart_values" {
-  type = list(string)
-  default = []
 }
 
 # botland #####################################################################

@@ -16,5 +16,4 @@ locals {
       default_override_namespaces = var.default_override_private_namespaces
     }
   }
-
 }

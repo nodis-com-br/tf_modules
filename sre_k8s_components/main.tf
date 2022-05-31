@@ -34,7 +34,7 @@ module "endpoint_bots" {
   namespace = var.bots_namespace
   chart = var.endpoint_bots_chart
   chart_version = var.endpoint_bots_chart_version
-  repository = var.default_chart_repository
+  repository = var.helm_chart_repository
   create_namespace = true
   values = var.endpoint_bots_chart_values
   depends_on = [
@@ -62,7 +62,7 @@ module "ghcr_credentials_bot" {
   namespace = var.bots_namespace
   chart = var.vault_bot_chart
   chart_version = var.vault_bot_chart_version
-  repository = var.default_chart_repository
+  repository = var.helm_chart_repository
   create_namespace = true
   values = var.ghcr_credentials_bot_chart_values
   depends_on = [
@@ -73,96 +73,7 @@ module "ghcr_credentials_bot" {
   }
 }
 
-# Kong ########################################################################
-
-module "kong_public" {
-  source = "../helm_release"
-  count = length(var.kong_public_chart_values) > 0 ? 1 : 0
-  name = "kong-public"
-  namespace = var.kong_namespace
-  chart = var.kong_chart
-  chart_version = var.kong_chart_version
-  repository = var.kong_chart_repository
-  values = var.kong_public_chart_values
-  create_namespace = true
-  skip_crds = true
-  providers = {
-    helm = helm
-  }
-}
-
-module "kong_private" {
-  source = "../helm_release"
-  count = length(var.kong_private_chart_values) > 0 ? 1 : 0
-  name = "kong-private"
-  namespace = var.kong_namespace
-  chart = var.kong_chart
-  chart_version = var.kong_chart_version
-  repository = var.kong_chart_repository
-  create_namespace = true
-  skip_crds = true
-  values = var.kong_private_chart_values
-  providers = {
-    helm = helm
-  }
-}
-
-module "kongingress_default_override_public" {
-  source = "../helm_release"
-  for_each = toset(var.kongingress_default_override_namespaces_public)
-  name = "default-override-public"
-  namespace = each.key
-  chart = var.kongingress_chart
-  repository = var.default_chart_repository
-  chart_version = var.kongingress_chart_version
-  create_namespace = true
-  values = concat(var.kongingress_default_override_values, [
-    jsonencode({
-      annotations = {"kubernetes.io/ingress.class" = "kong-public"}
-    })
-  ])
-  providers = {
-    helm = helm
-  }
-}
-
-module "kongingress_default_override_private" {
-  source = "../helm_release"
-  for_each = toset(var.kongingress_default_override_namespaces_private)
-  name = "default-override-private"
-  namespace = each.key
-  chart = var.kongingress_chart
-  repository = var.default_chart_repository
-  chart_version = var.kongingress_chart_version
-  create_namespace = true
-  values = concat(var.kongingress_default_override_values, [
-    jsonencode({
-      annotations = {"kubernetes.io/ingress.class" = "kong-private"}
-    })
-  ])
-  providers = {
-    helm = helm
-  }
-}
-
-module "kongplugin_gh_auth" {
-  source = "../helm_release"
-  for_each = toset(length(var.kongplugin_gh_auth_chart_values) > 0 ? var.kong_ingress_classes : [])
-  name = "gh_auth-${each.key}"
-  chart = var.kongplugin_chart
-  chart_version = var.kongplugin_chart_version
-  repository = var.default_chart_repository
-  values = concat(var.kongplugin_gh_auth_chart_values, [
-    jsonencode({
-      annotations = {"kubernetes.io/ingress.class" = "kong-${each.key}"}
-    })
-  ])
-  providers = {
-    helm = helm
-  }
-}
-
-# Miscellanea #################################################################
+# NewRelic ####################################################################
 
 module "newrelic" {
   source = "../helm_release"

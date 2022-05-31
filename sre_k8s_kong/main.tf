@@ -1,5 +1,3 @@
-# Kong ########################################################################
-
 module "kong" {
   source = "../helm_release"
   for_each = toset(var.instances)
@@ -47,7 +45,7 @@ module "kongingress_default_override" {
     namespace = n
   }]]) : "${i["instance"]}-${i["namespace"]}" => i}
   name = "default-override-${each.value["instance"]}"
-  namespace = each.value["ingress_class"]
+  namespace = each.value["namespace"]
   chart = var.kongingress_chart
   repository = var.kongingress_chart_repository
   chart_version = var.kongingress_chart_version
