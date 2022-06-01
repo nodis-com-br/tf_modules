@@ -9,7 +9,7 @@ variable "repository_type" {
 variable "repository_settings" {}
 
 variable "snapshot_schedule" {
-  default = "0 0 * * * ?"
+  default = "0 0 0 * * ?"
 }
 
 variable "snapshot_name" {
