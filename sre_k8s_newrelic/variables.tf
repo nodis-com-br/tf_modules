@@ -1,3 +1,7 @@
+variable "license_key" {}
+
+variable "cluster_name" {}
+
 variable "chart_name" {
   type = string
   default = "nri-bundle"
