@@ -7,14 +7,10 @@ module "newrelic" {
   repository = var.helm_charts_repository
   values = concat(var.values, [
     jsonencode({
-      global = {
-        licenseKey = var.license_key
-        cluster = var.cluster_name
-        lowDataMode = true
-      }
+      global = {licenseKey = var.license_key, cluster = var.cluster_name, lowDataMode = true}
       ksm = {enabled = true}
       kubeEvents = {enabled = true}
-      logging = {enabled = true, fluentBit = {criEnabled = true} }
+      logging = {enabled = true, fluentBit = {criEnabled = true}}
       prometheus = {enabled = false}
       newrelic-infrastructure = {
         privileged = true
@@ -34,7 +30,8 @@ module "newrelic" {
               matchExpressions = [{
                 key: "nodePoolClass"
                 operator: "NotIn"
-                values: ["rabbitmq", "elasticsearch"]}]
+                values: ["rabbitmq", "elasticsearch"]
+              }]
             }]
           }
         }
