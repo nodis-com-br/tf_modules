@@ -14,3 +14,15 @@ module "root_record" {
     aws.current = aws.current
   }
 }
+
+module "record" {
+  source = "../aws_route53_record"
+  for_each = {for r in var.records : "${r["name"]}_${r["type"]}" => r}
+  name = each.value["name"]
+  route53_zone = aws_route53_zone.this
+  type = each.value["type"]
+  records = each.value["records"]
+  providers = {
+    aws.current = aws.current
+  }
+}
