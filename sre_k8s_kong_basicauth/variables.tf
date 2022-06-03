@@ -36,10 +36,6 @@ variable "ingress_class" {
   default = "kong"
 }
 
-variable "consumers" {
-  type = list(object({
-    username = string
-    password = string
-  }))
-  default = []
-}
+variable "consumers_secret_path" {}
+
+variable "vault_auth_backend" {}

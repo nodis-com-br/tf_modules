@@ -9,25 +9,19 @@ module "bucket" {
   bucket_policy_statements = [
     {
       Effect = "Allow"
-      Principal = {
-        AWS = "arn:aws:iam::${local.elb_account_id[data.aws_region.current.name]}:root"
-      }
+      Principal = {AWS = "arn:aws:iam::${local.elb_account_id[data.aws_region.current.name]}:root"}
       Action = "s3:PutObject"
       Resource = "arn:aws:s3:::${var.log_bucket_name}/AWSLogs/${data.aws_caller_identity.current.account_id}/*"
     },
     {
       Effect = "Allow"
-      Principal = {
-        Service = "delivery.logs.amazonaws.com"
-      }
+      Principal = {Service = "delivery.logs.amazonaws.com"}
       Action = "s3:PutObject"
       Resource = "arn:aws:s3:::${var.log_bucket_name}/AWSLogs/${data.aws_caller_identity.current.account_id}/*"
     },
     {
       Effect = "Allow"
-      Principal = {
-        Service = "delivery.logs.amazonaws.com"
-      }
+      Principal = {Service = "delivery.logs.amazonaws.com"}
       Action = "s3:GetBucketAcl"
       Resource = "arn:aws:s3:::${var.log_bucket_name}"
     }
@@ -48,12 +42,12 @@ module "listener" {
   source = "../aws_loadbalancer_listener"
   for_each = local.listeners
   load_balancer = aws_alb.this
-  port = try(each.value.port, "443")
-  protocol = try(each.value.protocol, "HTTPS")
-  certificate = try(each.value.certificate, null)
-  actions = try(each.value.actions, {})
-  builtin_actions = try(each.value.builtin_actions, [])
-  rules = try(each.value.rules, {})
+  port = try(each.value["port"], "443")
+  protocol = try(each.value["protocol"], "HTTPS")
+  certificate = try(each.value["certificate"], null)
+  actions = try(each.value["actions"], {})
+  builtin_actions = try(each.value["builtin_actions"], [])
+  rules = try(each.value["rules"], {})
   providers = {
     aws.current = aws.current
   }
