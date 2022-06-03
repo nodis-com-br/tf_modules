@@ -45,7 +45,7 @@ resource "aws_alb" "this" {
 }
 
 module "listener" {
-  source = "../aws_lb_listener"
+  source = "../aws_loadbalancer_listener"
   for_each = local.listeners
   load_balancer = aws_alb.this
   port = try(each.value.port, "443")

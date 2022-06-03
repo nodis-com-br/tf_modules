@@ -29,7 +29,7 @@ module "security_group" {
 }
 
 module "target_group" {
-  source = "../aws_lb_target_group"
+  source = "../aws_loadbalancer_target_group"
   target_type = "instance"
   vpc = var.vpc
   targets = var.instances
@@ -39,7 +39,7 @@ module "target_group" {
 }
 
 module "load_balancer" {
-  source = "../aws_lb"
+  source = "../aws_loadbalancer"
   subnet_ids = var.subnet_ids
   log_bucket_name = var.log_bucket_name
   security_group_ids = [
