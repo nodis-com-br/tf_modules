@@ -14,9 +14,9 @@ module "plugin" {
   }
 }
 
-module "password_bot" {
+module "bot" {
   source = "../sre_k8s_vault_bot"
-  name = "${var.name}-password-bot"
+  name = "${var.name}-${var.namespace}-bot"
   namespace = var.namespace
   vault_auth_backend = var.vault_auth_backend
   vault_policies = ["path \"${var.consumers_secret_path}\" {capabilities = [\"read\"]}"]
@@ -35,6 +35,7 @@ module "password_bot" {
       }
       pod = {
         annotations = {
+          "vault.hashicorp.com/template-static-secret-render-interval" = var.static_secret_render_interval
           "vault.hashicorp.com/agent-inject-secret-update-script" = var.consumers_secret_path
           "vault.hashicorp.com/agent-inject-perms-update-script" = "0755"
           "vault.hashicorp.com/agent-inject-template-update-script" = <<-EOF
@@ -52,7 +53,7 @@ module "password_bot" {
                 annotations:
                   kubernetes.io/ingress.class: ${var.ingress_class}
                 name: ${var.name}-{{ $username }}
-                namespace: pypicloud
+                namespace: ${var.namespace}
               credentials:
                 - ${var.name}-{{ $username }}
               username: {{ $username }}" | kubectl apply -f -
@@ -72,7 +73,11 @@ module "password_bot" {
                 kongCredType: {{ base64Encode "basic-auth" }}" | kubectl apply -f -
             fi
 
-            UNDESIRED_CONSUMERS=($${UNDESIRED_CONSUMERS[@]/${var.name}-{{ $username }}/})
+            for INDEX in "$${!UNDESIRED_CONSUMERS[@]}"; do
+              if [[ $${UNDESIRED_CONSUMERS[INDEX]} == "${var.name}-{{ $username }}" ]]; then
+                unset 'UNDESIRED_CONSUMERS[INDEX]'
+              fi
+            done
             {{- end }}
             {{- end }}
 

@@ -1,7 +1,7 @@
 module "certificate" {
   source = "../aws_acm_certificate"
-  domain_name = local.domain_name
-  subject_alternative_names = local.subject_alternative_names
+  domain_name = var.domains[0]
+  subject_alternative_names = [for d in var.domains : d if index(var.domains, d) != 0]
   route53_zone = var.route53_zone
   providers = {
     aws.current = aws.current
@@ -20,7 +20,7 @@ module "security_group" {
     1 = {
       from_port = 0
       protocol = -1
-      cidr_blocks = [for s in var.subnets : s.cidr_block]
+      cidr_blocks = [for s in var.subnets : s["cidr_block"]]
       ipv6_cidr_blocks = []
     }
   }
@@ -31,7 +31,7 @@ module "security_group" {
 
 module "load_balancer" {
   source = "../aws_loadbalancer"
-  subnet_ids = [for s in var.subnets : s.id]
+  subnet_ids = [for s in var.subnets : s["id"]]
   log_bucket_name = var.log_bucket_name
   security_group_ids = [
     module.security_group.this.id

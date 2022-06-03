@@ -39,3 +39,7 @@ variable "ingress_class" {
 variable "consumers_secret_path" {}
 
 variable "vault_auth_backend" {}
+
+variable "static_secret_render_interval" {
+  default = "90s"
+}
