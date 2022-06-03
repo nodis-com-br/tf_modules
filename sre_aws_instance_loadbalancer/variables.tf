@@ -25,7 +25,7 @@ variable "instances" {
   }))
 }
 
-variable "instance_subnet_cidrs" {
+variable "instance_subnet_blocks" {
   type = list(string)
 }
 

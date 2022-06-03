@@ -19,7 +19,7 @@ module "security_group" {
     prod = {
       from_port = 0
       protocol = -1
-      cidr_blocks = var.instance_subnet_cidrs
+      cidr_blocks = var.instance_subnet_blocks
       ipv6_cidr_blocks = []
     }
   }

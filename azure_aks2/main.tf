@@ -38,23 +38,23 @@ resource "azurerm_kubernetes_cluster" "this" {
     }
   }
   default_node_pool {
-    name = local.node_pools[local.default_pool_index].name
-    enable_auto_scaling = local.node_pools[local.default_pool_index].enable_auto_scaling
-    node_count = local.node_pools[local.default_pool_index].node_count
-    min_count = local.node_pools[local.default_pool_index].enable_auto_scaling ? local.node_pools[local.default_pool_index].min_count : null
-    max_count = local.node_pools[local.default_pool_index].enable_auto_scaling ? local.node_pools[local.default_pool_index].max_count : null
-    vm_size = local.node_pools[local.default_pool_index].vm_size
-    vnet_subnet_id = local.node_pools[local.default_pool_index].vnet_subnet_id
-    orchestrator_version = local.node_pools[local.default_pool_index].orchestrator_version
+    name = local.node_pools[local.default_pool_index]["name"]
+    enable_auto_scaling = local.node_pools[local.default_pool_index]["enable_auto_scaling"]
+    node_count = local.node_pools[local.default_pool_index]["node_count"]
+    min_count = local.node_pools[local.default_pool_index]["enable_auto_scaling"] ? local.node_pools[local.default_pool_index]["min_count"] : null
+    max_count = local.node_pools[local.default_pool_index]["enable_auto_scaling"] ? local.node_pools[local.default_pool_index]["max_count"] : null
+    vm_size = local.node_pools[local.default_pool_index]["vm_size"]
+    vnet_subnet_id = local.node_pools[local.default_pool_index]["vnet_subnet_id"]
+    orchestrator_version = local.node_pools[local.default_pool_index]["orchestrator_version"]
     node_labels = {
-      nodePoolName = local.node_pools[local.default_pool_index].name
-      nodePoolClass = local.node_pools[local.default_pool_index].class
+      nodePoolName = local.node_pools[local.default_pool_index]["name"]
+      nodePoolClass = local.node_pools[local.default_pool_index]["class"]
     }
     dynamic "linux_os_config" {
-      for_each =  local.node_pools[local.default_pool_index].linux_os_config
+      for_each =  local.node_pools[local.default_pool_index]["linux_os_config"]
       content {
         dynamic "sysctl_config" {
-          for_each = try(linux_os_config.value.sysctl_config, {})
+          for_each = try(linux_os_config.value["sysctl_config"], {})
           content {
             vm_max_map_count = try(sysctl_config.value.vm_max_map_count, null)
           }
@@ -73,25 +73,25 @@ resource "azurerm_kubernetes_cluster" "this" {
 }
 
 resource "azurerm_kubernetes_cluster_node_pool" "this" {
-  for_each = {for i, v in local.node_pools : v.name => v if i != local.default_pool_index}
-  name = each.value.name
+  for_each = {for i, v in local.node_pools : v["name"] => v if i != local.default_pool_index}
+  name = each.value["name"]
   kubernetes_cluster_id = azurerm_kubernetes_cluster.this.id
-  vnet_subnet_id = each.value.vnet_subnet_id
-  node_count = each.value.node_count
-  enable_auto_scaling = each.value.enable_auto_scaling
-  min_count = each.value.enable_auto_scaling ? each.value.min_count : null
-  max_count = each.value.enable_auto_scaling ? each.value.max_count : null
-  vm_size = each.value.vm_size
-  orchestrator_version = each.value.orchestrator_version
+  vnet_subnet_id = each.value["vnet_subnet_id"]
+  node_count = each.value["node_count"]
+  enable_auto_scaling = each.value["enable_auto_scaling"]
+  min_count = each.value["enable_auto_scaling"] ? each.value["min_count"] : null
+  max_count = each.value["enable_auto_scaling"] ? each.value["max_count"] : null
+  vm_size = each.value["vm_size"]
+  orchestrator_version = each.value["orchestrator_version"]
   node_labels = {
-    nodePoolName = each.value.name
-    nodePoolClass = each.value.class
+    nodePoolName = each.value["name"]
+    nodePoolClass = each.value["class"]
   }
   dynamic "linux_os_config" {
-    for_each =  each.value.linux_os_config
+    for_each =  each.value["linux_os_config"]
     content {
       dynamic "sysctl_config" {
-        for_each = try(linux_os_config.value.sysctl_config, [])
+        for_each = try(linux_os_config.value["sysctl_config"], [])
         content {
           vm_max_map_count = try(sysctl_config.value.vm_max_map_count, null)
         }
