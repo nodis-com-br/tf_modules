@@ -118,6 +118,7 @@ module "vault_secrets_backend" {
   count = var.vault_secrets_backend ? 1 : 0
   path = "${var.vault_secrets_backend_path}${local.cluster_name}"
   host = local.credentials.host
+  default_ttl = "768h"
   max_ttl = "768h"
   providers = {
     kubernetes = kubernetes
