@@ -29,7 +29,3 @@ output "subnets" {
 output "storage_account" {
   value = azurerm_storage_account.this
 }
-
-output "subscription" {
-  value = data.azurerm_subscription.this
-}

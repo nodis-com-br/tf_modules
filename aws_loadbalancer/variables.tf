@@ -16,3 +16,9 @@ variable "builtin_listeners" {
   type = list(string)
   default = []
 }
+
+variable "region" {
+  default = "us-east-1"
+}
+
+variable "account_id" {}

@@ -23,8 +23,9 @@ variable "default_root_object" {
   default = "index.html"
 }
 
-variable "origin_path" {
-  default = "/www"
+variable "origin_paths" {
+  default = ["/www"]
+  type = list(string)
 }
 
 variable "cloudfront_enabled" {

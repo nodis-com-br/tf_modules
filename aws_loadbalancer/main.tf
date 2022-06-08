@@ -9,15 +9,15 @@ module "bucket" {
   bucket_policy_statements = [
     {
       Effect = "Allow"
-      Principal = {AWS = "arn:aws:iam::${local.elb_account_id[data.aws_region.current.name]}:root"}
+      Principal = {AWS = "arn:aws:iam::${local.elb_account_id[var.region]}:root"}
       Action = "s3:PutObject"
-      Resource = "arn:aws:s3:::${var.log_bucket_name}/AWSLogs/${data.aws_caller_identity.current.account_id}/*"
+      Resource = "arn:aws:s3:::${var.log_bucket_name}/AWSLogs/${var.account_id}/*"
     },
     {
       Effect = "Allow"
       Principal = {Service = "delivery.logs.amazonaws.com"}
       Action = "s3:PutObject"
-      Resource = "arn:aws:s3:::${var.log_bucket_name}/AWSLogs/${data.aws_caller_identity.current.account_id}/*"
+      Resource = "arn:aws:s3:::${var.log_bucket_name}/AWSLogs/${var.account_id}/*"
     },
     {
       Effect = "Allow"

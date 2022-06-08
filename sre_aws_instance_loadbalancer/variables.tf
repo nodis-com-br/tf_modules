@@ -30,3 +30,9 @@ variable "instance_subnet_blocks" {
 }
 
 variable "log_bucket_name" {}
+
+variable "region" {
+  default = "us-east-1"
+}
+
+variable "account_id" {}

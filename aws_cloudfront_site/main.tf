@@ -54,10 +54,14 @@ resource "aws_cloudfront_distribution" "this" {
       }
     }
   }
-  origin {
-    origin_path = var.origin_path
-    domain_name = module.bucket.this.bucket_domain_name
-    origin_id = "s3-${module.bucket.this.bucket}"
+  dynamic "origin" {
+    for_each = toset(var.origin_paths)
+    content {
+      origin_path = origin.value
+      domain_name = module.bucket.this.bucket_domain_name
+      origin_id = "s3-${module.bucket.this.bucket}"
+
+    }
   }
   restrictions {
     geo_restriction {

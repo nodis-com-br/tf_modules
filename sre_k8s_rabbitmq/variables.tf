@@ -24,7 +24,7 @@ variable "helm_chart" {
 
 variable "helm_chart_version" {
   type = string
-  default = "2.0.8"
+  default = "2.0.9"
 }
 
 variable "helm_chart_repository" {

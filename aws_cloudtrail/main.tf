@@ -18,7 +18,7 @@ module "bucket" {
         Service = "cloudtrail.amazonaws.com"
       }
       Action = "s3:PutObject"
-      Resource = "arn:aws:s3:::${var.bucket_name}/AWSLogs/${data.aws_caller_identity.current.account_id}/*"
+      Resource = "arn:aws:s3:::${var.bucket_name}/AWSLogs/${var.account_id}/*"
       Condition = {
         StringEquals = {
           "s3:x-amz-acl" = "bucket-owner-full-control"

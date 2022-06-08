@@ -9,6 +9,7 @@ module "cloudtrail" {
   source = "../aws_cloudtrail"
   name = "audit_logs"
   bucket_name = "${var.bucket_name_prefix}-${var.name}-audit-logs"
+  account_id = var.account_id
   providers = {
     aws.current = aws.current
   }

@@ -1,5 +1,7 @@
 variable "name" {}
 
+variable "account_id" {}
+
 variable "bucket_name_prefix" {
   default = "nodis"
 }

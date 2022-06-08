@@ -22,6 +22,7 @@ module "kong" {
     jsonencode({securityContext = {runAsUser = 0}}),
     jsonencode({serviceMonitor = {enabled = true}}),
     jsonencode({admin = {tls = {parameters = []}}}),
+    jsonencode({nodeSelector = {nodePoolClass = "general"}})
   ])
   providers = {
     helm = helm

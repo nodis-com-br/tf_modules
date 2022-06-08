@@ -2,4 +2,10 @@ variable "name" {}
 
 variable "rg" {}
 
-variable "tenant_id" {}
+variable "azure_config" {
+  type = object({
+    tenant_id = string
+    object_id = string
+  })
+}
+

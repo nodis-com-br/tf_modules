@@ -29,7 +29,7 @@ module "newrelic" {
         values: ["rabbitmq", "elasticsearch"]
       }]
     }]}}}})
-  ])
+  ], [for r in var.rabbitmq_instances : format(local.rabbitmq_integration, r["name"], r["environment"], r["username"], r["password"])])
   providers = {
     helm = helm
   }

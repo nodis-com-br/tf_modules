@@ -46,6 +46,8 @@ module "load_balancer" {
     }
   }
   builtin_listeners = ["http_to_https"]
+  region = var.region
+  account_id = var.account_id
   providers = {
     aws.current = aws.current
   }

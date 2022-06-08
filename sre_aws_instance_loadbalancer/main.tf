@@ -59,6 +59,8 @@ module "load_balancer" {
       }
     }
   }
+  region = var.region
+  account_id = var.account_id
   providers = {
     aws.current = aws.current
   }

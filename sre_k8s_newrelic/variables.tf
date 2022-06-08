@@ -26,3 +26,7 @@ variable "values" {
   type = list(string)
   default = []
 }
+
+variable "rabbitmq_instances" {
+  default = []
+}

@@ -56,14 +56,14 @@ module "bucket" {
                 Service = "delivery.logs.amazonaws.com"
             }
             Action = "s3:PutObject"
-            Resource = "arn:aws:s3:::${var.flow_logs_bucket_name}/AWSLogs/${data.aws_caller_identity.this.account_id}/*"
+            Resource = "arn:aws:s3:::${var.flow_logs_bucket_name}/AWSLogs/${var.account_id}/*"
             Condition = {
                 StringEquals = {
                     "s3:x-amz-acl" = "bucket-owner-full-control"
-                    "aws:SourceAccount" = data.aws_caller_identity.this.account_id
+                    "aws:SourceAccount" = var.account_id
                 }
                 ArnLike = {
-                    "aws:SourceArn" = "arn:aws:logs:${data.aws_region.this.name}:${data.aws_caller_identity.this.account_id}:*"
+                    "aws:SourceArn" = "arn:aws:logs:${var.region}:${var.account_id}:*"
                 }
             }
         },
@@ -83,7 +83,7 @@ module "bucket" {
                     "aws:SourceAccount" = data.aws_caller_identity.this.account_id
                 },
                 ArnLike = {
-                    "aws:SourceArn" = "arn:aws:logs:${data.aws_region.this.name}:${data.aws_caller_identity.this.account_id}:*"
+                    "aws:SourceArn" = "arn:aws:logs:${var.region}:${var.account_id}:*"
                 }
             }
         }
