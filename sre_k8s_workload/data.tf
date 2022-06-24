@@ -1,3 +1,3 @@
-data "external" "current_version" {
-  program = ["${path.module}/scripts/git_get_latest_tag.sh", var.github_token, module.workload.values["image"]["repository"], var.environment]
+data "external" "running_tag" {
+  program = ["${path.module}/scripts/get_running_image_tag.sh", var.kubeconfig, var.namespace, var.helm_chart, var.name]
 }
