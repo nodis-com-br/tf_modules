@@ -46,6 +46,7 @@ resource "azurerm_kubernetes_cluster" "this" {
     vm_size = local.node_pools[local.default_pool_index]["vm_size"]
     vnet_subnet_id = local.node_pools[local.default_pool_index]["vnet_subnet_id"]
     orchestrator_version = local.node_pools[local.default_pool_index]["orchestrator_version"]
+    node_taints = local.node_pools[local.default_pool_index]["node_taints"]
     node_labels = {
       nodePoolName = local.node_pools[local.default_pool_index]["name"]
       nodePoolClass = local.node_pools[local.default_pool_index]["class"]
@@ -83,6 +84,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "this" {
   max_count = each.value["enable_auto_scaling"] ? each.value["max_count"] : null
   vm_size = each.value["vm_size"]
   orchestrator_version = each.value["orchestrator_version"]
+  node_taints = each.value["node_taints"]
   node_labels = {
     nodePoolName = each.value["name"]
     nodePoolClass = each.value["class"]

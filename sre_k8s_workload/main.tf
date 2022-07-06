@@ -14,6 +14,8 @@ module "workload" {
 resource "null_resource" "set_latest_tag" {
   triggers = {
     values = jsonencode(module.workload.this.values)
+    chart_version = module.workload.this.version
+    workload_id = module.workload.this.id
   }
   provisioner "local-exec" {
     interpreter = ["/bin/bash", "-c"]

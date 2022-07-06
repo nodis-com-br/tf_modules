@@ -108,3 +108,7 @@ variable "default_node_pool_enable_auto_scaling" {
 variable "default_node_pool_subnet_id" {
   default = null
 }
+
+variable "default_node_pool_node_taints" {
+  default = null
+}

@@ -12,6 +12,7 @@ locals {
     orchestrator_version = try(v["orchestrator_version"], var.kubernetes_version)
     class = try(v["class"], var.default_node_pool_class)
     linux_os_config = try(v["linux_os_config"], [])
+    node_taints = try(v["node_taints"], var.default_node_pool_node_taints)
   }]
   subnet_ids = distinct([for pool in local.node_pools : pool["vnet_subnet_id"]])
   default_pool_index = index(local.node_pools.*.default, true)
