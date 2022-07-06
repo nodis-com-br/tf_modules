@@ -20,7 +20,7 @@ resource "vault_database_secret_backend_connection" "this" {
   name = elasticsearch_xpack_user.this.username
   backend = try(var.backend.path, var.backend)
   elasticsearch {
-    url = data.elasticsearch_host.this.url
+    url = var.elasticsearch_url
     username = elasticsearch_xpack_user.this.username
     password = random_password.this.result
   }
@@ -32,7 +32,7 @@ resource "null_resource" "rotate_role_password" {
     password = random_password.this.result
   }
   provisioner "local-exec" {
-    command = "VAULT_TOKEN=${data.vault_generic_secret.token.data.id} vault write -force ${vault_database_secret_backend_connection.this.backend}/rotate-root/${vault_database_secret_backend_connection.this.name}"
+    command = "VAULT_TOKEN=${var.vault_token} vault write -force ${vault_database_secret_backend_connection.this.backend}/rotate-root/${vault_database_secret_backend_connection.this.name}"
   }
   depends_on = [
     vault_database_secret_backend_connection.this

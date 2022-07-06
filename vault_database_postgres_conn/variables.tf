@@ -21,3 +21,4 @@ variable "login_name_suffix" {
   default = ""
 }
 
+variable "vault_token" {}
