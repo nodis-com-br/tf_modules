@@ -13,10 +13,8 @@ resource "mongodbatlas_cluster" "this" {
   cloud_backup = var.cloud_backup
   lifecycle {
     ignore_changes = [
-      snapshot_backup_policy,
       bi_connector,
       provider_disk_type_name,
-      state_name
     ]
   }
 }

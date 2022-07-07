@@ -21,6 +21,7 @@ resource "vault_kubernetes_auth_backend_config" "this" {
   kubernetes_host = var.host
   kubernetes_ca_cert = module.service_account.ca_crt
   token_reviewer_jwt = module.service_account.token
+
   pem_keys = []
   disable_iss_validation = true
 }

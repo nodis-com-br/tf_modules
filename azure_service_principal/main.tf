@@ -35,11 +35,6 @@ resource "azuread_service_principal_password" "this" {
   count = var.create_password ? 1 : 0
   service_principal_id = azuread_service_principal.this.id
   value = null
-  lifecycle {
-    ignore_changes = [
-      end_date
-    ]
-  }
 }
 
 resource "azuread_group_member" "this" {
