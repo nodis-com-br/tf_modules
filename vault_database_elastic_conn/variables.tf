@@ -6,7 +6,7 @@ variable "elasticsearch_url" {}
 
 variable "allowed_roles" {
   type = list(string)
-  default = null
+  default = ["*"]
 }
 
 variable "role_name_prefix" {
