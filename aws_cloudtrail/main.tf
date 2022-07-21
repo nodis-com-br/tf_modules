@@ -36,4 +36,7 @@ resource "aws_cloudtrail" "this" {
   name = var.name
   s3_bucket_name = module.bucket.this.id
   include_global_service_events = var.include_global_service_events
+  depends_on = [
+    module.bucket
+  ]
 }

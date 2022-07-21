@@ -38,7 +38,7 @@ resource "vault_database_secret_backend_connection" "this" {
 resource "null_resource" "rotate_role_password" {
   triggers = {
     username = elasticsearch_xpack_user.this.username
-    password = elasticsearch_xpack_user.this.password
+    password = random_password.this.result
   }
   provisioner "local-exec" {
     command = "VAULT_TOKEN=${var.vault_token} vault write -force ${vault_database_secret_backend_connection.this.backend}/rotate-root/${vault_database_secret_backend_connection.this.name}"

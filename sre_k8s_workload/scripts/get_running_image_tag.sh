@@ -11,4 +11,5 @@ case ${RESOURCE_KIND} in
 esac
 
 TAG=$(kubectl get --kubeconfig <(echo "${KUBE_CONFIG}") --namespace "${NAMESPACE}" "${RESOURCE_KIND}" "${RESOURCE_NAME}" -o jsonpath="${QUERY}" | awk -F: '{print $2}')
+[[ -z ${TAG} ]] && TAG="latest"
 echo "{\"tag\": \"${TAG}\"}"
